@@ -3,12 +3,143 @@
  */
 package ru.fadedfog.tombs;
 
-public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
+import ru.fadedfog.tombs.asset.character.behavior.attack.TypeAttack;
+import ru.fadedfog.tombs.asset.character.behavior.death.TypeKill;
+import ru.fadedfog.tombs.asset.character.behavior.jump.TypeJump;
+import ru.fadedfog.tombs.asset.character.behavior.move.TypeMove;
+import ru.fadedfog.tombs.asset.character.npc.FactoryEnemy;
+import ru.fadedfog.tombs.asset.character.npc.enemy.Enemy;
+import ru.fadedfog.tombs.asset.character.npc.enemy.TypeEnemy;
+import ru.fadedfog.tombs.asset.character.user.TreasureHunter;
+import ru.fadedfog.tombs.asset.geometry.Point;
+import ru.fadedfog.tombs.asset.level.element.FactoryClimbItem;
+import ru.fadedfog.tombs.asset.level.element.FactoryContainer;
+import ru.fadedfog.tombs.asset.level.element.FactorySurface;
+import ru.fadedfog.tombs.asset.level.element.FactoryTrap;
+import ru.fadedfog.tombs.asset.level.element.climb.ClimbItem;
+import ru.fadedfog.tombs.asset.level.element.climb.TypeClimbItem;
+import ru.fadedfog.tombs.asset.level.element.container.Container;
+import ru.fadedfog.tombs.asset.level.element.container.TypeContainer;
+import ru.fadedfog.tombs.asset.level.element.surface.Surface;
+import ru.fadedfog.tombs.asset.level.element.surface.TypeSurface;
+import ru.fadedfog.tombs.asset.level.element.trap.Trap;
+import ru.fadedfog.tombs.asset.level.element.trap.TypeTrap;
+import ru.fadedfog.tombs.asset.projectile.FactoryProjectile;
+import ru.fadedfog.tombs.asset.projectile.Projectile;
+import ru.fadedfog.tombs.asset.projectile.TypeProjectile;
+import ru.fadedfog.tombs.asset.reward.FactoryReward;
+import ru.fadedfog.tombs.asset.reward.Reward;
+import ru.fadedfog.tombs.asset.reward.TypeReward;
 
-    public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+public class App {
+
+    public static void main(String[] args) throws Exception { 	
+    	goCharacter();
+    	goLevelElement();
+    	goProjectile();
+    	goReward();
+    	goTrap();
+    }
+    
+    // Test Work
+    // To Remove
+    private static void goCharacter() throws Exception {
+    	System.out.println("@_ENEMY");
+    	goFactoryEnemy();
+    	System.out.println("@_HERO");
+    	goHero();
+    }
+    
+    //To Remove
+    private static void goFactoryEnemy() throws Exception {
+    	for (TypeEnemy typeEnemy: TypeEnemy.values()) {
+    		Enemy enemy = FactoryEnemy.makeEnemy(typeEnemy, TypeAttack.ATTACKABLE, TypeKill.KILLABLE,
+    				TypeJump.JUMPABLE, TypeMove.MOVEABLE, new Point(0,0));
+    		System.out.println("	" + typeEnemy.toString() + " " + enemy.getClass().getSimpleName() + " " + enemy.getHearts());
+    	}
+    }
+    
+    
+    //To Remove
+    private static void goHero() {
+    	TreasureHunter hero = TreasureHunter.getInstance();
+    	System.out.println("	" + hero.getClass().getSimpleName());
+    }
+    
+    //To Remover
+    private static void goLevelElement() throws Exception {
+    	System.out.println("@_LEVEL_ELEMENT");
+    	System.out.println("@_CLIMB_ITEM");
+    	goFactoryClimpItem();
+    	System.out.println("@_CONTAINER");   
+    	goFactoryContainer();
+    	System.out.println("@_SURFACE");   
+    	goFactorySurface();
+    }
+    
+    //To Remove
+    private static void goFactoryClimpItem() throws Exception {
+    	for (TypeClimbItem typeClimbItem: TypeClimbItem.values()) {
+    		ClimbItem climbItem = FactoryClimbItem.makeClimbItem(typeClimbItem, new Point(0, 0));
+    		System.out.println("	" + typeClimbItem + " " + climbItem.getClass().getSimpleName());
+    	}
+    }
+    
+    //To Remove
+    private static void goFactoryContainer() throws Exception {
+    	for (TypeContainer typeContainer: TypeContainer.values()) {
+    		Container container = FactoryContainer.makeContainer(typeContainer, new Point(0, 0), false);
+    		System.out.println("	" + typeContainer + " " + container.getClass().getSimpleName() + " " + container.isOpened());
+    	}
+    }
+    
+    //To Remove
+    private static void goFactorySurface() throws Exception {
+    	for (TypeSurface typeSurface: TypeSurface.values()) {
+    		Surface surface = FactorySurface.makeSurface(typeSurface, new Point(0, 0));
+    		System.out.println("	" + typeSurface + " " + surface.getClass().getSimpleName());
+    	}
+    }
+    
+    //To Remove
+    private static void goProjectile() throws Exception {
+    	System.out.println("@_PROJECTILE");
+    	goFactoryProjectile();
+    }
+    
+    //To Remove
+    private static void goFactoryProjectile() throws Exception {
+    	for (TypeProjectile typeProjectile: TypeProjectile.values()) {
+    		Projectile projectile = FactoryProjectile.makeProjectile(typeProjectile, new Point(0, 0));
+    		System.out.println("	" + typeProjectile + " " + projectile.getClass().getSimpleName());
+    	}
+    }
+    
+    //To Remove
+    private static void goReward() throws Exception {
+    	System.out.println("@_REWARD");
+    	goFactoryReward();
+    }
+    
+    //To Remove
+    private static void goFactoryReward() throws Exception {
+    	for (TypeReward typeReward: TypeReward.values()) {
+    		Reward reward = FactoryReward.makeReward(typeReward, new Point(0, 0));
+    		System.out.println("	" + typeReward + " " + reward.getClass().getSimpleName());
+    	}
+    }
+    
+    //To Remove
+    private static void goTrap() throws Exception {
+    	System.out.println("@_TRAP");
+    	goFactoryTrap();
+    }
+    
+    //To Remove
+    public static void goFactoryTrap() throws Exception {
+    	for (TypeTrap typeTrap: TypeTrap.values()) {
+    		Trap reward = FactoryTrap.makeTrap(typeTrap, new Point(0, 0));
+    		System.out.println("	" + typeTrap + " " + reward.getClass().getSimpleName());
+    	}
     }
 }
