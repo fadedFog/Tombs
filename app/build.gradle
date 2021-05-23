@@ -6,14 +6,17 @@
  * User Manual available at https://docs.gradle.org/6.9/userguide/building_java_projects.html
  */
 
+
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
 }
 
+apply plugin: "eclipse";
+
 repositories {
     // Use JCenter for resolving dependencies.
-    jcenter()
+    mavenCentral()
 }
 
 task customJar(type: Jar) {
@@ -31,6 +34,10 @@ dependencies {
 
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:29.0-jre'
+    
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
+    
 }
 
 application {
