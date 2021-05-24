@@ -1,5 +1,6 @@
 package ru.fadedfog.tombs.asset.character.user;
 
+
 import ru.fadedfog.tombs.asset.character.Character;
 
 public class TreasureHunter extends Character {
@@ -45,6 +46,11 @@ public class TreasureHunter extends Character {
 		if (totalScore != other.totalScore)
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "TreasureHunter [totalScore=" + totalScore + ", levelScore=" + levelScore + "]";
 	}
 
 }

@@ -14,7 +14,7 @@ import ru.fadedfog.tombs.asset.geometry.Point;
 import ru.fadedfog.tombs.asset.level.element.surface.Surface;
 import ru.fadedfog.tombs.asset.level.element.surface.TypeSurface;
 import ru.fadedfog.tombs.asset.level.map.room.Room;
-import ru.fadedfog.tombs.generate.SerializerRoom;
+import ru.fadedfog.tombs.generate.RoomConfig;
 
 import static org.junit.Assert.*;
 
@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AppTest {
-    private final String NAME_LEVEL_CONFIG_FILE = "src/test/resources/config_files/room.json";
+    private final String NAME_LEVEL_CONFIG_FILE = "src/test/resources/room.json";
 	
     @Test
     public void testGenerateStage() throws JsonGenerationException, JsonMappingException, IOException {
@@ -52,7 +52,7 @@ public class AppTest {
     	room.setWidth(width);
     	room.setName(name);
     	
-    	SerializerRoom serializerRoom = new SerializerRoom();
+    	RoomConfig serializerRoom = new RoomConfig();
     	serializerRoom.setCustomPath(NAME_LEVEL_CONFIG_FILE);
     	serializerRoom.serialize(room);
     	

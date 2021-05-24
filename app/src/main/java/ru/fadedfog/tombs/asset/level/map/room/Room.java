@@ -8,8 +8,8 @@ import ru.fadedfog.tombs.asset.level.element.surface.TypeSurface;
 import ru.fadedfog.tombs.asset.character.Character;
 
 public class Room {
-	private double width;
-	private double height;
+	private int width;
+	private int height;
 	private String name;
 	private Map<Point, Character> characters;
 	private Map<Point, Surface<TypeSurface>> surfaces;
@@ -27,19 +27,19 @@ public class Room {
 		this.surfaces = surfaces;
 	}
 	
-	public double getWidth() {
+	public int getWidth() {
 		return width;
 	}
 
-	public void setWidth(double width) {
+	public void setWidth(int width) {
 		this.width = width;
 	}
 
-	public double getHeight() {
+	public int getHeight() {
 		return height;
 	}
 
-	public void setHeight(double height) {
+	public void setHeight(int height) {
 		this.height = height;
 	}
 	

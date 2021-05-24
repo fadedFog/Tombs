@@ -48,6 +48,11 @@ public class Character {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Character [name=" + name + ", hearts=" + hearts + "]";
+	}
 	
 	
 

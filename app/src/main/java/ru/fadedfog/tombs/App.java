@@ -4,10 +4,59 @@
 package ru.fadedfog.tombs;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
+import ru.fadedfog.tombs.asset.character.Character;
+import ru.fadedfog.tombs.asset.character.user.TreasureHunter;
+import ru.fadedfog.tombs.asset.geometry.Point;
+import ru.fadedfog.tombs.asset.level.element.surface.Surface;
+import ru.fadedfog.tombs.asset.level.element.surface.TypeSurface;
+import ru.fadedfog.tombs.asset.level.map.room.Room;
+import ru.fadedfog.tombs.generate.RoomConfig;
+
 public class App {
 
     public static void main(String[] args) throws Exception {
-
+    	Room room = new Room();
+    	int width = 100;
+    	int height = 60;
+    	String name = "RoomTest";
+    	TreasureHunter treasureHunter = new TreasureHunter();
+    	treasureHunter.setHearts(2);
+    	treasureHunter.setName("Hunter");
+    	treasureHunter.setLevelScore(999);
+    	treasureHunter.setTotalScore(9999);
+    	Character npc = new Character();
+    	npc.setHearts(1);
+    	npc.setName("NPC_1");
+    	Map<Point, Character> map1 = new HashMap<>();
+    	map1.put(new Point(1,1), treasureHunter);
+    	map1.put(new Point(2,2), npc);
+    	Surface<TypeSurface> block = new Surface<TypeSurface>(TypeSurface.BLOCK);
+    	Map<Point, Surface<TypeSurface>> map2 = new HashMap<>();
+    	map2.put(new Point(2,2), block);
+    	
+    	room.setCharacters(map1);
+    	room.setSurfaces(map2);
+    	room.setHeight(height);
+    	room.setWidth(width);
+    	room.setName(name);
+    	
+    	RoomConfig serializerRoom = new RoomConfig();
+    	serializerRoom.serialize(room);
+    	
+    	Room newRoom = serializerRoom.deserialize();
+    	System.out.println(newRoom.equals(room));
+    	
+    	for (Map.Entry<Point, Character> element : newRoom.getCharacters().entrySet()) {
+    		if (element.getValue() instanceof TreasureHunter) {
+    			TreasureHunter treasureHunter1 = (TreasureHunter) element.getValue();
+    			System.out.println("TH " + treasureHunter1.toString());
+    		}
+    		System.out.println(element);
+    	}
+    	
     }
     
 }
