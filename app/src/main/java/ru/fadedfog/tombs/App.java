@@ -30,12 +30,18 @@ public class App {
     	Character npc = new Character();
     	npc.setHearts(1);
     	npc.setName("NPC_1");
+    	Character npc1 = new Character();
+    	npc1.setHearts(4);
+    	npc1.setName("NPC_2");
     	Map<Point, Character> map1 = new HashMap<>();
     	map1.put(new Point(1,1), treasureHunter);
     	map1.put(new Point(2,2), npc);
+    	map1.put(new Point(5,2), npc1);
     	Surface<TypeSurface> block = new Surface<TypeSurface>(TypeSurface.BLOCK);
+    	Surface<TypeSurface> block2 = new Surface<TypeSurface>(TypeSurface.BLOCK);
     	Map<Point, Surface<TypeSurface>> map2 = new HashMap<>();
     	map2.put(new Point(2,2), block);
+    	map2.put(new Point(2,3), block2);
     	
     	room.setCharacters(map1);
     	room.setSurfaces(map2);

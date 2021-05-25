@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -31,8 +30,9 @@ public class RoomConfig {
 	private int width;
 	private int height;
 	private String name;
-	private Characters characters;
-	private Surfaces surfaces;
+	private TreasureHunterFull treasureHunter;
+	private List<CharacterFull> characters;
+	private List<SurfaceFull> surfaces;
 	
 	public void serialize(Room room) throws JsonGenerationException, JsonMappingException, IOException {
 		initParameters(room);
@@ -52,8 +52,46 @@ public class RoomConfig {
 		this.width = room.getWidth();
 		this.height = room.getHeight();
 		this.name = room.getName();
-		this.characters = Characters.initCharacters(room);
-		this.surfaces = Surfaces.initSurfaces(room);
+		this.characters = initCharacters(room);
+		this.surfaces = initSurfaces(room);
+	}
+	
+	private List<CharacterFull> initCharacters(Room room) {
+		List<CharacterFull> result = new ArrayList<>();
+		Map<Point, Character> charactersMap = room.getCharacters();
+		for (Map.Entry<Point, Character> characterPair: charactersMap.entrySet()) {
+			Point point = characterPair.getKey();
+			Character character = characterPair.getValue();
+			if (!isTreasureHunter(character)) {
+				result.add(new CharacterFull(point, character));
+			} else {
+				initTreasureHunterFull(point, character);			
+			}
+		}
+		
+		return result;
+	}
+	
+	private boolean isTreasureHunter(Character character) {
+		return character instanceof TreasureHunter;
+	}
+	
+	private void initTreasureHunterFull(Point point, Character character) {
+		treasureHunter = new TreasureHunterFull(point, character);
+	}
+	
+	private List<SurfaceFull> initSurfaces(Room room) {
+		List<SurfaceFull> result = new ArrayList<SurfaceFull>();
+		Map<Point, Surface<TypeSurface>> surfacesMap = room.getSurfaces();
+		
+		for (Map.Entry<Point, Surface<TypeSurface>> surfacePair: surfacesMap.entrySet()) {
+			Point point = surfacePair.getKey();
+			Surface surface = surfacePair.getValue();
+			result.add(new SurfaceFull(point, surface));
+		}	
+		
+		
+		return result;
 	}
 	
 	public Room deserialize() throws JsonParseException, JsonMappingException, IOException {
@@ -76,29 +114,31 @@ public class RoomConfig {
 	} 
 	
 	private Map<Point, Character> initMapCharacters(RoomConfig serializerRoom) {
-		Map<Point, Character> charactersResult = new HashMap<Point, Character>();
-		Point pointHunter = serializerRoom.getCharacters().getPointHunter();
-		TreasureHunter treasureHunter = serializerRoom.getCharacters().getTreasureHunter();
-		charactersResult.put(pointHunter, treasureHunter);
+		Map<Point, Character> result = new HashMap<Point, Character>();
 		
-		List<Character> characters = serializerRoom.getCharacters().getCharacters();
-		List<Point> points = serializerRoom.getCharacters().getPointsCharacters();
+		TreasureHunterFull hunter = serializerRoom.getTreasureHunter();
+		result.put(hunter.getPoint(), treasureHunter.getTreasureHunter());
+		
+		List<CharacterFull> characters = serializerRoom.getCharacters();
 		for (int i = 0; i < characters.size(); i++) {
-			charactersResult.put(points.get(i), characters.get(i));
+			Point point = characters.get(i).getPoint();
+			Character character = characters.get(i).getCharacter();
+			result.put(point, character);
 		}
 		
-		return charactersResult;
+		return result;
 	}
 	
 	private Map<Point, Surface<TypeSurface>> initMapSurfaces(RoomConfig serializerRoom) {
-		Map<Point, Surface<TypeSurface>> surfecesResult = new HashMap<Point, Surface<TypeSurface>>();
-		List<Surface> surfaces = serializerRoom.getSurfaces().getSurfaces();
-		List<Point> points = serializerRoom.getSurfaces().getPointsSurfaces();
+		Map<Point, Surface<TypeSurface>> result = new HashMap<Point, Surface<TypeSurface>>();
+		List<SurfaceFull> surfaces = serializerRoom.getSurfaces();
 		for (int i = 0; i < surfaces.size(); i++) {
-			surfecesResult.put(points.get(i), surfaces.get(i));
+			Point point = surfaces.get(i).getPoint();
+			Surface surface = surfaces.get(i).getSurface();
+			result.put(point, surface);
 		}
 		
-		return surfecesResult;
+		return result;
 	}
 
 	public int getWidth() {
@@ -125,22 +165,30 @@ public class RoomConfig {
 		this.name = name;
 	}
 	
-	public Characters getCharacters() {
+	public TreasureHunterFull getTreasureHunter() {
+		return treasureHunter;
+	}
+
+	public void setTreasureHunter(TreasureHunterFull treasureHunter) {
+		this.treasureHunter = treasureHunter;
+	}
+
+	public List<CharacterFull> getCharacters() {
 		return characters;
 	}
 
-	public void setCharacters(Characters characters) {
+	public void setCharacters(List<CharacterFull> characters) {
 		this.characters = characters;
 	}
 
-	public Surfaces getSurfaces() {
+	public List<SurfaceFull> getSurfaces() {
 		return surfaces;
 	}
 
-	public void setSurfaces(Surfaces surfaces) {
+	public void setSurfaces(List<SurfaceFull> surfaces) {
 		this.surfaces = surfaces;
 	}
-	
+
 	@JsonIgnore
 	public String getCustomPath() {
 		return customPath;
