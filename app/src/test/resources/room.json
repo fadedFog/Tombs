@@ -1,0 +1,34 @@
+{
+  "width" : 100,
+  "height" : 60,
+  "name" : "RoomTest",
+  "characters" : {
+    "pointHunter" : {
+      "x" : 1,
+      "y" : 1
+    },
+    "treasureHunter" : {
+      "name" : "Hunter",
+      "hearts" : 2,
+      "totalScore" : 9999,
+      "levelScore" : 999
+    },
+    "pointsCharacters" : [ {
+      "x" : 2,
+      "y" : 2
+    } ],
+    "characters" : [ {
+      "name" : "NPC_1",
+      "hearts" : 1
+    } ]
+  },
+  "surfaces" : {
+    "pointsSurfaces" : [ {
+      "x" : 2,
+      "y" : 2
+    } ],
+    "surfaces" : [ {
+      "typeSurface" : "BLOCK"
+    } ]
+  }
+}
