@@ -5,19 +5,7 @@ public class Movable implements MoveBehavior {
 	public Movable() {}
 	
 	@Override
-	public void moveLeft() {
-	}
-
-	@Override
-	public void moveRight() {
-	}
-
-	@Override
-	public void moveDiagonallyUpRight() {
-	}
-
-	@Override
-	public void moveDiagonallUpLeft() {
+	public void move(int x, int y) {
 	}
 	
 	@Override
