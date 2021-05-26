@@ -2,19 +2,23 @@ package ru.fadedfog.tombs.generate;
 
 
 import ru.fadedfog.tombs.asset.character.Character;
+import ru.fadedfog.tombs.asset.character.behavior.move.MoveBehavior;
+import ru.fadedfog.tombs.asset.character.behavior.move.TypeMove;
 import ru.fadedfog.tombs.asset.geometry.Point;
 
 public class CharacterFull {
 	private Point point;
-	private Character character;
-	
+	private Character<MoveBehavior> character;
+	private TypeMove typeMove;
 	
 	public CharacterFull() {
 	}
 
-	public CharacterFull(Point point, Character character) {
+	public CharacterFull(Point point, Character<MoveBehavior> character, TypeMove typeMove) {
+		super();
 		this.point = point;
 		this.character = character;
+		this.typeMove = typeMove;
 	}
 
 	public Point getPoint() {
@@ -25,12 +29,20 @@ public class CharacterFull {
 		this.point = point;
 	}
 
-	public Character getCharacter() {
+	public Character<MoveBehavior> getCharacter() {
 		return character;
 	}
 
-	public void setCharacter(Character character) {
+	public void setCharacter(Character<MoveBehavior> character) {
 		this.character = character;
+	}
+
+	public TypeMove getTypeMove() {
+		return typeMove;
+	}
+
+	public void setTypeMove(TypeMove typeMove) {
+		this.typeMove = typeMove;
 	}
 
 	@Override
@@ -39,6 +51,7 @@ public class CharacterFull {
 		int result = 1;
 		result = prime * result + ((character == null) ? 0 : character.hashCode());
 		result = prime * result + ((point == null) ? 0 : point.hashCode());
+		result = prime * result + ((typeMove == null) ? 0 : typeMove.hashCode());
 		return result;
 	}
 
@@ -61,9 +74,9 @@ public class CharacterFull {
 				return false;
 		} else if (!point.equals(other.point))
 			return false;
+		if (typeMove != other.typeMove)
+			return false;
 		return true;
 	}
-	
-	
 	
 }

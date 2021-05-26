@@ -2,11 +2,20 @@ package ru.fadedfog.tombs.asset.character.user;
 
 
 import ru.fadedfog.tombs.asset.character.Character;
+import ru.fadedfog.tombs.asset.character.behavior.move.MoveBehavior;
 
-public class TreasureHunter extends Character {
+public class TreasureHunter<T extends MoveBehavior> extends Character<MoveBehavior> {
 	private int totalScore;
 	private int levelScore;
 	
+	public TreasureHunter() {
+		super();
+	}
+
+	public TreasureHunter(String name, int hearts, MoveBehavior moveBehavior) {
+		super(name, hearts, moveBehavior);
+	}
+
 	public int getTotalScore() {
 		return totalScore;
 	}
@@ -27,7 +36,10 @@ public class TreasureHunter extends Character {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
+		result = prime * result + getHearts();
 		result = prime * result + levelScore;
+		result = prime * result + ((getMoveBehavior() == null) ? 0 : getMoveBehavior().hashCode());
+		result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
 		result = prime * result + totalScore;
 		return result;
 	}
@@ -41,7 +53,19 @@ public class TreasureHunter extends Character {
 		if (getClass() != obj.getClass())
 			return false;
 		TreasureHunter other = (TreasureHunter) obj;
+		if (getHearts() != other.getHearts())
+			return false;
 		if (levelScore != other.levelScore)
+			return false;
+		if (getMoveBehavior() == null) {
+			if (other.getMoveBehavior() != null)
+				return false;
+		} else if (!getMoveBehavior().equals(other.getMoveBehavior()))
+			return false;
+		if (getName() == null) {
+			if (other.getName() != null)
+				return false;
+		} else if (!getName().equals(other.getName()))
 			return false;
 		if (totalScore != other.totalScore)
 			return false;
@@ -50,7 +74,7 @@ public class TreasureHunter extends Character {
 
 	@Override
 	public String toString() {
-		return "TreasureHunter [totalScore=" + totalScore + ", levelScore=" + levelScore + "]";
+		return "TreasureHunter [name=" + getName() + ", hearts=" + getHearts() + ", moveBehavior=" + getMoveBehavior() + " totalScore=" + totalScore + ", levelScore=" + levelScore + "]";
 	}
-
+	
 }

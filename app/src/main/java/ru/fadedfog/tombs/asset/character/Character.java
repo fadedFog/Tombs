@@ -1,10 +1,22 @@
 package ru.fadedfog.tombs.asset.character;
 
+import ru.fadedfog.tombs.asset.character.behavior.move.MoveBehavior;
 
-public class Character {
+public class Character <T extends MoveBehavior> {
 	private String name;
 	private int hearts;
+	private T moveBehavior;
 	
+	public Character() {
+		super();
+	}
+
+	public Character(String name, int hearts, T moveBehavior) {
+		this.name = name;
+		this.hearts = hearts;
+		this.moveBehavior = moveBehavior;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -21,11 +33,20 @@ public class Character {
 		this.hearts = hearts;
 	}
 
+	public MoveBehavior getMoveBehavior() {
+		return moveBehavior;
+	}
+
+	public void setMoveBehavior(T moveBehavior) {
+		this.moveBehavior = moveBehavior;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + hearts;
+		result = prime * result + ((moveBehavior == null) ? 0 : moveBehavior.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
@@ -41,6 +62,11 @@ public class Character {
 		Character other = (Character) obj;
 		if (hearts != other.hearts)
 			return false;
+		if (moveBehavior == null) {
+			if (other.moveBehavior != null)
+				return false;
+		} else if (!moveBehavior.equals(other.moveBehavior))
+			return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;
@@ -51,9 +77,7 @@ public class Character {
 
 	@Override
 	public String toString() {
-		return "Character [name=" + name + ", hearts=" + hearts + "]";
+		return "Character [name=" + name + ", hearts=" + hearts + ", moveBehavior=" + moveBehavior + "]";
 	}
-	
-	
 
 }

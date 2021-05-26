@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ru.fadedfog.tombs.asset.character.Character;
+import ru.fadedfog.tombs.asset.character.behavior.move.CantMoveable;
+import ru.fadedfog.tombs.asset.character.behavior.move.MoveBehavior;
+import ru.fadedfog.tombs.asset.character.behavior.move.Moveable;
 import ru.fadedfog.tombs.asset.character.user.TreasureHunter;
 import ru.fadedfog.tombs.asset.geometry.Point;
 import ru.fadedfog.tombs.asset.level.element.surface.Surface;
@@ -22,18 +25,21 @@ public class App {
     	int width = 100;
     	int height = 60;
     	String name = "RoomTest";
-    	TreasureHunter treasureHunter = new TreasureHunter();
+    	TreasureHunter<MoveBehavior> treasureHunter = new TreasureHunter<MoveBehavior>();
     	treasureHunter.setHearts(2);
     	treasureHunter.setName("Hunter");
     	treasureHunter.setLevelScore(999);
     	treasureHunter.setTotalScore(9999);
-    	Character npc = new Character();
+    	treasureHunter.setMoveBehavior(new Moveable());
+    	Character<MoveBehavior> npc = new Character<MoveBehavior>();
     	npc.setHearts(1);
     	npc.setName("NPC_1");
-    	Character npc1 = new Character();
+    	npc.setMoveBehavior(new Moveable());
+    	Character<MoveBehavior> npc1 = new Character<MoveBehavior>();
     	npc1.setHearts(4);
     	npc1.setName("NPC_2");
-    	Map<Point, Character> map1 = new HashMap<>();
+    	npc1.setMoveBehavior(new CantMoveable());
+    	Map<Point, Character<MoveBehavior>> map1 = new HashMap<>();
     	map1.put(new Point(1,1), treasureHunter);
     	map1.put(new Point(2,2), npc);
     	map1.put(new Point(5,2), npc1);
@@ -55,9 +61,11 @@ public class App {
     	Room newRoom = serializerRoom.deserialize();
     	System.out.println(newRoom.equals(room));
     	
-    	for (Map.Entry<Point, Character> element : newRoom.getCharacters().entrySet()) {
+    	
+    	
+    	for (Map.Entry<Point, Character<MoveBehavior>> element : newRoom.getCharacters().entrySet()) {
     		if (element.getValue() instanceof TreasureHunter) {
-    			TreasureHunter treasureHunter1 = (TreasureHunter) element.getValue();
+    			TreasureHunter<MoveBehavior> treasureHunter1 = (TreasureHunter<MoveBehavior>) element.getValue();
     			System.out.println("TH " + treasureHunter1.toString());
     		}
     		System.out.println(element);

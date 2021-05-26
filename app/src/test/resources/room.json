@@ -2,33 +2,37 @@
   "width" : 100,
   "height" : 60,
   "name" : "RoomTest",
-  "characters" : {
-    "pointHunter" : {
-      "x" : 1,
-      "y" : 1
-    },
+  "treasureHunter" : {
     "treasureHunter" : {
       "name" : "Hunter",
       "hearts" : 2,
       "totalScore" : 9999,
       "levelScore" : 999
     },
-    "pointsCharacters" : [ {
+    "point" : {
+      "x" : 1,
+      "y" : 1
+    },
+    "typeMove" : "MOVEABLE"
+  },
+  "characters" : [ {
+    "point" : {
       "x" : 2,
       "y" : 2
-    } ],
-    "characters" : [ {
+    },
+    "character" : {
       "name" : "NPC_1",
       "hearts" : 1
-    } ]
-  },
-  "surfaces" : {
-    "pointsSurfaces" : [ {
+    },
+    "typeMove" : "MOVEABLE"
+  } ],
+  "surfaces" : [ {
+    "point" : {
       "x" : 2,
       "y" : 2
-    } ],
-    "surfaces" : [ {
+    },
+    "surface" : {
       "typeSurface" : "BLOCK"
-    } ]
-  }
+    }
+  } ]
 }

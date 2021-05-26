@@ -16,6 +16,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import ru.fadedfog.tombs.asset.character.Character;
+import ru.fadedfog.tombs.asset.character.behavior.move.MoveBehavior;
+import ru.fadedfog.tombs.asset.character.behavior.move.TypeMove;
 import ru.fadedfog.tombs.asset.character.user.TreasureHunter;
 import ru.fadedfog.tombs.asset.geometry.Point;
 import ru.fadedfog.tombs.asset.level.element.surface.Surface;
@@ -58,12 +60,13 @@ public class RoomConfig {
 	
 	private List<CharacterFull> initCharacters(Room room) {
 		List<CharacterFull> result = new ArrayList<>();
-		Map<Point, Character> charactersMap = room.getCharacters();
-		for (Map.Entry<Point, Character> characterPair: charactersMap.entrySet()) {
+		Map<Point, Character<MoveBehavior>> charactersMap = room.getCharacters();
+		for (Map.Entry<Point, Character<MoveBehavior>> characterPair: charactersMap.entrySet()) {
 			Point point = characterPair.getKey();
-			Character character = characterPair.getValue();
+			Character<MoveBehavior> character = characterPair.getValue();
 			if (!isTreasureHunter(character)) {
-				result.add(new CharacterFull(point, character));
+				TypeMove typeMove = getTypeMove(character.getMoveBehavior());
+				result.add(new CharacterFull(point, character, typeMove));
 			} else {
 				initTreasureHunterFull(point, character);			
 			}
@@ -72,12 +75,17 @@ public class RoomConfig {
 		return result;
 	}
 	
-	private boolean isTreasureHunter(Character character) {
+	private TypeMove getTypeMove(MoveBehavior moveBehavior) {
+		return TypeMove.getTypeMove(moveBehavior);
+	}
+	
+	private boolean isTreasureHunter(Character<MoveBehavior> character) {
 		return character instanceof TreasureHunter;
 	}
 	
-	private void initTreasureHunterFull(Point point, Character character) {
-		treasureHunter = new TreasureHunterFull(point, character);
+	private void initTreasureHunterFull(Point point, Character<MoveBehavior> character) {
+		TypeMove typeMove = getTypeMove(character.getMoveBehavior());
+		treasureHunter = new TreasureHunterFull(point, character, typeMove);
 	}
 	
 	private List<SurfaceFull> initSurfaces(Room room) {
@@ -86,7 +94,7 @@ public class RoomConfig {
 		
 		for (Map.Entry<Point, Surface<TypeSurface>> surfacePair: surfacesMap.entrySet()) {
 			Point point = surfacePair.getKey();
-			Surface surface = surfacePair.getValue();
+			Surface<TypeSurface> surface = surfacePair.getValue();
 			result.add(new SurfaceFull(point, surface));
 		}	
 		
@@ -95,7 +103,7 @@ public class RoomConfig {
 	}
 	
 	public Room deserialize() throws JsonParseException, JsonMappingException, IOException {
-		RoomConfig serializerRoom = mapper.readValue(new File(PATH), RoomConfig.class);
+		RoomConfig serializerRoom = mapper.readValue(new File(getPath()), RoomConfig.class);
 		Room newRoom = initParametersRoom(serializerRoom);
 		return newRoom;
 	} 
@@ -105,7 +113,7 @@ public class RoomConfig {
 		room.setWidth(serilizeRoom.getWidth());
 		room.setHeight(serilizeRoom.getHeight());
 		room.setName(serilizeRoom.getName());
-		Map<Point, Character> characters = initMapCharacters(serilizeRoom);
+		Map<Point, Character<MoveBehavior>> characters = initMapCharacters(serilizeRoom);
 		room.setCharacters(characters);
 		Map<Point, Surface<TypeSurface>> surfaces = initMapSurfaces(serilizeRoom);
 		room.setSurfaces(surfaces);
@@ -113,20 +121,29 @@ public class RoomConfig {
 		return room;
 	} 
 	
-	private Map<Point, Character> initMapCharacters(RoomConfig serializerRoom) {
-		Map<Point, Character> result = new HashMap<Point, Character>();
+	private Map<Point, Character<MoveBehavior>> initMapCharacters(RoomConfig serializerRoom) {
+		Map<Point, Character<MoveBehavior>> result = new HashMap<Point, Character<MoveBehavior>>();
 		
 		TreasureHunterFull hunter = serializerRoom.getTreasureHunter();
-		result.put(hunter.getPoint(), treasureHunter.getTreasureHunter());
+		TreasureHunter<MoveBehavior> treasureHunter = hunter.getTreasureHunter();
+		MoveBehavior moveBehavior = getMoveBehavior(hunter.getTypeMove());
+		treasureHunter.setMoveBehavior(moveBehavior);
+		result.put(hunter.getPoint(), treasureHunter);
 		
 		List<CharacterFull> characters = serializerRoom.getCharacters();
 		for (int i = 0; i < characters.size(); i++) {
 			Point point = characters.get(i).getPoint();
-			Character character = characters.get(i).getCharacter();
+			Character<MoveBehavior> character = characters.get(i).getCharacter();
+			moveBehavior = getMoveBehavior(characters.get(i).getTypeMove());
+			character.setMoveBehavior(moveBehavior);
 			result.put(point, character);
 		}
 		
 		return result;
+	}
+	
+	private MoveBehavior getMoveBehavior(TypeMove typeMove) {
+		return typeMove.getMoveBehavior();
 	}
 	
 	private Map<Point, Surface<TypeSurface>> initMapSurfaces(RoomConfig serializerRoom) {
