@@ -1,20 +1,20 @@
 package ru.fadedfog.tombs.generate;
 
 import ru.fadedfog.tombs.asset.character.Character;
+import ru.fadedfog.tombs.asset.character.behavior.move.MoveBehavior;
+import ru.fadedfog.tombs.asset.character.behavior.move.TypeMove;
 import ru.fadedfog.tombs.asset.character.user.TreasureHunter;
 import ru.fadedfog.tombs.asset.geometry.Point;
 
 public class TreasureHunterFull {
-//	private String name;
-//	private int hearts;
-//	private int totalScore;
-//	private int levelScore;
-	private TreasureHunter treasureHunter;
+	private TreasureHunter<MoveBehavior> treasureHunter;
 	private Point point;
+	private TypeMove typeMove;
 
-	public TreasureHunterFull(Point point, Character character) {
+	public TreasureHunterFull(Point point, Character<MoveBehavior> character, TypeMove typeMove) {
 		this.point = point;
-		this.treasureHunter = (TreasureHunter) character;
+		this.treasureHunter = (TreasureHunter<MoveBehavior>) character;
+		this.typeMove = typeMove;
 	}
 
 	public TreasureHunterFull() {
@@ -29,12 +29,20 @@ public class TreasureHunterFull {
 		this.point = point;
 	}
 
-	public TreasureHunter getTreasureHunter() {
+	public TreasureHunter<MoveBehavior> getTreasureHunter() {
 		return treasureHunter;
 	}
 
-	public void setTreasureHunter(TreasureHunter treasureHunter) {
+	public void setTreasureHunter(TreasureHunter<MoveBehavior> treasureHunter) {
 		this.treasureHunter = treasureHunter;
+	}
+
+	public TypeMove getTypeMove() {
+		return typeMove;
+	}
+
+	public void setTypeMove(TypeMove typeMove) {
+		this.typeMove = typeMove;
 	}
 
 	@Override
@@ -43,6 +51,7 @@ public class TreasureHunterFull {
 		int result = 1;
 		result = prime * result + ((point == null) ? 0 : point.hashCode());
 		result = prime * result + ((treasureHunter == null) ? 0 : treasureHunter.hashCode());
+		result = prime * result + ((typeMove == null) ? 0 : typeMove.hashCode());
 		return result;
 	}
 
@@ -64,6 +73,8 @@ public class TreasureHunterFull {
 			if (other.treasureHunter != null)
 				return false;
 		} else if (!treasureHunter.equals(other.treasureHunter))
+			return false;
+		if (typeMove != other.typeMove)
 			return false;
 		return true;
 	}

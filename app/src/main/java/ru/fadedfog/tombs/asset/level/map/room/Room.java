@@ -6,12 +6,13 @@ import ru.fadedfog.tombs.asset.geometry.Point;
 import ru.fadedfog.tombs.asset.level.element.surface.Surface;
 import ru.fadedfog.tombs.asset.level.element.surface.TypeSurface;
 import ru.fadedfog.tombs.asset.character.Character;
+import ru.fadedfog.tombs.asset.character.behavior.move.MoveBehavior;
 
 public class Room {
 	private int width;
 	private int height;
 	private String name;
-	private Map<Point, Character> characters;
+	private Map<Point, Character<MoveBehavior>> characters;
 	private Map<Point, Surface<TypeSurface>> surfaces;
 	
 	public Room() {
@@ -19,14 +20,14 @@ public class Room {
 	}
 	
 	public Room(int width, int height, String name,  
-			Map<Point, Character> characters, Map<Point, Surface<TypeSurface>> surfaces) {
+			Map<Point, Character<MoveBehavior>> characters, Map<Point, Surface<TypeSurface>> surfaces) {
 		this.width = width;
 		this.height = height;
 		this.name = name;
 		this.characters = characters;
 		this.surfaces = surfaces;
 	}
-	
+
 	public int getWidth() {
 		return width;
 	}
@@ -42,7 +43,7 @@ public class Room {
 	public void setHeight(int height) {
 		this.height = height;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -50,15 +51,15 @@ public class Room {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	public Map<Point, Character> getCharacters() {
+
+	public Map<Point, Character<MoveBehavior>> getCharacters() {
 		return characters;
 	}
 
-	public void setCharacters(Map<Point, Character> characters) {
+	public void setCharacters(Map<Point, Character<MoveBehavior>> characters) {
 		this.characters = characters;
 	}
-	
+
 	public Map<Point, Surface<TypeSurface>> getSurfaces() {
 		return surfaces;
 	}
@@ -70,13 +71,13 @@ public class Room {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		double result = 1;
+		int result = 1;
 		result = prime * result + ((characters == null) ? 0 : characters.hashCode());
 		result = prime * result + height;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((surfaces == null) ? 0 : surfaces.hashCode());
 		result = prime * result + width;
-		return (int) result;
+		return result;
 	}
 
 	@Override

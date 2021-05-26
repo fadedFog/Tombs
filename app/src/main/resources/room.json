@@ -12,7 +12,8 @@
     "point" : {
       "x" : 1,
       "y" : 1
-    }
+    },
+    "typeMove" : "MOVEABLE"
   },
   "characters" : [ {
     "point" : {
@@ -22,29 +23,13 @@
     "character" : {
       "name" : "NPC_1",
       "hearts" : 1
-    }
-  }, {
-    "point" : {
-      "x" : 5,
-      "y" : 2
     },
-    "character" : {
-      "name" : "NPC_2",
-      "hearts" : 4
-    }
+    "typeMove" : "MOVEABLE"
   } ],
   "surfaces" : [ {
     "point" : {
       "x" : 2,
       "y" : 2
-    },
-    "surface" : {
-      "typeSurface" : "BLOCK"
-    }
-  }, {
-    "point" : {
-      "x" : 2,
-      "y" : 3
     },
     "surface" : {
       "typeSurface" : "BLOCK"
