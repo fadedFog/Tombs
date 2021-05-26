@@ -9,8 +9,8 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import ru.fadedfog.tombs.asset.character.Character;
+import ru.fadedfog.tombs.asset.character.behavior.move.Movable;
 import ru.fadedfog.tombs.asset.character.behavior.move.MoveBehavior;
-import ru.fadedfog.tombs.asset.character.behavior.move.Moveable;
 import ru.fadedfog.tombs.asset.character.user.TreasureHunter;
 import ru.fadedfog.tombs.asset.geometry.Point;
 import ru.fadedfog.tombs.asset.level.element.surface.Surface;
@@ -38,11 +38,11 @@ public class AppTest {
     	treasureHunter.setName("Hunter");
     	treasureHunter.setLevelScore(999);
     	treasureHunter.setTotalScore(9999);
-    	treasureHunter.setMoveBehavior(new Moveable());
+    	treasureHunter.setMoveBehavior(new Movable());
     	Character<MoveBehavior> npc = new Character<MoveBehavior>();
     	npc.setHearts(1);
     	npc.setName("NPC_1");
-    	npc.setMoveBehavior(new Moveable());
+    	npc.setMoveBehavior(new Movable());
     	Map<Point, Character<MoveBehavior>> map1 = new HashMap<>();
     	map1.put(new Point(1,1), treasureHunter);
     	map1.put(new Point(2,2), npc);

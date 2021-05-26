@@ -1,8 +1,8 @@
 package ru.fadedfog.tombs.asset.character.behavior.move;
 
-public class CantMoveable implements MoveBehavior {
+public class Immovable implements MoveBehavior {
 
-	public CantMoveable() {}
+	public Immovable() {}
 	
 	@Override
 	public void moveLeft() {

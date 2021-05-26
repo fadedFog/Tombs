@@ -1,16 +1,16 @@
 package ru.fadedfog.tombs.asset.character.behavior.move;
 
 public enum TypeMove {
-	MOVEABLE {
+	MOVABLE {
 		@Override
 		public MoveBehavior getMoveBehavior() {
-			return new Moveable();
+			return new Movable();
 		}
 	},
-	CANT_MOVEABLE {
+	IMMOVABLE {
 		@Override
 		public MoveBehavior getMoveBehavior() {
-			return new CantMoveable();
+			return new Immovable();
 		}
 	};
 	
@@ -18,10 +18,10 @@ public enum TypeMove {
 	
 	public static TypeMove getTypeMove(MoveBehavior moveBehavior) {
 		TypeMove typeMove;
-		if (moveBehavior instanceof Moveable) {
-			typeMove = TypeMove.MOVEABLE;
+		if (moveBehavior instanceof Movable) {
+			typeMove = TypeMove.MOVABLE;
 		} else {
-			typeMove = TypeMove.CANT_MOVEABLE;
+			typeMove = TypeMove.IMMOVABLE;
 		}
 		return typeMove;
 	}

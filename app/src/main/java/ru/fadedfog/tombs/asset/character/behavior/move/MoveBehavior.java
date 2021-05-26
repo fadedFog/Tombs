@@ -5,9 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreType;
 @JsonIgnoreType
 public interface MoveBehavior {
 	
-	public void moveLeft();
-	public void moveRight();
-	public void moveDiagonallyUpRight();
-	public void moveDiagonallUpLeft();
+	public void move(int x, int y);
 	
 }
