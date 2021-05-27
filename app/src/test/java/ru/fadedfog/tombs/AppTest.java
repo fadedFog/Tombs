@@ -27,57 +27,57 @@ import java.util.Map;
 
 public class AppTest {
     private final String NAME_LEVEL_CONFIG_FILE = "src/test/resources/room.json";
-//	
-//    @Test
-//    public void testGenerateStage() throws JsonGenerationException, JsonMappingException, IOException {
-//    	Room room = new Room();
-//    	int width = 100;
-//    	int height = 60;
-//    	String name = "RoomTest";
-//    	TreasureHunter<MoveBehavior> treasureHunter = new TreasureHunter<MoveBehavior>();
-//    	treasureHunter.setHearts(2);
-//    	treasureHunter.setName("Hunter");
-//    	treasureHunter.setLevelScore(999);
-//    	treasureHunter.setTotalScore(9999);
-//    	treasureHunter.setMoveBehavior(new Movable());
-//    	Character<MoveBehavior> npc = new Character<MoveBehavior>();
-//    	npc.setHearts(1);
-//    	npc.setName("NPC_1");
-//    	npc.setMoveBehavior(new Movable());
-//    	Map<Point, Character<MoveBehavior>> map1 = new HashMap<>();
-//    	map1.put(new Point(1,1), treasureHunter);
-//    	map1.put(new Point(2,2), npc);
-//    	Surface<TypeSurface> block = new Surface<TypeSurface>(TypeSurface.BLOCK);
-//    	Map<Point, Surface<TypeSurface>> map2 = new HashMap<>();
-//    	map2.put(new Point(2,2), block);
-//    	
-//    	room.setCharacters(map1);
-//    	room.setSurfaces(map2);
-//    	room.setHeight(height);
-//    	room.setWidth(width);
-//    	room.setName(name);
-//    	
-//    	RoomConfig serializerRoom = new RoomConfig();
-//    	serializerRoom.setCustomPath(NAME_LEVEL_CONFIG_FILE);
-//    	serializerRoom.serialize(room);
-//    	
-//    	Room newRoom = serializerRoom.deserialize();
-//    	
-//    	assertEquals(room, newRoom);
-//    }
-//	
-//    @Test
-//    public void testGameLoop() {
-//    	GameLoop gameLoop = new GameLoop();
-//    	gameLoop.getRoomConfig().setCustomPath(NAME_LEVEL_CONFIG_FILE);
-//    	gameLoop.start();
-//    	assertTrue(gameLoop.isRunning());
-//    	
-//    	
-//    	gameLoop.stop();
-//    	assertFalse(gameLoop.isRunning());
-//    	
-//   }
+	
+    @Test
+    public void testGenerateStage() throws JsonGenerationException, JsonMappingException, IOException {
+    	Room room = new Room();
+    	int width = 100;
+    	int height = 60;
+    	String name = "RoomTest";
+    	TreasureHunter<MoveBehavior> treasureHunter = new TreasureHunter<MoveBehavior>();
+    	treasureHunter.setHearts(2);
+    	treasureHunter.setName("Hunter");
+    	treasureHunter.setLevelScore(999);
+    	treasureHunter.setTotalScore(9999);
+    	treasureHunter.setMoveBehavior(new Movable());
+    	Character<MoveBehavior> npc = new Character<MoveBehavior>();
+    	npc.setHearts(1);
+    	npc.setName("NPC_1");
+    	npc.setMoveBehavior(new Movable());
+    	Map<Point, Character<MoveBehavior>> map1 = new HashMap<>();
+    	map1.put(new Point(1,1), treasureHunter);
+    	map1.put(new Point(2,2), npc);
+    	Surface<TypeSurface> block = new Surface<TypeSurface>(TypeSurface.BLOCK);
+    	Map<Point, Surface<TypeSurface>> map2 = new HashMap<>();
+    	map2.put(new Point(2,2), block);
+    	
+    	room.setCharacters(map1);
+    	room.setSurfaces(map2);
+    	room.setHeight(height);
+    	room.setWidth(width);
+    	room.setName(name);
+    	
+    	RoomConfig serializerRoom = new RoomConfig();
+    	serializerRoom.setCustomPath(NAME_LEVEL_CONFIG_FILE);
+    	serializerRoom.serialize(room);
+    	
+    	Room newRoom = serializerRoom.deserialize();
+    	
+    	assertEquals(room, newRoom);
+    }
+	
+    @Test
+    public void testGameLoop() {
+    	GameLoop gameLoop = new GameLoop();
+    	gameLoop.getRoomConfig().setCustomPath(NAME_LEVEL_CONFIG_FILE);
+    	gameLoop.start();
+    	assertTrue(gameLoop.isRunning());
+    	
+    	
+    	gameLoop.stop();
+    	assertFalse(gameLoop.isRunning());
+    	
+   }
 
     @Test
     public void testMovingNPCs() {
