@@ -75,7 +75,7 @@ public class GameLoopTest {
     	for (Map.Entry<Point, Character<MoveBehavior>> character: characters2.entrySet()) {
     		Character<MoveBehavior> value = character.getValue();
     		Point key = character.getKey();
-    		Point newKey = new Point(key.getX() + xMonster, key.getY() + yMonster);
+    		Point newKey = value.move(xMonster, yMonster, key);
     		pointsRemove.add(key);
     		newPositionCharacters.put(newKey, value);
     	}

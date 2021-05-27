@@ -1,6 +1,7 @@
 package ru.fadedfog.tombs.asset.character;
 
 import ru.fadedfog.tombs.asset.character.behavior.move.MoveBehavior;
+import ru.fadedfog.tombs.asset.geometry.Point;
 
 public class Character <T extends MoveBehavior> implements Runnable {
 	private String name;
@@ -22,8 +23,8 @@ public class Character <T extends MoveBehavior> implements Runnable {
 		
 	}
 
-	public void move(int x, int y) {
-		moveBehavior.move(x, y);
+	public Point move(int x, int y, Point point) {
+		return moveBehavior.move(x, y, point);
 	}
 
 	public String getName() {
