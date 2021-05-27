@@ -8,7 +8,7 @@ import ru.fadedfog.tombs.asset.level.element.surface.TypeSurface;
 import ru.fadedfog.tombs.asset.character.Character;
 import ru.fadedfog.tombs.asset.character.behavior.move.MoveBehavior;
 
-public class Room {
+public class Room implements Runnable {
 	private int width;
 	private int height;
 	private String name;
@@ -26,6 +26,11 @@ public class Room {
 		this.name = name;
 		this.characters = characters;
 		this.surfaces = surfaces;
+	}
+	
+	@Override
+	public void run() {
+		
 	}
 
 	public int getWidth() {

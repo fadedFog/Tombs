@@ -1,7 +1,7 @@
 package ru.fadedfog.tombs.asset.level.element.surface;
 
 
-public class Surface<T extends TypeSurface> {
+public class Surface<T extends TypeSurface> implements Runnable {
 	private T typeSurface;
 	
 	public Surface() {
@@ -10,6 +10,11 @@ public class Surface<T extends TypeSurface> {
 	
 	public Surface(T typeSurface) {
 		this.typeSurface = typeSurface;
+	}
+	
+	@Override
+	public void run() {
+		
 	}
 
 	public TypeSurface getTypeSurface() {

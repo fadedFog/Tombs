@@ -1,6 +1,6 @@
 package ru.fadedfog.tombs.asset.geometry;
 
-public class Point {
+public class Point implements Runnable {
 	private int x;
 	private int y;
 	
@@ -11,6 +11,11 @@ public class Point {
 	public Point(int x, int y) {
 		this.x = x;
 		this.y = y;
+	}
+	
+	@Override
+	public void run() {
+		
 	}
 	
 	public int getX() {

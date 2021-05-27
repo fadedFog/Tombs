@@ -2,7 +2,7 @@ package ru.fadedfog.tombs.asset.character;
 
 import ru.fadedfog.tombs.asset.character.behavior.move.MoveBehavior;
 
-public class Character <T extends MoveBehavior> {
+public class Character <T extends MoveBehavior> implements Runnable {
 	private String name;
 	private int hearts;
 	private T moveBehavior;
@@ -16,6 +16,12 @@ public class Character <T extends MoveBehavior> {
 		this.hearts = hearts;
 		this.moveBehavior = moveBehavior;
 	}
+	
+	@Override
+	public void run() {
+		
+	}
+	
 
 	public String getName() {
 		return name;

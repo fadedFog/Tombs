@@ -16,6 +16,7 @@ import ru.fadedfog.tombs.asset.geometry.Point;
 import ru.fadedfog.tombs.asset.level.element.surface.Surface;
 import ru.fadedfog.tombs.asset.level.element.surface.TypeSurface;
 import ru.fadedfog.tombs.asset.level.map.room.Room;
+import ru.fadedfog.tombs.game.GameLoop;
 import ru.fadedfog.tombs.generate.RoomConfig;
 
 import static org.junit.Assert.*;
@@ -65,4 +66,17 @@ public class AppTest {
     	assertEquals(room, newRoom);
     }
 	
+    @Test
+    public void testGameLoop() {
+    	GameLoop gameLoop = new GameLoop();
+    	gameLoop.getRoomConfig().setCustomPath(NAME_LEVEL_CONFIG_FILE);
+    	gameLoop.start();
+    	assertTrue(gameLoop.isRunning());
+    	
+    	
+    	gameLoop.stop();
+    	assertFalse(gameLoop.isRunning());
+    	
+    }
+    
 }
