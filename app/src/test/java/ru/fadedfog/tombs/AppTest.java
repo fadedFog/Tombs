@@ -27,56 +27,110 @@ import java.util.Map;
 
 public class AppTest {
     private final String NAME_LEVEL_CONFIG_FILE = "src/test/resources/room.json";
-	
+//	
+//    @Test
+//    public void testGenerateStage() throws JsonGenerationException, JsonMappingException, IOException {
+//    	Room room = new Room();
+//    	int width = 100;
+//    	int height = 60;
+//    	String name = "RoomTest";
+//    	TreasureHunter<MoveBehavior> treasureHunter = new TreasureHunter<MoveBehavior>();
+//    	treasureHunter.setHearts(2);
+//    	treasureHunter.setName("Hunter");
+//    	treasureHunter.setLevelScore(999);
+//    	treasureHunter.setTotalScore(9999);
+//    	treasureHunter.setMoveBehavior(new Movable());
+//    	Character<MoveBehavior> npc = new Character<MoveBehavior>();
+//    	npc.setHearts(1);
+//    	npc.setName("NPC_1");
+//    	npc.setMoveBehavior(new Movable());
+//    	Map<Point, Character<MoveBehavior>> map1 = new HashMap<>();
+//    	map1.put(new Point(1,1), treasureHunter);
+//    	map1.put(new Point(2,2), npc);
+//    	Surface<TypeSurface> block = new Surface<TypeSurface>(TypeSurface.BLOCK);
+//    	Map<Point, Surface<TypeSurface>> map2 = new HashMap<>();
+//    	map2.put(new Point(2,2), block);
+//    	
+//    	room.setCharacters(map1);
+//    	room.setSurfaces(map2);
+//    	room.setHeight(height);
+//    	room.setWidth(width);
+//    	room.setName(name);
+//    	
+//    	RoomConfig serializerRoom = new RoomConfig();
+//    	serializerRoom.setCustomPath(NAME_LEVEL_CONFIG_FILE);
+//    	serializerRoom.serialize(room);
+//    	
+//    	Room newRoom = serializerRoom.deserialize();
+//    	
+//    	assertEquals(room, newRoom);
+//    }
+//	
+//    @Test
+//    public void testGameLoop() {
+//    	GameLoop gameLoop = new GameLoop();
+//    	gameLoop.getRoomConfig().setCustomPath(NAME_LEVEL_CONFIG_FILE);
+//    	gameLoop.start();
+//    	assertTrue(gameLoop.isRunning());
+//    	
+//    	
+//    	gameLoop.stop();
+//    	assertFalse(gameLoop.isRunning());
+//    	
+//   }
+
     @Test
-    public void testGenerateStage() throws JsonGenerationException, JsonMappingException, IOException {
-    	Room room = new Room();
-    	int width = 100;
-    	int height = 60;
-    	String name = "RoomTest";
-    	TreasureHunter<MoveBehavior> treasureHunter = new TreasureHunter<MoveBehavior>();
-    	treasureHunter.setHearts(2);
-    	treasureHunter.setName("Hunter");
-    	treasureHunter.setLevelScore(999);
-    	treasureHunter.setTotalScore(9999);
-    	treasureHunter.setMoveBehavior(new Movable());
-    	Character<MoveBehavior> npc = new Character<MoveBehavior>();
-    	npc.setHearts(1);
-    	npc.setName("NPC_1");
-    	npc.setMoveBehavior(new Movable());
-    	Map<Point, Character<MoveBehavior>> map1 = new HashMap<>();
-    	map1.put(new Point(1,1), treasureHunter);
-    	map1.put(new Point(2,2), npc);
-    	Surface<TypeSurface> block = new Surface<TypeSurface>(TypeSurface.BLOCK);
-    	Map<Point, Surface<TypeSurface>> map2 = new HashMap<>();
-    	map2.put(new Point(2,2), block);
+    public void testMovingNPCs() {
+    	String name1 = "Monseter_1";
+    	String name2 = "Monseter_2";
+    	Point point1 = new Point(0, 5);
+    	Character<MoveBehavior> monster1 = new Character<>();
+    	monster1.setMoveBehavior(new Movable());
+    	monster1.setName(name1);
+    	monster1.setHearts(2);
+    	Point point2 = new Point(3, -2);
+    	Character<MoveBehavior> monster2 = new Character<>();
+    	monster2.setMoveBehavior(new Movable());
+    	monster2.setName(name2);
+    	monster2.setHearts(1);
     	
-    	room.setCharacters(map1);
-    	room.setSurfaces(map2);
-    	room.setHeight(height);
-    	room.setWidth(width);
-    	room.setName(name);
+    	Point clonePoint1 = new Point(point1.getX(), point1.getY());
+    	Point clonePoint2 = new Point(point2.getX(), point2.getY());
     	
-    	RoomConfig serializerRoom = new RoomConfig();
-    	serializerRoom.setCustomPath(NAME_LEVEL_CONFIG_FILE);
-    	serializerRoom.serialize(room);
+    	Map<Point, Character<MoveBehavior>> characters = new HashMap<>();
+    	characters.put(point1, monster1);
+    	characters.put(point2, monster2);
     	
-    	Room newRoom = serializerRoom.deserialize();
+    	int xMonster = -1;
+    	int yMonster = 3;
+    	Map<Point, Character<MoveBehavior>> newChatecters = new HashMap<>();
+    	Point[] points = new Point[characters.size()];
+    	int i = 0;
     	
-    	assertEquals(room, newRoom);
-    }
-	
-    @Test
-    public void testGameLoop() {
-    	GameLoop gameLoop = new GameLoop();
-    	gameLoop.getRoomConfig().setCustomPath(NAME_LEVEL_CONFIG_FILE);
-    	gameLoop.start();
-    	assertTrue(gameLoop.isRunning());
+    	for (Map.Entry<Point, Character<MoveBehavior>> character: characters.entrySet()) {
+    		Character<MoveBehavior> value = character.getValue();
+    		
+    		Point point = character.getKey();
+    		point.setX(point.getX() + xMonster);
+    		point.setY(point.getY() + yMonster);
+    		
+    		points[i] = point;
+    		i++;
+    		
+    		newChatecters.put(point, value);
+
+    	}
     	
-    	
-    	gameLoop.stop();
-    	assertFalse(gameLoop.isRunning());
-    	
+    	assertFalse(points[0].equals(clonePoint1));
+    	assertFalse(points[1].equals(clonePoint2));
     }
     
 }
+
+
+
+
+
+
+
+

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import ru.fadedfog.tombs.asset.level.map.room.Room;
 import ru.fadedfog.tombs.generate.RoomConfig;
 
-public class GameLoop implements Runnable {
+public class GameLoop {
 	private boolean isRunning = false; 
 	private RoomConfig roomConfig;
 	private Room room;
@@ -20,15 +20,14 @@ public class GameLoop implements Runnable {
 
 	public void start() {
 		setRunning(true);
-		new Thread(this).start();
+		run();
 	}
 	
 	public void stop() {
 		setRunning(false);
 	}
 	
-	@Override
-	public void run() {
+	private void run() {
 		init();
 		
 		while(isRunning) {
