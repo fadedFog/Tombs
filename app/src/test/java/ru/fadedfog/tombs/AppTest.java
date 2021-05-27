@@ -65,7 +65,7 @@ public class AppTest {
     	
     	assertEquals(room, newRoom);
     }
-	
+    
     @Test
     public void testGameLoop() {
     	GameLoop gameLoop = new GameLoop();
@@ -78,9 +78,10 @@ public class AppTest {
     	assertFalse(gameLoop.isRunning());
     	
    }
-
+    
+    
     @Test
-    public void testMovingNPCs() {
+    public void testMovingNPCs() throws JsonGenerationException, JsonMappingException, IOException {    	
     	String name1 = "Monseter_1";
     	String name2 = "Monseter_2";
     	Point point1 = new Point(0, 5);
@@ -94,20 +95,34 @@ public class AppTest {
     	monster2.setName(name2);
     	monster2.setHearts(1);
     	
-    	Point clonePoint1 = new Point(point1.getX(), point1.getY());
-    	Point clonePoint2 = new Point(point2.getX(), point2.getY());
-    	
     	Map<Point, Character<MoveBehavior>> characters = new HashMap<>();
     	characters.put(point1, monster1);
     	characters.put(point2, monster2);
     	
+    	Room room = new Room();
+    	room.setHeight(100);
+    	room.setWidth(60);
+    	room.setName("testRoom2");
+    	room.setCharacters(characters);
+    	room.setSurfaces(new HashMap<>());
+    	
+    	RoomConfig roomConfig = new RoomConfig();
+    	roomConfig.setCustomPath(NAME_LEVEL_CONFIG_FILE);
+    	roomConfig.serialize(room);
+    	
+    	GameLoop gameLoop = new GameLoop();
+    	gameLoop.getRoomConfig().setCustomPath(NAME_LEVEL_CONFIG_FILE);
+    	gameLoop.start();
+    	
+    	Room room2 = gameLoop.getRoom();
     	int xMonster = -1;
     	int yMonster = 3;
-    	Map<Point, Character<MoveBehavior>> newChatecters = new HashMap<>();
-    	Point[] points = new Point[characters.size()];
+    	Map<Point, Character<MoveBehavior>> characters2 = room2.getCharacters();
+    	Map<Point, Character<MoveBehavior>> updateChatecters = new HashMap<>();
+    	Point[] points = new Point[characters2.size()];
     	int i = 0;
     	
-    	for (Map.Entry<Point, Character<MoveBehavior>> character: characters.entrySet()) {
+    	for (Map.Entry<Point, Character<MoveBehavior>> character: characters2.entrySet()) {
     		Character<MoveBehavior> value = character.getValue();
     		
     		Point point = character.getKey();
@@ -117,12 +132,21 @@ public class AppTest {
     		points[i] = point;
     		i++;
     		
-    		newChatecters.put(point, value);
+    		updateChatecters.put(point, value);
 
     	}
     	
-    	assertFalse(points[0].equals(clonePoint1));
-    	assertFalse(points[1].equals(clonePoint2));
+    	for (Map.Entry<Point, Character<MoveBehavior>> charaEntry: room.getCharacters().entrySet()) {
+    		System.out.println(charaEntry.getKey() + " " + charaEntry.getValue());
+    	}
+    	System.out.println();
+    	
+    	for (Map.Entry<Point, Character<MoveBehavior>> charaEntry: room2.getCharacters().entrySet()) {
+    		System.out.println(charaEntry.getKey() + " " + charaEntry.getValue());
+    	}
+    	
+    	assertFalse(room.getCharacters().equals(room2.getCharacters()));
+    	
     }
     
 }

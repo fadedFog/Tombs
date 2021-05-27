@@ -123,13 +123,15 @@ public class RoomConfig {
 	
 	private Map<Point, Character<MoveBehavior>> initMapCharacters(RoomConfig serializerRoom) {
 		Map<Point, Character<MoveBehavior>> result = new HashMap<Point, Character<MoveBehavior>>();
-		
+		MoveBehavior moveBehavior;
 		TreasureHunterFull hunter = serializerRoom.getTreasureHunter();
-		TreasureHunter<MoveBehavior> treasureHunter = hunter.getTreasureHunter();
-		MoveBehavior moveBehavior = getMoveBehavior(hunter.getTypeMove());
-		treasureHunter.setMoveBehavior(moveBehavior);
-		result.put(hunter.getPoint(), treasureHunter);
-		
+		if (hunter != null) {
+			TreasureHunter<MoveBehavior> treasureHunter = hunter.getTreasureHunter();
+			moveBehavior = getMoveBehavior(hunter.getTypeMove());
+			treasureHunter.setMoveBehavior(moveBehavior);
+			result.put(hunter.getPoint(), treasureHunter);
+		}
+	
 		List<CharacterFull> characters = serializerRoom.getCharacters();
 		for (int i = 0; i < characters.size(); i++) {
 			Point point = characters.get(i).getPoint();
