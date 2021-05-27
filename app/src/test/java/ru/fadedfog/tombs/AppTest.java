@@ -136,15 +136,6 @@ public class AppTest {
 
     	}
     	
-    	for (Map.Entry<Point, Character<MoveBehavior>> charaEntry: room.getCharacters().entrySet()) {
-    		System.out.println(charaEntry.getKey() + " " + charaEntry.getValue());
-    	}
-    	System.out.println();
-    	
-    	for (Map.Entry<Point, Character<MoveBehavior>> charaEntry: room2.getCharacters().entrySet()) {
-    		System.out.println(charaEntry.getKey() + " " + charaEntry.getValue());
-    	}
-    	
     	assertFalse(room.getCharacters().equals(room2.getCharacters()));
     	
     }
