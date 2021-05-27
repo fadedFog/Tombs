@@ -3,7 +3,9 @@ package ru.fadedfog.tombs;
 import static org.junit.Assert.assertFalse;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
@@ -67,10 +69,22 @@ public class GameLoopTest {
     	int xMonster = -1;
     	int yMonster = 3;
     	Map<Point, Character<MoveBehavior>> characters2 = room2.getCharacters();
+    	List<Point> pointsRemove = new ArrayList<>();
+    	Map<Point, Character<MoveBehavior>> newPositionCharacters = new HashMap<>();
     	
     	for (Map.Entry<Point, Character<MoveBehavior>> character: characters2.entrySet()) {
-    		character.getValue().move(xMonster, yMonster, character.getKey());
+    		Character<MoveBehavior> value = character.getValue();
+    		Point key = character.getKey();
+    		Point newKey = new Point(key.getX() + xMonster, key.getY() + yMonster);
+    		pointsRemove.add(key);
+    		newPositionCharacters.put(newKey, value);
     	}
+    	
+    	for (Point point: pointsRemove) {
+    		characters2.remove(point);
+    	}
+    	
+    	characters2.putAll(newPositionCharacters);
     	
     	assertFalse(room.getCharacters().equals(room2.getCharacters()));
     	
