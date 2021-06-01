@@ -60,10 +60,6 @@ public class GameLoopTest {
     	room.setCharacters(characters);
     	room.setSurfaces(new HashMap<>());
     	
-    	GameLoop gameLoop = new GameLoop();
-    	gameLoop.setRoom(room);
-    	gameLoop.start();
-    	
     	Map<Point, Character<MoveBehavior>> copyOldCharacters = new HashMap<Point, Character<MoveBehavior>>();
     	copyOldCharacters.putAll(room.getCharacters());
     	
@@ -85,7 +81,6 @@ public class GameLoopTest {
     	
     	characters.putAll(newPositionCharacters);
     	
-    	gameLoop.interrupt();
     	
     	assertFalse(copyOldCharacters.equals(room.getCharacters()));
     	
