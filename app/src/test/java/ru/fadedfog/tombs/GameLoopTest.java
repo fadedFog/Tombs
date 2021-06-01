@@ -1,6 +1,7 @@
 package ru.fadedfog.tombs;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,8 +29,8 @@ public class GameLoopTest {
     	GameLoop gameLoop = new GameLoop();
     	gameLoop.getRoomConfig().setCustomPath(NAME_LEVEL_CONFIG_FILE);
     	gameLoop.start();
-    	gameLoop.stop();
-    	assertFalse(gameLoop.isRunning());
+    	gameLoop.interrupt();
+    	assertTrue(gameLoop.isInterrupted());
     	
    }
     
@@ -49,6 +50,9 @@ public class GameLoopTest {
     	monster2.setName(name2);
     	monster2.setHearts(1);
     	
+    	List<Point> oldPoints = new ArrayList<>();
+    	oldPoints.add(point1);
+    	oldPoints.add(point2);
     	Map<Point, Character<MoveBehavior>> characters = new HashMap<>();
     	characters.put(point1, monster1);
     	characters.put(point2, monster2);
@@ -60,30 +64,30 @@ public class GameLoopTest {
     	room.setCharacters(characters);
     	room.setSurfaces(new HashMap<>());
     	
-    	Map<Point, Character<MoveBehavior>> copyOldCharacters = new HashMap<Point, Character<MoveBehavior>>();
-    	copyOldCharacters.putAll(room.getCharacters());
+    	GameLoop gameLoop = new GameLoop();
+    	gameLoop.setRoom(room);
+    	gameLoop.start();
     	
-    	List<Point> pointsRemove = new ArrayList<>();
-    	Map<Point, Character<MoveBehavior>> newPositionCharacters = new HashMap<>();
-    	int xMonster = -1;
-    	int yMonster = 3;
-    	for (Map.Entry<Point, Character<MoveBehavior>> character: characters.entrySet()) {
-    		Character<MoveBehavior> value = character.getValue();
-    		Point key = character.getKey();
-    		Point newKey = value.move(xMonster, yMonster, key);
-    		pointsRemove.add(key);
-    		newPositionCharacters.put(newKey, value);
+    	try {
+			Thread.sleep(5);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    	
+    	gameLoop.interrupt();
+    	
+    	Map<Point, Character<MoveBehavior>> map = gameLoop.getRoom().getCharacters();
+    	List<Point> newPoints = new ArrayList<>(map.keySet());
+    	
+    	for (Point point: oldPoints) {
+    		System.out.println(point);
+    	}   
+    	
+    	for (Point point: newPoints ) {
+    		System.out.println(point);
     	}
     	
-    	for (Point point: pointsRemove) {
-    		characters.remove(point);
-    	}
-    	
-    	characters.putAll(newPositionCharacters);
-    	
-    	
-    	assertFalse(copyOldCharacters.equals(room.getCharacters()));
-    	
+    	assertFalse(oldPoints.equals(newPoints));
     }
 	
 }
