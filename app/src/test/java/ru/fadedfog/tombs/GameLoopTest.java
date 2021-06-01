@@ -61,18 +61,17 @@ public class GameLoopTest {
     	room.setSurfaces(new HashMap<>());
     	
     	GameLoop gameLoop = new GameLoop();
-    	gameLoop.getRoomConfig().setCustomPath(NAME_LEVEL_CONFIG_FILE);
+    	gameLoop.setRoom(room);
     	gameLoop.start();
-    	gameLoop.stop();
     	
-    	Room room2 = gameLoop.getRoom();
-    	int xMonster = -1;
-    	int yMonster = 3;
-    	Map<Point, Character<MoveBehavior>> characters2 = room2.getCharacters();
+    	Map<Point, Character<MoveBehavior>> copyOldCharacters = new HashMap<Point, Character<MoveBehavior>>();
+    	copyOldCharacters.putAll(room.getCharacters());
+    	
     	List<Point> pointsRemove = new ArrayList<>();
     	Map<Point, Character<MoveBehavior>> newPositionCharacters = new HashMap<>();
-    	
-    	for (Map.Entry<Point, Character<MoveBehavior>> character: characters2.entrySet()) {
+    	int xMonster = -1;
+    	int yMonster = 3;
+    	for (Map.Entry<Point, Character<MoveBehavior>> character: characters.entrySet()) {
     		Character<MoveBehavior> value = character.getValue();
     		Point key = character.getKey();
     		Point newKey = value.move(xMonster, yMonster, key);
@@ -81,12 +80,14 @@ public class GameLoopTest {
     	}
     	
     	for (Point point: pointsRemove) {
-    		characters2.remove(point);
+    		characters.remove(point);
     	}
     	
-    	characters2.putAll(newPositionCharacters);
+    	characters.putAll(newPositionCharacters);
     	
-    	assertFalse(room.getCharacters().equals(room2.getCharacters()));
+    	gameLoop.interrupt();
+    	
+    	assertFalse(copyOldCharacters.equals(room.getCharacters()));
     	
     }
 	

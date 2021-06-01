@@ -20,7 +20,12 @@ public class Character <T extends MoveBehavior> implements Runnable {
 	
 	@Override
 	public void run() {
-		
+		try {
+			Thread.sleep(1000);
+			System.out.println(name);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public Point move(int x, int y, Point point) {
