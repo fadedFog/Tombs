@@ -33,8 +33,7 @@ public class GameLoopTest {
     	assertTrue(gameLoop.isInterrupted());
     	
    }
-    
-    
+      
     @Test
     public void testMovingNPCs() throws JsonGenerationException, JsonMappingException, IOException {    	
     	String name1 = "Monseter_1";
@@ -77,17 +76,26 @@ public class GameLoopTest {
     	gameLoop.interrupt();
     	
     	Map<Point, Character<MoveBehavior>> map = gameLoop.getRoom().getCharacters();
-    	List<Point> newPoints = new ArrayList<>(map.keySet());
-    	
-    	for (Point point: oldPoints) {
-    		System.out.println(point);
-    	}   
-    	
-    	for (Point point: newPoints ) {
-    		System.out.println(point);
-    	}
+    	List<Point> newPoints = new ArrayList<>(map.keySet());   	
     	
     	assertFalse(oldPoints.equals(newPoints));
     }
 	
+    @Test
+    public void testPauseGameLoop() {
+    	GameLoop gameLoop = new GameLoop();
+    	gameLoop.start();
+    	assertFalse(gameLoop.isPause());
+    	
+    	gameLoop.pause();
+    	assertTrue(gameLoop.isPause());
+    	
+    	gameLoop.proceed();
+    	assertFalse(gameLoop.isPause());
+    	
+    	gameLoop.interrupt();
+    	assertFalse(gameLoop.isPause());
+    	
+    }
+    
 }

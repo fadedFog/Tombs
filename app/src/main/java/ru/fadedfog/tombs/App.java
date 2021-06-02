@@ -7,8 +7,8 @@ package ru.fadedfog.tombs;
 import java.util.HashMap;
 import java.util.Map;
 
+
 import ru.fadedfog.tombs.asset.character.Character;
-import ru.fadedfog.tombs.asset.character.behavior.move.Immovable;
 import ru.fadedfog.tombs.asset.character.behavior.move.Movable;
 import ru.fadedfog.tombs.asset.character.behavior.move.MoveBehavior;
 import ru.fadedfog.tombs.asset.character.user.TreasureHunter;
@@ -16,7 +16,9 @@ import ru.fadedfog.tombs.asset.geometry.Point;
 import ru.fadedfog.tombs.asset.level.element.surface.Surface;
 import ru.fadedfog.tombs.asset.level.element.surface.TypeSurface;
 import ru.fadedfog.tombs.asset.level.map.room.Room;
-import ru.fadedfog.tombs.generate.RoomConfig;
+import ru.fadedfog.tombs.controller.UserKeys;
+import ru.fadedfog.tombs.game.GameLoop;
+import ru.fadedfog.tombs.view.GameView;
 
 public class App {
 
@@ -31,18 +33,8 @@ public class App {
     	treasureHunter.setLevelScore(999);
     	treasureHunter.setTotalScore(9999);
     	treasureHunter.setMoveBehavior(new Movable());
-    	Character<MoveBehavior> npc = new Character<MoveBehavior>();
-    	npc.setHearts(1);
-    	npc.setName("NPC_1");
-    	npc.setMoveBehavior(new Movable());
-    	Character<MoveBehavior> npc1 = new Character<MoveBehavior>();
-    	npc1.setHearts(4);
-    	npc1.setName("NPC_2");
-    	npc1.setMoveBehavior(new Immovable());
     	Map<Point, Character<MoveBehavior>> map1 = new HashMap<>();
     	map1.put(new Point(1,1), treasureHunter);
-    	map1.put(new Point(2,2), npc);
-    	map1.put(new Point(5,2), npc1);
     	Surface<TypeSurface> block = new Surface<TypeSurface>(TypeSurface.BLOCK);
     	Surface<TypeSurface> block2 = new Surface<TypeSurface>(TypeSurface.BLOCK);
     	Map<Point, Surface<TypeSurface>> map2 = new HashMap<>();
@@ -55,22 +47,12 @@ public class App {
     	room.setWidth(width);
     	room.setName(name);
     	
-    	RoomConfig serializerRoom = new RoomConfig();
-    	serializerRoom.serialize(room);
-    	
-    	Room newRoom = serializerRoom.deserialize();
-    	System.out.println(newRoom.equals(room));
-    	
-    	
-    	
-    	for (Map.Entry<Point, Character<MoveBehavior>> element : newRoom.getCharacters().entrySet()) {
-    		if (element.getValue() instanceof TreasureHunter) {
-    			TreasureHunter<MoveBehavior> treasureHunter1 = (TreasureHunter<MoveBehavior>) element.getValue();
-    			System.out.println("TH " + treasureHunter1.toString());
-    		}
-    		System.out.println(element);
-    	}
+    	GameLoop gameloop = new GameLoop();
+    	gameloop.setRoom(room);
+    	UserKeys userKeys = new UserKeys(gameloop);
+    	GameView gameView = new GameView(userKeys);
     	
     }
+    
     
 }

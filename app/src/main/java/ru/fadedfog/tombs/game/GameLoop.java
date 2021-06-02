@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 import ru.fadedfog.tombs.asset.character.Character;
 import ru.fadedfog.tombs.asset.character.behavior.move.MoveBehavior;
+import ru.fadedfog.tombs.asset.character.user.TreasureHunter;
 import ru.fadedfog.tombs.asset.geometry.Point;
 import ru.fadedfog.tombs.asset.level.map.room.Room;
 import ru.fadedfog.tombs.generate.RoomConfig;
@@ -18,6 +19,7 @@ import ru.fadedfog.tombs.generate.RoomConfig;
 public class GameLoop extends Thread{
 	private RoomConfig roomConfig;
 	private Room room;
+	private boolean pause;
 	
 	
 	public GameLoop() {
@@ -29,13 +31,16 @@ public class GameLoop extends Thread{
 		init();
 		
 		while(!isInterrupted()) {
-			moveCharacters();
+			if (!isPause()) {
+				moveCharacters();
+			}
 		}
 		
 	}
 
 	private void init() {
 		try {
+			pause = false;
 			initRoom();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -65,6 +70,18 @@ public class GameLoop extends Thread{
 	
 	private void initSurfaces() {
 		
+	}
+	
+	public boolean isPause() {
+		return pause;
+	} 
+
+	public void pause() {
+		this.pause = true;
+	}
+	
+	public void proceed() {
+		this.pause = false;
 	}
 	
 	private void moveCharacters() {
@@ -97,6 +114,40 @@ public class GameLoop extends Thread{
 		
 	}
 
+	public Point getPointUser() {
+		Map<Point, Character<MoveBehavior>> characters = room.getCharacters();
+		Point pointUser = null;
+		for (Map.Entry<Point, Character<MoveBehavior>> pointCharacter: characters.entrySet()) {
+			Point point = pointCharacter.getKey();
+			Character<MoveBehavior> character = pointCharacter.getValue();
+			if (character instanceof TreasureHunter<?>) {
+				pointUser = point;
+			}
+		}
+		return pointUser;
+	}
+	
+	public TreasureHunter<MoveBehavior> getUser() {
+		List<Character<MoveBehavior>> characters = new ArrayList<>(room.getCharacters().values());
+		TreasureHunter<MoveBehavior> user = null;
+		for (Character<MoveBehavior> character: characters) {
+			if (character instanceof TreasureHunter<?>) {
+				user = (TreasureHunter<MoveBehavior>) character;
+			}
+		}
+		
+		return user;
+	}
+	
+	public void changePositionUser(Point oldPoint, Point newPoint) {
+		Map<Point, Character<MoveBehavior>> characters = room.getCharacters();
+		Character<MoveBehavior> user = characters.get(oldPoint);
+		characters.remove(oldPoint);
+		
+		characters.put(newPoint, user);
+		
+	} 
+	
 	public RoomConfig getRoomConfig() {
 		return roomConfig;
 	}
