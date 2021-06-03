@@ -7,6 +7,7 @@ import ru.fadedfog.tombs.asset.level.element.surface.Surface;
 import ru.fadedfog.tombs.asset.level.element.surface.TypeSurface;
 import ru.fadedfog.tombs.asset.character.Character;
 import ru.fadedfog.tombs.asset.character.behavior.move.MoveBehavior;
+import ru.fadedfog.tombs.asset.character.user.TreasureHunter;
 
 public class Room {
 	private int width;
@@ -14,6 +15,7 @@ public class Room {
 	private String name;
 	private Map<Point, Character<MoveBehavior>> characters;
 	private Map<Point, Surface<TypeSurface>> surfaces;
+	private Point pointUser;
 	
 	public Room() {
 		
@@ -26,6 +28,17 @@ public class Room {
 		this.name = name;
 		this.characters = characters;
 		this.surfaces = surfaces;
+		initPointUser();
+	}
+	
+	public void initPointUser() {
+		for (Map.Entry<Point, Character<MoveBehavior>> pointCharacter: characters.entrySet()) {
+			Point point = pointCharacter.getKey();
+			Character<MoveBehavior> character = pointCharacter.getValue();
+			if (character instanceof TreasureHunter<?>) {
+				setPointUser(point);
+			}
+		}
 	}
 
 	public int getWidth() {
@@ -66,6 +79,15 @@ public class Room {
 
 	public void setSurfaces(Map<Point, Surface<TypeSurface>> surfaces) {
 		this.surfaces = surfaces;
+	}
+	
+	public Point getPointUser() {
+		initPointUser();
+		return pointUser;
+	}
+
+	public void setPointUser(Point pointUser) {
+		this.pointUser = pointUser;
 	}
 
 	@Override

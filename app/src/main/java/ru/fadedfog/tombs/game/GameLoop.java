@@ -32,6 +32,11 @@ public class GameLoop extends Thread{
 		
 		while(!isInterrupted()) {
 			if (!isPause()) {
+				try {
+					Thread.currentThread().sleep(200L);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 				moveCharacters();
 			}
 		}
@@ -92,10 +97,15 @@ public class GameLoop extends Thread{
     	
     	for (Map.Entry<Point, Character<MoveBehavior>> character: room.getCharacters().entrySet()) {
     		Character<MoveBehavior> value = character.getValue();
-    		Point key = character.getKey();
-    		pointsRemove.add(key);
-    		Point newKey = value.move(xMonster, yMonster, key);
-    		newPositionCharacters.put(newKey, value);
+    		if (!(value instanceof TreasureHunter<?>)) {
+	    		Point key = character.getKey();
+	    		pointsRemove.add(key);
+	    		Point newKey = value.move(xMonster, yMonster, key);
+	    		if (room.getCharacters().containsKey(newKey)) {
+	    			newKey = key;
+	    		}
+	    		newPositionCharacters.put(newKey, value);
+    		}
     	}
     	
     	for (Point point: pointsRemove) {
@@ -103,7 +113,6 @@ public class GameLoop extends Thread{
     	}
     	
     	room.getCharacters().putAll(newPositionCharacters);
-    	
 	}
 	
 	private void render() {
@@ -113,39 +122,13 @@ public class GameLoop extends Thread{
 	private void update() {
 		
 	}
-
-	public Point getPointUser() {
-		Map<Point, Character<MoveBehavior>> characters = room.getCharacters();
-		Point pointUser = null;
-		for (Map.Entry<Point, Character<MoveBehavior>> pointCharacter: characters.entrySet()) {
-			Point point = pointCharacter.getKey();
-			Character<MoveBehavior> character = pointCharacter.getValue();
-			if (character instanceof TreasureHunter<?>) {
-				pointUser = point;
-			}
-		}
-		return pointUser;
-	}
 	
-	public TreasureHunter<MoveBehavior> getUser() {
-		List<Character<MoveBehavior>> characters = new ArrayList<>(room.getCharacters().values());
-		TreasureHunter<MoveBehavior> user = null;
-		for (Character<MoveBehavior> character: characters) {
-			if (character instanceof TreasureHunter<?>) {
-				user = (TreasureHunter<MoveBehavior>) character;
-			}
-		}
-		
-		return user;
-	}
-	
-	public void changePositionUser(Point oldPoint, Point newPoint) {
+	public void changePositionUser(TreasureHunter<MoveBehavior> user, Point oldPoint, Point newPoint) {
 		Map<Point, Character<MoveBehavior>> characters = room.getCharacters();
-		Character<MoveBehavior> user = characters.get(oldPoint);
-		characters.remove(oldPoint);
-		
-		characters.put(newPoint, user);
-		
+		if (!characters.containsKey(newPoint)) {
+			characters.remove(oldPoint);
+			characters.put(newPoint, user);	
+		}
 	} 
 	
 	public RoomConfig getRoomConfig() {
