@@ -23,13 +23,13 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class AppTest {
     private final String NAME_LEVEL_CONFIG_FILE = "src/test/resources/room.json";
 	
     @Test
     public void testGenerateStage() throws JsonGenerationException, JsonMappingException, IOException {
-    	Room room = new Room();
     	int width = 100;
     	int height = 60;
     	String name = "RoomTest";
@@ -43,18 +43,14 @@ public class AppTest {
     	npc.setHearts(1);
     	npc.setName("NPC_1");
     	npc.setMoveBehavior(new Movable());
-    	Map<Point, Character<MoveBehavior>> map1 = new HashMap<>();
+    	ConcurrentHashMap<Point, Character<MoveBehavior>> map1 = new ConcurrentHashMap<Point, Character<MoveBehavior>>();
     	map1.put(new Point(1,1), treasureHunter);
     	map1.put(new Point(2,2), npc);
     	Surface<TypeSurface> block = new Surface<TypeSurface>(TypeSurface.BLOCK);
     	Map<Point, Surface<TypeSurface>> map2 = new HashMap<>();
     	map2.put(new Point(2,2), block);
     	
-    	room.setCharacters(map1);
-    	room.setSurfaces(map2);
-    	room.setHeight(height);
-    	room.setWidth(width);
-    	room.setName(name);
+    	Room room = new Room(width, height, name, map1, map2);
     	
     	RoomConfig serializerRoom = new RoomConfig();
     	serializerRoom.setCustomPath(NAME_LEVEL_CONFIG_FILE);

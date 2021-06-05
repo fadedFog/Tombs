@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.junit.Test;
 
@@ -33,8 +34,7 @@ public class GameLoopTest {
     	assertTrue(gameLoop.isInterrupted());
     	
    }
-    
-    
+      
     @Test
     public void testMovingNPCs() throws JsonGenerationException, JsonMappingException, IOException {    	
     	String name1 = "Monseter_1";
@@ -53,16 +53,12 @@ public class GameLoopTest {
     	List<Point> oldPoints = new ArrayList<>();
     	oldPoints.add(point1);
     	oldPoints.add(point2);
-    	Map<Point, Character<MoveBehavior>> characters = new HashMap<>();
+    	ConcurrentHashMap<Point, Character<MoveBehavior>> characters = new ConcurrentHashMap<Point, Character<MoveBehavior>>();
     	characters.put(point1, monster1);
     	characters.put(point2, monster2);
     	
-    	Room room = new Room();
-    	room.setHeight(100);
-    	room.setWidth(60);
-    	room.setName("testRoom2");
-    	room.setCharacters(characters);
-    	room.setSurfaces(new HashMap<>());
+    	
+    	Room room = new Room(60, 100, "testRoom2", characters, new HashMap<>());
     	
     	GameLoop gameLoop = new GameLoop();
     	gameLoop.setRoom(room);
@@ -77,17 +73,26 @@ public class GameLoopTest {
     	gameLoop.interrupt();
     	
     	Map<Point, Character<MoveBehavior>> map = gameLoop.getRoom().getCharacters();
-    	List<Point> newPoints = new ArrayList<>(map.keySet());
-    	
-    	for (Point point: oldPoints) {
-    		System.out.println(point);
-    	}   
-    	
-    	for (Point point: newPoints ) {
-    		System.out.println(point);
-    	}
+    	List<Point> newPoints = new ArrayList<>(map.keySet());   	
     	
     	assertFalse(oldPoints.equals(newPoints));
     }
 	
+    @Test
+    public void testPauseGameLoop() {
+    	GameLoop gameLoop = new GameLoop();
+    	gameLoop.start();
+    	assertFalse(gameLoop.isPause());
+    	
+    	gameLoop.pause();
+    	assertTrue(gameLoop.isPause());
+    	
+    	gameLoop.proceed();
+    	assertFalse(gameLoop.isPause());
+    	
+    	gameLoop.interrupt();
+    	assertFalse(gameLoop.isPause());
+    	
+    }
+    
 }
