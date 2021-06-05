@@ -6,7 +6,7 @@ package ru.fadedfog.tombs;
 
 import java.util.HashMap;
 import java.util.Map;
-
+import java.util.concurrent.ConcurrentHashMap;
 
 import ru.fadedfog.tombs.asset.character.Character;
 import ru.fadedfog.tombs.asset.character.behavior.move.Immovable;
@@ -24,10 +24,7 @@ import ru.fadedfog.tombs.view.GameView;
 public class App {
 
     public static void main(String[] args) throws Exception {
-    	Room room = new Room();
-    	int width = 100;
-    	int height = 60;
-    	String name = "RoomTest";
+    	
     	TreasureHunter<MoveBehavior> treasureHunter = new TreasureHunter<MoveBehavior>();
     	treasureHunter.setHearts(2);
     	treasureHunter.setName("Hunter");
@@ -40,12 +37,12 @@ public class App {
     	monster1.setHearts(1);
     	Character<MoveBehavior> monster2 = new Character<>();
     	monster2.setName("Monster#2");
-    	monster2.setMoveBehavior(new Movable());
+    	monster2.setMoveBehavior(new Immovable());
     	monster2.setHearts(1);
-    	Map<Point, Character<MoveBehavior>> map1 = new HashMap<>();
+    	ConcurrentHashMap<Point, Character<MoveBehavior>> map1 = new ConcurrentHashMap<>();
     	map1.put(new Point(0, 1), monster2);
     	map1.put(new Point(1, 1), treasureHunter);
-    	map1.put(new Point(5, 1), monster1);
+    	map1.put(new Point(10, 1), monster1);
     	
     	Surface<TypeSurface> block = new Surface<TypeSurface>(TypeSurface.BLOCK);
     	Surface<TypeSurface> block2 = new Surface<TypeSurface>(TypeSurface.BLOCK);
@@ -53,13 +50,13 @@ public class App {
     	map2.put(new Point(2,2), block);
     	map2.put(new Point(2,3), block2);
     	
-    	room.setCharacters(map1);
-    	room.setSurfaces(map2);
-    	room.setHeight(height);
-    	room.setWidth(width);
-    	room.setName(name);
     	
+    	int width = 100;
+    	int height = 60;
+    	String name = "RoomTest";
+    	Room room = new Room(width, height, name, map1, map2);
     	
+    	System.out.println(new Point(1, 1) + " " + treasureHunter);
     	GameLoop gameloop = new GameLoop();
     	gameloop.setRoom(room);
     	gameloop.start();

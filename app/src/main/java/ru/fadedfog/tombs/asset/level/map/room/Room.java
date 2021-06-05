@@ -1,6 +1,7 @@
 package ru.fadedfog.tombs.asset.level.map.room;
 
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import ru.fadedfog.tombs.asset.geometry.Point;
 import ru.fadedfog.tombs.asset.level.element.surface.Surface;
@@ -13,16 +14,12 @@ public class Room {
 	private int width;
 	private int height;
 	private String name;
-	private Map<Point, Character<MoveBehavior>> characters;
+	private ConcurrentHashMap<Point, Character<MoveBehavior>> characters;
 	private Map<Point, Surface<TypeSurface>> surfaces;
 	private Point pointUser;
 	
-	public Room() {
-		
-	}
-	
 	public Room(int width, int height, String name,  
-			Map<Point, Character<MoveBehavior>> characters, Map<Point, Surface<TypeSurface>> surfaces) {
+			ConcurrentHashMap<Point, Character<MoveBehavior>> characters, Map<Point, Surface<TypeSurface>> surfaces) {
 		this.width = width;
 		this.height = height;
 		this.name = name;
@@ -65,11 +62,11 @@ public class Room {
 		this.name = name;
 	}
 
-	public Map<Point, Character<MoveBehavior>> getCharacters() {
+	public ConcurrentHashMap<Point, Character<MoveBehavior>> getCharacters() {
 		return characters;
 	}
 
-	public void setCharacters(Map<Point, Character<MoveBehavior>> characters) {
+	public void setCharacters(ConcurrentHashMap<Point, Character<MoveBehavior>> characters) {
 		this.characters = characters;
 	}
 
@@ -82,7 +79,6 @@ public class Room {
 	}
 	
 	public Point getPointUser() {
-		initPointUser();
 		return pointUser;
 	}
 

@@ -2,9 +2,7 @@ package ru.fadedfog.tombs.controller;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,7 +33,7 @@ public class UserKeys implements KeyListener {
 		int yStartVelocity = 0;
 		
 		Point oldPointUser = gameLoop.getRoom().getPointUser();
-		Map<Point, Character<MoveBehavior>> characters = gameLoop.getRoom().getCharacters();
+		ConcurrentHashMap<Point, Character<MoveBehavior>> characters = gameLoop.getRoom().getCharacters();
 		TreasureHunter<MoveBehavior> user = (TreasureHunter<MoveBehavior>) characters.get(oldPointUser);
 		Point newPoint;
 		LOG.info("##############");
@@ -67,6 +65,10 @@ public class UserKeys implements KeyListener {
 				}
 				break;
 		}
+		System.out.println();
+		System.out.println(gameLoop.getRoom().getPointUser() + " " + user);
+		System.out.println("#" + gameLoop.getRoom().getCharacters().size());
+		System.out.println(gameLoop.getRoom().getCharacters());
 	}
 
 	@Override

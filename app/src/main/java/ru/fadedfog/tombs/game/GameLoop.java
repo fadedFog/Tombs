@@ -2,9 +2,12 @@ package ru.fadedfog.tombs.game;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -17,6 +20,7 @@ import ru.fadedfog.tombs.asset.level.map.room.Room;
 import ru.fadedfog.tombs.generate.RoomConfig;
 
 public class GameLoop extends Thread{
+	private static final Logger LOG = LogManager.getLogger();
 	private RoomConfig roomConfig;
 	private Room room;
 	private boolean pause;
@@ -33,7 +37,7 @@ public class GameLoop extends Thread{
 		while(!isInterrupted()) {
 			if (!isPause()) {
 				try {
-					Thread.currentThread().sleep(200L);
+					Thread.sleep(500l);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -92,20 +96,20 @@ public class GameLoop extends Thread{
 	private void moveCharacters() {
 		int xMonster = 1;
     	int yMonster = 0;
-    	Map<Point, Character<MoveBehavior>> newPositionCharacters = new HashMap<>();
+    	ConcurrentHashMap<Point, Character<MoveBehavior>> newPositionCharacters = new ConcurrentHashMap<>();
     	List<Point> pointsRemove = new ArrayList<>();
     	
     	for (Map.Entry<Point, Character<MoveBehavior>> character: room.getCharacters().entrySet()) {
     		Character<MoveBehavior> value = character.getValue();
-    		if (!(value instanceof TreasureHunter<?>)) {
-	    		Point key = character.getKey();
-	    		pointsRemove.add(key);
-	    		Point newKey = value.move(xMonster, yMonster, key);
-	    		if (room.getCharacters().containsKey(newKey)) {
-	    			newKey = key;
-	    		}
-	    		newPositionCharacters.put(newKey, value);
-    		}
+	    	Point key = character.getKey();
+	    	Point newKey = value.move(xMonster, yMonster, key);
+	    	System.out.println(!room.getCharacters().containsKey(newKey));
+	    	LOG.info(!room.getCharacters().containsKey(newKey));
+	    	if (!room.getCharacters().containsKey(newKey) && !(value instanceof TreasureHunter<?>)) {
+		    	pointsRemove.add(key);
+		    	newPositionCharacters.put(newKey, value);
+	    	}
+    		
     	}
     	
     	for (Point point: pointsRemove) {
@@ -124,10 +128,11 @@ public class GameLoop extends Thread{
 	}
 	
 	public void changePositionUser(TreasureHunter<MoveBehavior> user, Point oldPoint, Point newPoint) {
-		Map<Point, Character<MoveBehavior>> characters = room.getCharacters();
+		ConcurrentHashMap<Point, Character<MoveBehavior>> characters = room.getCharacters();
 		if (!characters.containsKey(newPoint)) {
 			characters.remove(oldPoint);
 			characters.put(newPoint, user);	
+			room.setPointUser(newPoint);
 		}
 	} 
 	

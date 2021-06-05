@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -109,20 +110,18 @@ public class RoomConfig {
 	} 
 	
 	private Room initParametersRoom(RoomConfig serilizeRoom) {
-		Room room = new Room();
-		room.setWidth(serilizeRoom.getWidth());
-		room.setHeight(serilizeRoom.getHeight());
-		room.setName(serilizeRoom.getName());
-		Map<Point, Character<MoveBehavior>> characters = initMapCharacters(serilizeRoom);
-		room.setCharacters(characters);
+		int width = serilizeRoom.getWidth();
+		int height = serilizeRoom.getHeight();
+		String name = serilizeRoom.getName();
+		ConcurrentHashMap<Point, Character<MoveBehavior>> characters = initMapCharacters(serilizeRoom);
 		Map<Point, Surface<TypeSurface>> surfaces = initMapSurfaces(serilizeRoom);
-		room.setSurfaces(surfaces);
+		Room room = new Room(width, height, name, characters, surfaces);
 		
 		return room;
 	} 
 	
-	private Map<Point, Character<MoveBehavior>> initMapCharacters(RoomConfig serializerRoom) {
-		Map<Point, Character<MoveBehavior>> result = new HashMap<Point, Character<MoveBehavior>>();
+	private ConcurrentHashMap<Point, Character<MoveBehavior>> initMapCharacters(RoomConfig serializerRoom) {
+		ConcurrentHashMap<Point, Character<MoveBehavior>> result = new ConcurrentHashMap<Point, Character<MoveBehavior>>();
 		MoveBehavior moveBehavior;
 		TreasureHunterFull hunter = serializerRoom.getTreasureHunter();
 		if (hunter != null) {
