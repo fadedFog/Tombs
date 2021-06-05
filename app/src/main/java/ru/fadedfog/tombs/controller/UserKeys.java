@@ -35,22 +35,13 @@ public class UserKeys implements KeyListener {
 		Point oldPointUser = gameLoop.getRoom().getPointUser();
 		ConcurrentHashMap<Point, Character<MoveBehavior>> characters = gameLoop.getRoom().getCharacters();
 		TreasureHunter<MoveBehavior> user = (TreasureHunter<MoveBehavior>) characters.get(oldPointUser);
-		Point newPoint;
 		LOG.info("##############");
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_D:
-				if (!gameLoop.isPause()) {
-					newPoint = user.move(xVelocity, yStartVelocity, oldPointUser);
-					LOG.info(newPoint);
-					gameLoop.changePositionUser(user, oldPointUser, newPoint);
-				}
+				move(user, xVelocity, yStartVelocity, oldPointUser);
 				break;
 			case KeyEvent.VK_A:
-				if (!gameLoop.isPause()) {
-					newPoint = user.move(-xVelocity, yStartVelocity, oldPointUser);
-					LOG.info(newPoint);
-					gameLoop.changePositionUser(user, oldPointUser, newPoint);
-				}
+				move(user, -xVelocity, yStartVelocity, oldPointUser);
 				break;
 			case KeyEvent.VK_ESCAPE:
 				LOG.info("IP: " + gameLoop.isPause());
@@ -65,10 +56,14 @@ public class UserKeys implements KeyListener {
 				}
 				break;
 		}
-		System.out.println();
-		System.out.println(gameLoop.getRoom().getPointUser() + " " + user);
-		System.out.println("#" + gameLoop.getRoom().getCharacters().size());
-		System.out.println(gameLoop.getRoom().getCharacters());
+	}
+	
+	private void move(TreasureHunter<MoveBehavior> user, int xVelocity, int yVelocity, Point oldPointUser) {
+		if (!gameLoop.isPause()) {
+			Point newPoint = user.move(xVelocity, yVelocity, oldPointUser);
+			LOG.info(newPoint);
+			gameLoop.changePositionUser(user, oldPointUser, newPoint);
+		}
 	}
 
 	@Override
