@@ -10,6 +10,7 @@ import ru.fadedfog.tombs.asset.character.Character;
 import ru.fadedfog.tombs.asset.character.behavior.move.MoveBehavior;
 import ru.fadedfog.tombs.asset.character.user.TreasureHunter;
 
+
 public class Room {
 	private int width;
 	private int height;

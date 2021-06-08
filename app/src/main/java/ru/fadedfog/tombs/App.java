@@ -19,6 +19,7 @@ import ru.fadedfog.tombs.asset.level.element.surface.TypeSurface;
 import ru.fadedfog.tombs.asset.level.map.room.Room;
 import ru.fadedfog.tombs.controller.UserKeys;
 import ru.fadedfog.tombs.game.GameLoop;
+import ru.fadedfog.tombs.service.StatisticsCollector;
 import ru.fadedfog.tombs.view.GameView;
 
 public class App {
@@ -59,6 +60,8 @@ public class App {
     	System.out.println(new Point(1, 1) + " " + treasureHunter);
     	GameLoop gameloop = new GameLoop();
     	gameloop.setRoom(room);
+    	StatisticsCollector statisticsCollector = new StatisticsCollector(gameloop);
+    	statisticsCollector.start();
     	gameloop.start();
 
     	UserKeys userKeys = new UserKeys(gameloop);

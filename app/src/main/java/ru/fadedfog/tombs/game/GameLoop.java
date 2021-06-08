@@ -103,7 +103,6 @@ public class GameLoop extends Thread{
     		Character<MoveBehavior> value = character.getValue();
 	    	Point key = character.getKey();
 	    	Point newKey = value.move(xMonster, yMonster, key);
-	    	System.out.println(!room.getCharacters().containsKey(newKey));
 	    	LOG.info(!room.getCharacters().containsKey(newKey));
 	    	if (!room.getCharacters().containsKey(newKey) && !(value instanceof TreasureHunter<?>)) {
 		    	pointsRemove.add(key);
