@@ -57,7 +57,6 @@ public class App {
     	String name = "RoomTest";
     	Room room = new Room(width, height, name, map1, map2);
     	
-    	System.out.println(new Point(1, 1) + " " + treasureHunter);
     	GameLoop gameloop = new GameLoop();
     	gameloop.setRoom(room);
     	StatisticsCollector statisticsCollector = new StatisticsCollector(gameloop);
