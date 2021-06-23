@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import ru.fadedfog.tombs.asset.character.Character;
 import ru.fadedfog.tombs.asset.character.behavior.move.Immovable;
 import ru.fadedfog.tombs.asset.character.behavior.move.Movable;
@@ -19,12 +22,13 @@ import ru.fadedfog.tombs.asset.level.element.surface.TypeSurface;
 import ru.fadedfog.tombs.asset.level.map.room.Room;
 import ru.fadedfog.tombs.controller.UserKeys;
 import ru.fadedfog.tombs.game.GameLoop;
-import ru.fadedfog.tombs.service.StatisticsCollector;
 import ru.fadedfog.tombs.view.GameView;
 
 public class App {
 
     public static void main(String[] args) throws Exception {
+    	ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+    	GameLoop gameLoop = context.getBean(GameLoop.class);
     	
     	TreasureHunter<MoveBehavior> treasureHunter = new TreasureHunter<MoveBehavior>();
     	treasureHunter.setHearts(2);
@@ -56,14 +60,11 @@ public class App {
     	int height = 60;
     	String name = "RoomTest";
     	Room room = new Room(width, height, name, map1, map2);
-    	
-    	GameLoop gameloop = new GameLoop();
-    	gameloop.setRoom(room);
-    	StatisticsCollector statisticsCollector = new StatisticsCollector(gameloop);
-    	statisticsCollector.start();
-    	gameloop.start();
+    	System.out.println(new Point(1, 1) + " " + treasureHunter);
+    	gameLoop.setRoom(room);
+    	gameLoop.start();
 
-    	UserKeys userKeys = new UserKeys(gameloop);
+    	UserKeys userKeys = new UserKeys(gameLoop);
     	GameView gameView = new GameView(userKeys);
     	
     }

@@ -18,6 +18,7 @@ public class Room {
 	private ConcurrentHashMap<Point, Character<MoveBehavior>> characters;
 	private Map<Point, Surface<TypeSurface>> surfaces;
 	private Point pointUser;
+	private int numberStepsUser;
 	
 	public Room(int width, int height, String name,  
 			ConcurrentHashMap<Point, Character<MoveBehavior>> characters, Map<Point, Surface<TypeSurface>> surfaces) {
@@ -27,6 +28,7 @@ public class Room {
 		this.characters = characters;
 		this.surfaces = surfaces;
 		initPointUser();
+		setInitialNumberSteps();
 	}
 	
 	public void initPointUser() {
@@ -37,6 +39,14 @@ public class Room {
 				setPointUser(point);
 			}
 		}
+	}
+	
+	public void setInitialNumberSteps() {
+		this.numberStepsUser = 0;
+	}
+	
+	public void increaseNumberSteps() {
+		this.numberStepsUser += 1;
 	}
 
 	public int getWidth() {
@@ -85,6 +95,10 @@ public class Room {
 
 	public void setPointUser(Point pointUser) {
 		this.pointUser = pointUser;
+	}
+	
+	public int getNumberStepsUser() {
+		return numberStepsUser;
 	}
 
 	@Override

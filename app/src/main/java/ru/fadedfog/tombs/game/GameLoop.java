@@ -8,6 +8,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -18,13 +20,16 @@ import ru.fadedfog.tombs.asset.character.user.TreasureHunter;
 import ru.fadedfog.tombs.asset.geometry.Point;
 import ru.fadedfog.tombs.asset.level.map.room.Room;
 import ru.fadedfog.tombs.generate.RoomConfig;
+import ru.fadedfog.tombs.service.ServiceStatisticsCollector;
 
+@Component
 public class GameLoop extends Thread{
 	private static final Logger LOG = LogManager.getLogger();
 	private RoomConfig roomConfig;
 	private Room room;
 	private boolean pause;
-	
+	@Autowired
+	private ServiceStatisticsCollector serviece;
 	
 	public GameLoop() {
 		this.roomConfig = new RoomConfig();
@@ -59,6 +64,7 @@ public class GameLoop extends Thread{
 	private void initRoom() throws JsonParseException, JsonMappingException, IOException {
 		if (room == null) {
 			this.room = roomConfig.deserialize();
+			serviece.setNumberSteps(room.getNumberStepsUser());
 		}
 		initRoomElements();
 	}
@@ -132,6 +138,7 @@ public class GameLoop extends Thread{
 			characters.remove(oldPoint);
 			characters.put(newPoint, user);	
 			room.setPointUser(newPoint);
+			room.increaseNumberSteps();
 		}
 	} 
 	
