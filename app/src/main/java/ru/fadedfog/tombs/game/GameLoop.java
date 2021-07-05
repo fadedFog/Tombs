@@ -30,6 +30,7 @@ public class GameLoop extends Thread{
 	private boolean pause;
 	@Autowired
 	private ServiceStatisticsCollector serviece;
+	private int numberStepsUser;
 	
 	public GameLoop() {
 		this.roomConfig = new RoomConfig();
@@ -56,6 +57,7 @@ public class GameLoop extends Thread{
 		try {
 			pause = false;
 			initRoom();
+			setInitialNumberSteps();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -64,7 +66,6 @@ public class GameLoop extends Thread{
 	private void initRoom() throws JsonParseException, JsonMappingException, IOException {
 		if (room == null) {
 			this.room = roomConfig.deserialize();
-			serviece.setNumberSteps(room.getNumberStepsUser());
 		}
 		initRoomElements();
 	}
@@ -138,9 +139,17 @@ public class GameLoop extends Thread{
 			characters.remove(oldPoint);
 			characters.put(newPoint, user);	
 			room.setPointUser(newPoint);
-			room.increaseNumberSteps();
+			increaseNumberSteps();
 		}
 	} 
+	
+	public void setInitialNumberSteps() {
+		this.numberStepsUser = 0;
+	}
+	
+	public void increaseNumberSteps() {
+		this.numberStepsUser += 1;
+	}
 	
 	public RoomConfig getRoomConfig() {
 		return roomConfig;
@@ -156,6 +165,14 @@ public class GameLoop extends Thread{
 
 	public void setRoom(Room room) {
 		this.room = room;
+	}
+	
+	public int getNumberStepsUser() {
+		return numberStepsUser;
+	}
+	
+	public void setNumberStepsUser(int numberStepsUser) {
+		this.numberStepsUser = numberStepsUser;
 	}
 
 	@Override
