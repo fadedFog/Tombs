@@ -36,7 +36,7 @@ dependencies {
     implementation 'com.google.guava:guava:29.0-jre'
     
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
     
    	// https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
 	implementation 'org.apache.logging.log4j:log4j-core:2.14.1'
@@ -50,7 +50,10 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.springframework/spring-context
 	implementation 'org.springframework:spring-context:5.3.7'
 	
-
+	// https://mvnrepository.com/artifact/mysql/mysql-connector-java
+	implementation 'mysql:mysql-connector-java:8.0.25'
+	
+	
 }
 
 application {

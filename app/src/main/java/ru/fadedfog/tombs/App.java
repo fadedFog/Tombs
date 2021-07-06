@@ -35,6 +35,7 @@ public class App {
     	treasureHunter.setName("Hunter");
     	treasureHunter.setLevelScore(999);
     	treasureHunter.setTotalScore(9999);
+    	treasureHunter.setNumberStepsUser(0);
     	treasureHunter.setMoveBehavior(new Movable());
     	Character<MoveBehavior> monster1 = new Character<>();
     	monster1.setName("Monster#1");
@@ -68,6 +69,5 @@ public class App {
     	GameView gameView = new GameView(userKeys);
     	
     }
-    
     
 }
