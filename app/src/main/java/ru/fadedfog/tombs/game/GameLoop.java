@@ -18,6 +18,8 @@ import ru.fadedfog.tombs.asset.character.Character;
 import ru.fadedfog.tombs.asset.character.behavior.move.MoveBehavior;
 import ru.fadedfog.tombs.asset.character.user.TreasureHunter;
 import ru.fadedfog.tombs.asset.geometry.Point;
+import ru.fadedfog.tombs.asset.level.element.surface.Surface;
+import ru.fadedfog.tombs.asset.level.element.surface.TypeSurface;
 import ru.fadedfog.tombs.asset.level.map.room.Room;
 import ru.fadedfog.tombs.generate.RoomConfig;
 import ru.fadedfog.tombs.service.ServiceStatisticsCollector;
@@ -44,6 +46,7 @@ public class GameLoop extends Thread{
 			if (!isPause()) {
 				try {
 					Thread.sleep(500l);
+					serviece.saveNumberSteps();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -52,6 +55,8 @@ public class GameLoop extends Thread{
 				System.out.println(treasureHunter.getNumberStepsUser());
 			}
 		}
+		
+		serviece.saveNumberSteps();
 		
 	}
 
@@ -101,6 +106,26 @@ public class GameLoop extends Thread{
 		this.pause = false;
 	}
 	
+	public void exit() {
+		interruptRoom();
+		this.interrupt();
+	}
+	
+	private void interruptRoom() {
+		interruptCharacters();
+		interruptSurfaces();
+	}
+	
+	private void interruptCharacters() {
+		for (Map.Entry<Point, Character<MoveBehavior>> characters: room.getCharacters().entrySet()) {
+			characters.getValue().interrupt(); 
+		}
+	}
+	
+	private void interruptSurfaces() {
+	
+	}
+	
 	private void moveCharacters() {
 		int xMonster = 1;
     	int yMonster = 0;
@@ -142,6 +167,7 @@ public class GameLoop extends Thread{
 			room.setPointUser(newPoint);
 			TreasureHunter<MoveBehavior> treasureHunter = (TreasureHunter<MoveBehavior>) room.getCharacters().get(newPoint);
 			treasureHunter.increaseNumberSteps();
+			serviece.setNumberSteps(treasureHunter.getNumberStepsUser());
 		}
 	} 
 	

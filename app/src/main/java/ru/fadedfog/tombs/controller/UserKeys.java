@@ -43,7 +43,7 @@ public class UserKeys implements KeyListener {
 			case KeyEvent.VK_A:
 				move(user, -xVelocity, yStartVelocity, oldPointUser);
 				break;
-			case KeyEvent.VK_ESCAPE:
+			case KeyEvent.VK_BACK_SPACE:
 				LOG.info("IP: " + gameLoop.isPause());
 				LOG.info("IA: " + gameLoop.isAlive());
 				LOG.info("II: " + gameLoop.isInterrupted());
@@ -54,6 +54,9 @@ public class UserKeys implements KeyListener {
 					gameLoop.pause();
 					LOG.info(gameLoop.isPause());
 				}
+				break;
+			case KeyEvent.VK_ESCAPE:
+				gameLoop.exit();
 				break;
 		}
 	}

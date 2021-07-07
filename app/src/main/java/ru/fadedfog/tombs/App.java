@@ -22,11 +22,15 @@ import ru.fadedfog.tombs.asset.level.element.surface.TypeSurface;
 import ru.fadedfog.tombs.asset.level.map.room.Room;
 import ru.fadedfog.tombs.controller.UserKeys;
 import ru.fadedfog.tombs.game.GameLoop;
+import ru.fadedfog.tombs.model.CallerQueriesDB;
 import ru.fadedfog.tombs.view.GameView;
 
 public class App {
 
     public static void main(String[] args) throws Exception {
+    	CallerQueriesDB caller = new CallerQueriesDB();
+    
+    	
     	ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
     	GameLoop gameLoop = context.getBean(GameLoop.class);
     	
