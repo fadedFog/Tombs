@@ -22,10 +22,6 @@ public class Character <T extends MoveBehavior> implements Runnable {
 	public void run() {
 	}
 	
-	public void interrupt() {
-		Thread.currentThread().interrupt();
-	}
-
 	public Point move(int x, int y, Point point) {
 		return moveBehavior.move(x, y, point);
 	}
