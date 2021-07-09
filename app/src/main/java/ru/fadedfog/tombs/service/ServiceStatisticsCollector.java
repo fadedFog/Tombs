@@ -1,21 +1,22 @@
 package ru.fadedfog.tombs.service;
 
 
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import ru.fadedfog.tombs.model.CallerQueriesDB;
+import ru.fadedfog.tombs.repository.StatisticsRepository;
 
+@Service
 @Component
 public class ServiceStatisticsCollector {
-	private CallerQueriesDB callerQueriesDB;
+	@Autowired
+	private StatisticsRepository statisticsRepository;
 	private int numberSteps;
 
-	public ServiceStatisticsCollector() {
-		callerQueriesDB = new CallerQueriesDB();
-	}
-	
 	public void saveNumberSteps() {
-		callerQueriesDB.saveNumberSteps(getNumberSteps());
+		statisticsRepository.updateStatistics(numberSteps);
 	}
 	
 	public int getNumberSteps() {
