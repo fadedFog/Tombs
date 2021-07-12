@@ -59,6 +59,12 @@ dependencies {
 	// https://mvnrepository.com/artifact/mysql/mysql-connector-java
 	implementation 'mysql:mysql-connector-java:8.0.25'
 	
+	// https://mvnrepository.com/artifact/org.hibernate/hibernate-core
+	implementation 'org.hibernate:hibernate-core:5.5.3.Final'
+	
+	// https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager
+	implementation 'org.hibernate:hibernate-entitymanager:5.5.3.Final'
+	
 }
 
 application {

@@ -7,7 +7,6 @@ public class ProcessorHook extends Thread {
 	private ServiceStatisticsCollector service;
 	
 	public ProcessorHook(ServiceStatisticsCollector service) {
-		super();
 		this.service = service;
 	}
 

@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -24,10 +27,11 @@ import ru.fadedfog.tombs.controller.UserKeys;
 import ru.fadedfog.tombs.game.GameLoop;
 import ru.fadedfog.tombs.view.GameView;
 
+@SpringBootApplication
+@Configurable
 public class App {
-
     public static void main(String[] args) throws Exception {
-    
+    	SpringApplication.run(App.class, args);
     	
     	ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
     	GameLoop gameLoop = context.getBean(GameLoop.class);
@@ -70,6 +74,5 @@ public class App {
     	UserKeys userKeys = new UserKeys(gameLoop);
     	GameView gameView = new GameView(userKeys);
     	
-    }
-    
+    }    
 }

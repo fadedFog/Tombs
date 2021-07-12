@@ -44,7 +44,6 @@ public class GameLoop extends Thread{
 			if (!isPause()) {
 				try {
 					Thread.sleep(500l);
-					service.saveNumberSteps();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
