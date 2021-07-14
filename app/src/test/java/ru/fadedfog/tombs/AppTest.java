@@ -28,6 +28,16 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AppTest {
     private final String NAME_LEVEL_CONFIG_FILE = "src/test/resources/room.json";
 	
+//    @Before
+//    public void setUpHeadlessMode() {
+//        System.setProperty("java.awt.headless", "true");
+//    }
+//    
+//    @Test
+//    public void whenSetUpSuccessfulThenHeadlessIsTrue() {
+//    	assertTrue(GraphicsEnvironment.isHeadless());
+//    }
+    
     @Test
     public void testGenerateStage() throws JsonGenerationException, JsonMappingException, IOException {
     	int width = 100;

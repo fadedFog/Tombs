@@ -4,6 +4,7 @@
 package ru.fadedfog.tombs;
 
 
+import java.awt.GraphicsEnvironment;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,6 +33,8 @@ import ru.fadedfog.tombs.view.GameView;
 public class App {
     public static void main(String[] args) throws Exception {
     	SpringApplication.run(App.class, args);
+    	
+    	System.setProperty("java.awt.headless", "false");
     	
     	ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
     	GameLoop gameLoop = context.getBean(GameLoop.class);
@@ -74,5 +77,6 @@ public class App {
     	UserKeys userKeys = new UserKeys(gameLoop);
     	GameView gameView = new GameView(userKeys);
     	
-    }    
+    }   
+    
 }
