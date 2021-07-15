@@ -51,6 +51,7 @@ public class GameLoop extends Thread{
 				TreasureHunter<MoveBehavior> treasureHunter = (TreasureHunter<MoveBehavior>) room.getCharacters().get(room.getPointUser());
 				System.out.println(treasureHunter.getNumberStepsUser());
 			}
+			
 		}
 		
 	}

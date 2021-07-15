@@ -1,6 +1,5 @@
 package ru.fadedfog.tombs.model;
 
-import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,7 +9,7 @@ import javax.persistence.Id;
 @Entity
 public class Statistics {
 	@Id
-	@GeneratedValue (strategy = GenerationType.SEQUENCE)
+	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	public Long id;
 	private int numberStepsUser;
 	
@@ -43,21 +42,4 @@ public class Statistics {
 		        id, numberStepsUser);
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(numberStepsUser);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Statistics other = (Statistics) obj;
-		return numberStepsUser == other.numberStepsUser;
-	}
-	
 }
