@@ -4,7 +4,6 @@
 package ru.fadedfog.tombs;
 
 
-import java.awt.GraphicsEnvironment;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
