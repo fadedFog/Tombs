@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,6 +32,8 @@ import ru.fadedfog.tombs.view.GameView;
 @SpringBootApplication
 @Configurable
 public class App {
+	private static final Logger LOG = LogManager.getLogger();
+	
     public static void main(String[] args) throws Exception {
     	SpringApplication.run(App.class, args);
     	
@@ -69,7 +73,7 @@ public class App {
     	int height = 60;
     	String name = "RoomTest";
     	Room room = new Room(width, height, name, map1, map2);
-    	System.out.println(new Point(1, 1) + " " + treasureHunter);
+    	LOG.info(new Point(1, 1) + " " + treasureHunter);
     	gameLoop.setRoom(room);
     	gameLoop.start();
 

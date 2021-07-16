@@ -49,7 +49,7 @@ public class GameLoop extends Thread{
 				}
 				moveCharacters();
 				TreasureHunter<MoveBehavior> treasureHunter = (TreasureHunter<MoveBehavior>) room.getCharacters().get(room.getPointUser());
-				System.out.println(treasureHunter.getNumberStepsUser());
+				LOG.info(treasureHunter.getNumberStepsUser());
 			}
 			
 		}
