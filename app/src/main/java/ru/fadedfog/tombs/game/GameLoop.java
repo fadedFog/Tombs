@@ -24,6 +24,7 @@ public class GameLoop extends Thread{
 	private RoomConfig roomConfig;
 	private Room room;
 	private boolean pause;
+	private static final int GRAVITATION = -1;
 	
 	
 	public GameLoop() {
@@ -102,14 +103,17 @@ public class GameLoop extends Thread{
     	for (Map.Entry<Point, Character<MoveBehavior>> character: room.getCharacters().entrySet()) {
     		Character<MoveBehavior> value = character.getValue();
 	    	Point key = character.getKey();
-	    	Point newKey = value.move(xMonster, yMonster, key);
-	    	System.out.println(!room.getCharacters().containsKey(newKey));
-	    	LOG.info(!room.getCharacters().containsKey(newKey));
+	    	Point afterGravitation = getPointAfterGravitation(key);
+	    	LOG.info("afterGravitation## " + afterGravitation + " || " + value);
+	    	Point newKey = value.move(xMonster, yMonster, afterGravitation);
+	    	LOG.info("##newKey " + value.getName() + " || " + newKey + "\n");
+	    	if (value instanceof TreasureHunter<?>) {
+	    		changePositionUser((TreasureHunter<MoveBehavior>) value, key, afterGravitation);
+	    	}
 	    	if (!room.getCharacters().containsKey(newKey) && !(value instanceof TreasureHunter<?>)) {
 		    	pointsRemove.add(key);
 		    	newPositionCharacters.put(newKey, value);
 	    	}
-    		
     	}
     	
     	for (Point point: pointsRemove) {
@@ -117,6 +121,18 @@ public class GameLoop extends Thread{
     	}
     	
     	room.getCharacters().putAll(newPositionCharacters);
+    	
+    	for (Map.Entry<Point, Character<MoveBehavior>> chaEntry: room.getCharacters().entrySet()) {
+    		if (chaEntry.getValue() instanceof TreasureHunter<?>) {
+    			LOG.info(chaEntry.getKey() + " " + chaEntry.getValue());
+	    	} 
+    	}
+    	
+    	LOG.info("\n\n");
+	}
+	
+	private Point getPointAfterGravitation(Point point) {
+		return new Point(point.getX(), point.getY() + GRAVITATION);
 	}
 	
 	private void render() {
