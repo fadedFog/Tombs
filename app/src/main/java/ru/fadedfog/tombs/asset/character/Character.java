@@ -7,7 +7,6 @@ public class Character <T extends MoveBehavior> implements Runnable {
 	private String name;
 	private int hearts;
 	private T moveBehavior;
-	private int acceleration;
 	
 	public Character() {
 		super();
@@ -17,7 +16,6 @@ public class Character <T extends MoveBehavior> implements Runnable {
 		this.name = name;
 		this.hearts = hearts;
 		this.moveBehavior = moveBehavior;
-		this.acceleration = 0;
 	}
 	
 	@Override
@@ -52,14 +50,6 @@ public class Character <T extends MoveBehavior> implements Runnable {
 		this.moveBehavior = moveBehavior;
 	}
 	
-	public int getAcceleration() {
-		return acceleration;
-	}
-
-	public void setAcceleration(int acceleration) {
-		this.acceleration = acceleration;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -67,7 +57,6 @@ public class Character <T extends MoveBehavior> implements Runnable {
 		result = prime * result + hearts;
 		result = prime * result + ((moveBehavior == null) ? 0 : moveBehavior.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + acceleration;
 		return result;
 	}
 
@@ -92,15 +81,12 @@ public class Character <T extends MoveBehavior> implements Runnable {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (acceleration != other.acceleration)
-			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Character [name=" + name + ", hearts=" + hearts + ", moveBehavior=" + moveBehavior + ", acceleration="
-				+ acceleration + "]";
+		return "Character [name=" + name + ", hearts=" + hearts + ", moveBehavior=" + moveBehavior + ", acceleration=" + "]";
 	}
 
 }
