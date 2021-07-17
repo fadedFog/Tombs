@@ -8,6 +8,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import ru.fadedfog.tombs.asset.character.Character;
 import ru.fadedfog.tombs.asset.character.behavior.move.Immovable;
 import ru.fadedfog.tombs.asset.character.behavior.move.Movable;
@@ -21,15 +29,25 @@ import ru.fadedfog.tombs.controller.UserKeys;
 import ru.fadedfog.tombs.game.GameLoop;
 import ru.fadedfog.tombs.view.GameView;
 
+@SpringBootApplication
+@Configurable
 public class App {
-
+	private static final Logger LOG = LogManager.getLogger();
+	
     public static void main(String[] args) throws Exception {
+    	SpringApplication.run(App.class, args);
+    	
+    	System.setProperty("java.awt.headless", "false");
+    	
+    	ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+    	GameLoop gameLoop = context.getBean(GameLoop.class);
     	
     	TreasureHunter<MoveBehavior> treasureHunter = new TreasureHunter<MoveBehavior>();
     	treasureHunter.setHearts(2);
     	treasureHunter.setName("Hunter");
     	treasureHunter.setLevelScore(999);
     	treasureHunter.setTotalScore(9999);
+    	treasureHunter.setNumberStepsUser(0);
     	treasureHunter.setMoveBehavior(new Movable());
     	Character<MoveBehavior> monster1 = new Character<>();
     	monster1.setName("Monster#1");
@@ -55,16 +73,13 @@ public class App {
     	int height = 60;
     	String name = "RoomTest";
     	Room room = new Room(width, height, name, map1, map2);
-    	
-    	System.out.println(new Point(1, 1) + " " + treasureHunter);
-    	GameLoop gameloop = new GameLoop();
-    	gameloop.setRoom(room);
-    	gameloop.start();
+    	LOG.info(new Point(1, 1) + " " + treasureHunter);
+    	gameLoop.setRoom(room);
+    	gameLoop.start();
 
-    	UserKeys userKeys = new UserKeys(gameloop);
+    	UserKeys userKeys = new UserKeys(gameLoop);
     	GameView gameView = new GameView(userKeys);
     	
-    }
-    
+    }   
     
 }

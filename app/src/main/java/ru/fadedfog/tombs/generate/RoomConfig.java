@@ -85,8 +85,9 @@ public class RoomConfig {
 	}
 	
 	private void initTreasureHunterFull(Point point, Character<MoveBehavior> character) {
+		TreasureHunter<MoveBehavior> hunter = (TreasureHunter<MoveBehavior>) character;
 		TypeMove typeMove = getTypeMove(character.getMoveBehavior());
-		treasureHunter = new TreasureHunterFull(point, character, typeMove);
+		treasureHunter = new TreasureHunterFull(point, character, typeMove, hunter.getNumberStepsUser());
 	}
 	
 	private List<SurfaceFull> initSurfaces(Room room) {

@@ -10,6 +10,7 @@ import ru.fadedfog.tombs.asset.character.Character;
 import ru.fadedfog.tombs.asset.character.behavior.move.MoveBehavior;
 import ru.fadedfog.tombs.asset.character.user.TreasureHunter;
 
+
 public class Room {
 	private int width;
 	private int height;
@@ -17,6 +18,7 @@ public class Room {
 	private ConcurrentHashMap<Point, Character<MoveBehavior>> characters;
 	private Map<Point, Surface<TypeSurface>> surfaces;
 	private Point pointUser;
+	
 	
 	public Room(int width, int height, String name,  
 			ConcurrentHashMap<Point, Character<MoveBehavior>> characters, Map<Point, Surface<TypeSurface>> surfaces) {
@@ -37,6 +39,7 @@ public class Room {
 			}
 		}
 	}
+	
 
 	public int getWidth() {
 		return width;
@@ -85,6 +88,7 @@ public class Room {
 	public void setPointUser(Point pointUser) {
 		this.pointUser = pointUser;
 	}
+	
 
 	@Override
 	public int hashCode() {

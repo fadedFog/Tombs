@@ -8,6 +8,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -18,12 +20,16 @@ import ru.fadedfog.tombs.asset.character.user.TreasureHunter;
 import ru.fadedfog.tombs.asset.geometry.Point;
 import ru.fadedfog.tombs.asset.level.map.room.Room;
 import ru.fadedfog.tombs.generate.RoomConfig;
+import ru.fadedfog.tombs.service.ServiceStatisticsCollector;
 
+@Component
 public class GameLoop extends Thread{
 	private static final Logger LOG = LogManager.getLogger();
 	private RoomConfig roomConfig;
 	private Room room;
 	private boolean pause;
+	@Autowired
+	private ServiceStatisticsCollector service;
 	
 	
 	public GameLoop() {
@@ -42,13 +48,17 @@ public class GameLoop extends Thread{
 					e.printStackTrace();
 				}
 				moveCharacters();
+				TreasureHunter<MoveBehavior> treasureHunter = (TreasureHunter<MoveBehavior>) room.getCharacters().get(room.getPointUser());
+				LOG.info(treasureHunter.getNumberStepsUser());
 			}
+			
 		}
 		
 	}
 
 	private void init() {
 		try {
+			Runtime.getRuntime().addShutdownHook(new ProcessorHook(service));
 			pause = false;
 			initRoom();
 		} catch (IOException e) {
@@ -103,7 +113,6 @@ public class GameLoop extends Thread{
     		Character<MoveBehavior> value = character.getValue();
 	    	Point key = character.getKey();
 	    	Point newKey = value.move(xMonster, yMonster, key);
-	    	System.out.println(!room.getCharacters().containsKey(newKey));
 	    	LOG.info(!room.getCharacters().containsKey(newKey));
 	    	if (!room.getCharacters().containsKey(newKey) && !(value instanceof TreasureHunter<?>)) {
 		    	pointsRemove.add(key);
@@ -133,8 +142,13 @@ public class GameLoop extends Thread{
 			characters.remove(oldPoint);
 			characters.put(newPoint, user);	
 			room.setPointUser(newPoint);
+			TreasureHunter<MoveBehavior> treasureHunter = (TreasureHunter<MoveBehavior>) room.getCharacters().get(newPoint);
+			treasureHunter.increaseNumberSteps();
+			service.setNumberSteps(treasureHunter.getNumberStepsUser());
 		}
 	} 
+	
+	
 	
 	public RoomConfig getRoomConfig() {
 		return roomConfig;
@@ -151,6 +165,8 @@ public class GameLoop extends Thread{
 	public void setRoom(Room room) {
 		this.room = room;
 	}
+	
+	
 
 	@Override
 	public int hashCode() {

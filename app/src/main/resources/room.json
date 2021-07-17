@@ -7,32 +7,34 @@
       "name" : "Hunter",
       "hearts" : 2,
       "totalScore" : 9999,
-      "levelScore" : 999
+      "levelScore" : 999,
+      "numberStepsUser" : 0
     },
     "point" : {
-      "x" : 1,
+      "x" : 5,
       "y" : 1
     },
-    "typeMove" : "MOVABLE"
+    "typeMove" : "MOVABLE",
+    "numberStepsUser" : 0
   },
   "characters" : [ {
     "point" : {
-      "x" : 2,
-      "y" : 2
+      "x" : 0,
+      "y" : 1
     },
     "character" : {
-      "name" : "NPC_1",
+      "name" : "Monster#2",
       "hearts" : 1
     },
-    "typeMove" : "MOVABLE"
+    "typeMove" : "IMMOVABLE"
   }, {
     "point" : {
-      "x" : 5,
-      "y" : 2
+      "x" : 10,
+      "y" : 1
     },
     "character" : {
-      "name" : "NPC_2",
-      "hearts" : 4
+      "name" : "Monster#1",
+      "hearts" : 1
     },
     "typeMove" : "IMMOVABLE"
   } ],
