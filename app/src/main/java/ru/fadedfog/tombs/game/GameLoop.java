@@ -102,8 +102,11 @@ public class GameLoop extends Thread{
     	
     	for (Map.Entry<Point, Character<MoveBehavior>> character: room.getCharacters().entrySet()) {
     		Character<MoveBehavior> value = character.getValue();
+    		int acceleration = value.getAcceleration();
 	    	Point key = character.getKey();
-	    	Point afterGravitation = getPointAfterGravitation(key);
+	    	Point afterGravitation = getPointAfterGravitation(key, acceleration);
+	    	acceleration += 1;
+	    	value.setAcceleration(acceleration);
 	    	LOG.info("afterGravitation## " + afterGravitation + " || " + value);
 	    	Point newKey = value.move(xMonster, yMonster, afterGravitation);
 	    	LOG.info("##newKey " + value.getName() + " || " + newKey + "\n");
@@ -131,8 +134,8 @@ public class GameLoop extends Thread{
     	LOG.info("\n\n");
 	}
 	
-	private Point getPointAfterGravitation(Point point) {
-		return new Point(point.getX(), point.getY() + GRAVITATION);
+	private Point getPointAfterGravitation(Point point, int accelerationObject) {
+		return new Point(point.getX(), point.getY() + GRAVITATION - accelerationObject);
 	}
 	
 	private void render() {
