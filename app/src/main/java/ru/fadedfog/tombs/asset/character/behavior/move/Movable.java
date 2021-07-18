@@ -1,12 +1,18 @@
 package ru.fadedfog.tombs.asset.character.behavior.move;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import ru.fadedfog.tombs.asset.geometry.Point;
 import ru.fadedfog.tombs.settings.SettingsGame;
 
 public class Movable implements MoveBehavior {
-	private int boost = SettingsGame.ZERO;
+	@Autowired
+	private SettingsGame settingsGame;
+	private int boost;
 	
-	public Movable() {}
+	public Movable() {
+		boost = settingsGame.ZERO;
+	}
 	
 	@Override
 	public Point move(int x, int y, Point point) {
@@ -18,7 +24,7 @@ public class Movable implements MoveBehavior {
 	
 	@Override
 	public Point getPointaAfterGravitation(Point point) {
-		Point afterGraviation = new Point(point.getX(), point.getY() + (SettingsGame.gravitation - getBoost()));
+		Point afterGraviation = new Point(point.getX(), point.getY() + (settingsGame.getGravitation() - getBoost()));
 		increaseBoost();
 		return afterGraviation;
 	}
@@ -30,14 +36,14 @@ public class Movable implements MoveBehavior {
 	
 	@Override
 	public void setBoostZero() {
-		this.boost =  SettingsGame.ZERO;
+		this.boost =  settingsGame.ZERO;
 	}
 	
 	@Override
 	public void increaseBoost() {
-		if (SettingsGame.gravitation < 0) {
+		if (settingsGame.getGravitation() < 0) {
 			this.boost += 1;
-		} else if (SettingsGame.gravitation > 0) {
+		} else if (settingsGame.getGravitation() > 0) {
 			this.boost -= 1;
 		}
 	}

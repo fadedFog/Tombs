@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -21,6 +22,8 @@ import ru.fadedfog.tombs.generate.RoomConfig;
 import ru.fadedfog.tombs.settings.SettingsGame;
 
 public class GameLoop extends Thread{
+	@Autowired
+	private SettingsGame settingsGame;
 	private static final Logger LOG = LogManager.getLogger();
 	private RoomConfig roomConfig;
 	private Room room;
@@ -34,7 +37,7 @@ public class GameLoop extends Thread{
 	@Override
 	public void run() {
 		init();
-		
+		settingsGame.setGravitation(0);
 		while(!isInterrupted()) {
 			if (!isPause()) {
 				try {

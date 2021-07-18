@@ -1,20 +1,23 @@
 package ru.fadedfog.tombs.settings;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class SettingsGame {
-	public static final int ZERO = 0;
-	public static final int GRAVITATION_PRIMORDIAL = -1;
-	public static int gravitation = GRAVITATION_PRIMORDIAL;
+	public final int ZERO = 0;
+	public final int GRAVITATION_PRIMORDIAL = -1;
+	private int gravitation = GRAVITATION_PRIMORDIAL;
 	
-	public static int getGravitation() {
+	public int getGravitation() {
 		return gravitation;
 	}
 	
-	public static void setGravitation(int gravitation) {
-		SettingsGame.gravitation = gravitation;
+	public void setGravitation(int gravitation) {
+		this.gravitation = gravitation;
 	}
 	
-	public static void setGravitaionToPrimordial() {
-		SettingsGame.gravitation = GRAVITATION_PRIMORDIAL;
+	public void setGravitaionToPrimordial() {
+		this.gravitation = GRAVITATION_PRIMORDIAL;
 	}
 	
 }
