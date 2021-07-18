@@ -49,7 +49,7 @@ public class Character <T extends MoveBehavior> implements Runnable {
 	public void setMoveBehavior(T moveBehavior) {
 		this.moveBehavior = moveBehavior;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -86,7 +86,7 @@ public class Character <T extends MoveBehavior> implements Runnable {
 
 	@Override
 	public String toString() {
-		return "Character [name=" + name + ", hearts=" + hearts + ", moveBehavior=" + moveBehavior + "]";
+		return "Character [name=" + name + ", hearts=" + hearts + ", moveBehavior=" + moveBehavior + ", acceleration=" + "]";
 	}
 
 }

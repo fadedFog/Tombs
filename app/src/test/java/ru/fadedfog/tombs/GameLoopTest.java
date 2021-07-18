@@ -95,4 +95,11 @@ public class GameLoopTest {
     	
     }
     
+    @Test
+    public void testChangeGravitation() {
+    	GameLoop gameLoop = new GameLoop();
+    	gameLoop.getSettingsGame().setGravitation(10);
+    	Movable movable = new Movable(); 
+    	assertTrue(movable.getSettingsGame().getGravitation() == 10);
+    }
 }
