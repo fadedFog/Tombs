@@ -46,6 +46,10 @@ public class Immovable implements MoveBehavior {
 		}
 	}
 	
+	public SettingsGame getSettingsGame() {
+		return settingsGame;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (getClass() != obj.getClass())

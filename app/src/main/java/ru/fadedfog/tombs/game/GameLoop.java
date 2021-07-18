@@ -37,7 +37,7 @@ public class GameLoop extends Thread{
 	@Override
 	public void run() {
 		init();
-		settingsGame.setGravitation(0);
+		
 		while(!isInterrupted()) {
 			if (!isPause()) {
 				try {
@@ -165,6 +165,10 @@ public class GameLoop extends Thread{
 	public void setRoom(Room room) {
 		this.room = room;
 	}
+	
+	public SettingsGame getSettingsGame() {
+		return settingsGame;
+	}
 
 	@Override
 	public int hashCode() {
@@ -195,6 +199,6 @@ public class GameLoop extends Thread{
 		} else if (!roomConfig.equals(other.roomConfig))
 			return false;
 		return true;
-	}	
-	
+	}
+
 }
