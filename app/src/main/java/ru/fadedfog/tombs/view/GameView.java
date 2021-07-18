@@ -10,6 +10,7 @@ public class GameView extends JFrame {
 		setSize(100, 100);
 		setVisible(true);
 		addKeyListener(userKeys);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	
 }

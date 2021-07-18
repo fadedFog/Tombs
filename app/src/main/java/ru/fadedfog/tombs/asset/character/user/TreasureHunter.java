@@ -7,13 +7,19 @@ import ru.fadedfog.tombs.asset.character.behavior.move.MoveBehavior;
 public class TreasureHunter<T extends MoveBehavior> extends Character<MoveBehavior> {
 	private int totalScore;
 	private int levelScore;
+	private int numberStepsUser;
 	
 	public TreasureHunter() {
 		super();
 	}
 
-	public TreasureHunter(String name, int hearts, MoveBehavior moveBehavior) {
+	public TreasureHunter(String name, int hearts, MoveBehavior moveBehavior, int numberStepsUser) {
 		super(name, hearts, moveBehavior);
+		this.numberStepsUser = numberStepsUser;
+	}
+	
+	public void increaseNumberSteps() {
+		this.numberStepsUser += 1;
 	}
 
 	public int getTotalScore() {
@@ -31,7 +37,15 @@ public class TreasureHunter<T extends MoveBehavior> extends Character<MoveBehavi
 	public void setLevelScore(int levelScore) {
 		this.levelScore = levelScore;
 	}
-
+	
+	public int getNumberStepsUser() {
+		return numberStepsUser;
+	}
+	
+	public void setNumberStepsUser(int numberStepsUser) {
+		this.numberStepsUser = numberStepsUser;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

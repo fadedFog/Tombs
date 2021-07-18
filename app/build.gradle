@@ -36,11 +36,35 @@ dependencies {
     implementation 'com.google.guava:guava:29.0-jre'
     
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
     
    	// https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
 	implementation 'org.apache.logging.log4j:log4j-core:2.14.1'
-
+	
+	// https://mvnrepository.com/artifact/org.springframework/spring-core
+	implementation 'org.springframework:spring-core:5.3.7'
+	
+	// https://mvnrepository.com/artifact/org.springframework/spring-beans
+	implementation 'org.springframework:spring-beans:5.3.7'
+	
+	// https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa
+	implementation 'org.springframework.data:spring-data-jpa:2.5.2'
+	
+	// https://mvnrepository.com/artifact/org.springframework/spring-context
+	implementation 'org.springframework:spring-context:5.3.7'
+	
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.5.2'
+	
+	// https://mvnrepository.com/artifact/mysql/mysql-connector-java
+	implementation 'mysql:mysql-connector-java:8.0.25'
+	
+	// https://mvnrepository.com/artifact/org.hibernate/hibernate-core
+	implementation 'org.hibernate:hibernate-core:5.5.3.Final'
+	
+	// https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager
+	implementation 'org.hibernate:hibernate-entitymanager:5.5.3.Final'
+	
 }
 
 application {

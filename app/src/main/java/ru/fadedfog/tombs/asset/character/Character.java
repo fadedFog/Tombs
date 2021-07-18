@@ -21,7 +21,7 @@ public class Character <T extends MoveBehavior> implements Runnable {
 	@Override
 	public void run() {
 	}
-
+	
 	public Point move(int x, int y, Point point) {
 		return moveBehavior.move(x, y, point);
 	}

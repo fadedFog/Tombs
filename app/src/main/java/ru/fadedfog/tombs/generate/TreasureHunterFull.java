@@ -10,11 +10,13 @@ public class TreasureHunterFull {
 	private TreasureHunter<MoveBehavior> treasureHunter;
 	private Point point;
 	private TypeMove typeMove;
+	private int numberStepsUser;
 
-	public TreasureHunterFull(Point point, Character<MoveBehavior> character, TypeMove typeMove) {
+	public TreasureHunterFull(Point point, Character<MoveBehavior> character, TypeMove typeMove, int numberStepsUser) {
 		this.point = point;
 		this.treasureHunter = (TreasureHunter<MoveBehavior>) character;
 		this.typeMove = typeMove;
+		this.numberStepsUser = numberStepsUser;
 	}
 
 	public TreasureHunterFull() {
@@ -43,6 +45,14 @@ public class TreasureHunterFull {
 
 	public void setTypeMove(TypeMove typeMove) {
 		this.typeMove = typeMove;
+	}
+	
+	public int getNumberStepsUser() {
+		return numberStepsUser;
+	}
+
+	public void setNumberStepsUser(int numberStepsUser) {
+		this.numberStepsUser = numberStepsUser;
 	}
 
 	@Override

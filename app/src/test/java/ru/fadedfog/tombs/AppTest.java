@@ -28,6 +28,16 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AppTest {
     private final String NAME_LEVEL_CONFIG_FILE = "src/test/resources/room.json";
 	
+//    @Before
+//    public void setUpHeadlessMode() {
+//        System.setProperty("java.awt.headless", "true");
+//    }
+//    
+//    @Test
+//    public void whenSetUpSuccessfulThenHeadlessIsTrue() {
+//    	assertTrue(GraphicsEnvironment.isHeadless());
+//    }
+    
     @Test
     public void testGenerateStage() throws JsonGenerationException, JsonMappingException, IOException {
     	int width = 100;
@@ -38,6 +48,7 @@ public class AppTest {
     	treasureHunter.setName("Hunter");
     	treasureHunter.setLevelScore(999);
     	treasureHunter.setTotalScore(9999);
+    	treasureHunter.setNumberStepsUser(0);
     	treasureHunter.setMoveBehavior(new Movable());
     	Character<MoveBehavior> npc = new Character<MoveBehavior>();
     	npc.setHearts(1);
