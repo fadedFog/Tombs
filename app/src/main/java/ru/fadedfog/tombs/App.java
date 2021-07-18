@@ -58,14 +58,14 @@ public class App {
     	monster2.setMoveBehavior(new Immovable());
     	monster2.setHearts(1);
     	ConcurrentHashMap<Point, Character<MoveBehavior>> map1 = new ConcurrentHashMap<>();
-    	map1.put(new Point(0, 1), monster2);
-    	map1.put(new Point(5, 1), treasureHunter);
-    	map1.put(new Point(10, 1), monster1);
+    	map1.put(new Point(0, 2), monster2);
+    	map1.put(new Point(5, 5), treasureHunter);
+    	map1.put(new Point(10, 2), monster1);
     	
     	Surface<TypeSurface> block = new Surface<TypeSurface>(TypeSurface.BLOCK);
     	Surface<TypeSurface> block2 = new Surface<TypeSurface>(TypeSurface.BLOCK);
     	Map<Point, Surface<TypeSurface>> map2 = new HashMap<>();
-    	map2.put(new Point(2,2), block);
+    	map2.put(new Point(5,1), block);
     	map2.put(new Point(2,3), block2);
     	
     	

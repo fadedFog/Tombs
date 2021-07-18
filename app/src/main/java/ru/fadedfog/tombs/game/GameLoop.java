@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
@@ -20,10 +21,12 @@ import ru.fadedfog.tombs.asset.character.user.TreasureHunter;
 import ru.fadedfog.tombs.asset.geometry.Point;
 import ru.fadedfog.tombs.asset.level.map.room.Room;
 import ru.fadedfog.tombs.generate.RoomConfig;
+import ru.fadedfog.tombs.settings.SettingsGame;
 import ru.fadedfog.tombs.service.ServiceStatisticsCollector;
 
 @Component
 public class GameLoop extends Thread{
+	private SettingsGame settingsGame;
 	private static final Logger LOG = LogManager.getLogger();
 	private RoomConfig roomConfig;
 	private Room room;
@@ -33,6 +36,7 @@ public class GameLoop extends Thread{
 	
 	
 	public GameLoop() {
+		settingsGame = SettingsGame.getInstance();
 		this.roomConfig = new RoomConfig();
 	}
 	
@@ -49,7 +53,7 @@ public class GameLoop extends Thread{
 				}
 				moveCharacters();
 				TreasureHunter<MoveBehavior> treasureHunter = (TreasureHunter<MoveBehavior>) room.getCharacters().get(room.getPointUser());
-				LOG.info(treasureHunter.getNumberStepsUser());
+				LOG.info("getNumberStepsUser(): " + treasureHunter.getNumberStepsUser());
 			}
 			
 		}
@@ -113,12 +117,15 @@ public class GameLoop extends Thread{
     		Character<MoveBehavior> value = character.getValue();
 	    	Point key = character.getKey();
 	    	Point newKey = value.move(xMonster, yMonster, key);
+	    	LOG.info("##newKey " + value.getName() + " || " + newKey + "\n");
+	    	if (value instanceof TreasureHunter<?>) {
+	    		changePositionUser((TreasureHunter<MoveBehavior>) value, key, key);
+	    	}
 	    	LOG.info(!room.getCharacters().containsKey(newKey));
 	    	if (!room.getCharacters().containsKey(newKey) && !(value instanceof TreasureHunter<?>)) {
 		    	pointsRemove.add(key);
 		    	newPositionCharacters.put(newKey, value);
 	    	}
-    		
     	}
     	
     	for (Point point: pointsRemove) {
@@ -126,7 +133,16 @@ public class GameLoop extends Thread{
     	}
     	
     	room.getCharacters().putAll(newPositionCharacters);
+    	
+    	for (Map.Entry<Point, Character<MoveBehavior>> chaEntry: room.getCharacters().entrySet()) {
+    		if (chaEntry.getValue() instanceof TreasureHunter<?>) {
+    			LOG.info(chaEntry.getKey() + " " + chaEntry.getValue());
+	    	} 
+    	}
+    	
+    	LOG.info("\n\n");
 	}
+	
 	
 	private void render() {
 		
@@ -166,7 +182,9 @@ public class GameLoop extends Thread{
 		this.room = room;
 	}
 	
-	
+	public SettingsGame getSettingsGame() {
+		return settingsGame;
+	}
 
 	@Override
 	public int hashCode() {
@@ -197,6 +215,6 @@ public class GameLoop extends Thread{
 		} else if (!roomConfig.equals(other.roomConfig))
 			return false;
 		return true;
-	}	
-	
+	}
+
 }

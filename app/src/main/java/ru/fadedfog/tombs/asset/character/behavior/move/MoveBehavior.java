@@ -10,4 +10,12 @@ public interface MoveBehavior {
 	
 	public Point move(int x, int y, Point point);
 	
+	Point getPointaAfterGravitation(Point point);
+	
+	void setBoostZero();
+	
+	int getBoost();
+	
+	void increaseBoost();
+	
 }
