@@ -7,8 +7,6 @@ import ru.fadedfog.tombs.asset.geometry.Point;
 
 @JsonIgnoreType
 public interface MoveBehavior {
-	static final int ZERO = 0;
-	static final int GRAVITATION = -1;
 	
 	public Point move(int x, int y, Point point);
 	

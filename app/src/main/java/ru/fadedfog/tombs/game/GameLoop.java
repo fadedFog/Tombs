@@ -18,13 +18,13 @@ import ru.fadedfog.tombs.asset.character.user.TreasureHunter;
 import ru.fadedfog.tombs.asset.geometry.Point;
 import ru.fadedfog.tombs.asset.level.map.room.Room;
 import ru.fadedfog.tombs.generate.RoomConfig;
+import ru.fadedfog.tombs.settings.SettingsGame;
 
 public class GameLoop extends Thread{
 	private static final Logger LOG = LogManager.getLogger();
 	private RoomConfig roomConfig;
 	private Room room;
 	private boolean pause;
-	private static final int GRAVITATION = -1;
 	
 	
 	public GameLoop() {

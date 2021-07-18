@@ -1,9 +1,10 @@
 package ru.fadedfog.tombs.asset.character.behavior.move;
 
 import ru.fadedfog.tombs.asset.geometry.Point;
+import ru.fadedfog.tombs.settings.SettingsGame;
 
 public class Immovable implements MoveBehavior {
-	private int boost = ZERO;
+	private int boost = SettingsGame.ZERO;
 	
 	public Immovable() {}
 	
@@ -15,14 +16,9 @@ public class Immovable implements MoveBehavior {
 	
 	@Override
 	public Point getPointaAfterGravitation(Point point) {
-		Point afterGraviation = new Point(point.getX(), point.getY() + (GRAVITATION - getBoost()));
+		Point afterGraviation = new Point(point.getX(), point.getY() + (SettingsGame.gravitation - getBoost()));
 		increaseBoost();
 		return afterGraviation;
-	}
-
-	@Override
-	public void setBoostZero() {
-		boost = ZERO;
 	}
 	
 	@Override
@@ -31,8 +27,17 @@ public class Immovable implements MoveBehavior {
 	}
 	
 	@Override
+	public void setBoostZero() {
+		this.boost =  SettingsGame.ZERO;
+	}
+	
+	@Override
 	public void increaseBoost() {
-		this.boost += 1;
+		if (SettingsGame.gravitation < 0) {
+			this.boost += 1;
+		} else if (SettingsGame.gravitation > 0) {
+			this.boost -= 1;
+		}
 	}
 	
 	@Override
