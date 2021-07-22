@@ -13,13 +13,14 @@ import ru.fadedfog.tombs.asset.character.user.TreasureHunter;
 import ru.fadedfog.tombs.asset.geometry.Point;
 import ru.fadedfog.tombs.game.GameLoop;
 
-
 public class UserKeys implements KeyListener {
+	private static UserKeys instance;
 	private static final Logger LOG = LogManager.getLogger();
 	private GameLoop gameLoop;
 	
 	public UserKeys(GameLoop gameLoop) {
 		this.gameLoop = gameLoop;
+		instance = this;
 	}
 
 	@Override
@@ -53,6 +54,14 @@ public class UserKeys implements KeyListener {
 				} else {
 					gameLoop.pause();
 					LOG.info(gameLoop.isPause());
+				}
+				break;
+			case KeyEvent.VK_BACK_SPACE:
+				System.exit(1);
+				break;
+			case KeyEvent.VK_ENTER:
+				if (gameLoop.isMainMenu() || gameLoop.isLose()) {
+					gameLoop.setMainMenu(false);
 				}
 				break;
 		}

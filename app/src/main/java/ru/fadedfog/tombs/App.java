@@ -68,6 +68,8 @@ public class App {
     	map2.put(new Point(5,1), block);
     	map2.put(new Point(2,3), block2);
     	
+//    	UserKeys userKeys = new UserKeys(gameLoop);
+//    	GameView gameView = new GameView(userKeys);
     	
     	int width = 100;
     	int height = 60;
@@ -77,8 +79,6 @@ public class App {
     	gameLoop.setRoom(room);
     	gameLoop.start();
 
-    	UserKeys userKeys = new UserKeys(gameLoop);
-    	GameView gameView = new GameView(userKeys);
     	
     }   
     

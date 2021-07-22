@@ -20,8 +20,10 @@ import ru.fadedfog.tombs.asset.character.behavior.move.MoveBehavior;
 import ru.fadedfog.tombs.asset.character.user.TreasureHunter;
 import ru.fadedfog.tombs.asset.geometry.Point;
 import ru.fadedfog.tombs.asset.level.map.room.Room;
+import ru.fadedfog.tombs.controller.UserKeys;
 import ru.fadedfog.tombs.generate.RoomConfig;
 import ru.fadedfog.tombs.settings.SettingsGame;
+import ru.fadedfog.tombs.view.GameView;
 import ru.fadedfog.tombs.service.ServiceStatisticsCollector;
 
 @Component
@@ -31,13 +33,22 @@ public class GameLoop extends Thread{
 	private RoomConfig roomConfig;
 	private Room room;
 	private boolean pause;
+	private boolean isMainMenu;
+	private boolean isLose;
 	@Autowired
 	private ServiceStatisticsCollector service;
+	private UserKeys userKeys;
+	private GameView gameView;
 	
 	
 	public GameLoop() {
+		System.setProperty("java.awt.headless", "false");
+		setLose(false);
+		setMainMenu(true);
 		settingsGame = SettingsGame.getInstance();
 		this.roomConfig = new RoomConfig();
+		userKeys = new UserKeys(this);
+		gameView = new GameView(userKeys);
 	}
 	
 	@Override
@@ -45,17 +56,28 @@ public class GameLoop extends Thread{
 		init();
 		
 		while(!isInterrupted()) {
-			if (!isPause()) {
-				try {
-					Thread.sleep(500l);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+			if (!isMainMenu) {
+				if (!isPause()) {
+					try {
+						Thread.sleep(500l);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					if (isHeroLive()) {
+						moveCharacters();
+						TreasureHunter<MoveBehavior> treasureHunter = (TreasureHunter<MoveBehavior>) room.getCharacters().get(room.getPointUser());
+						LOG.info("getNumberStepsUser(): " + treasureHunter.getNumberStepsUser());
+					} else {
+						setLose(true);
+						pause();
+						gameView.setLoseMenu();
+					}
+				} else {
+					gameView.setPauseMenu();
 				}
-				moveCharacters();
-				TreasureHunter<MoveBehavior> treasureHunter = (TreasureHunter<MoveBehavior>) room.getCharacters().get(room.getPointUser());
-				LOG.info("getNumberStepsUser(): " + treasureHunter.getNumberStepsUser());
+			} else {
+				gameView.setStartMenu();
 			}
-			
 		}
 		
 	}
@@ -105,6 +127,11 @@ public class GameLoop extends Thread{
 	
 	public void proceed() {
 		this.pause = false;
+	}
+	
+	private boolean isHeroLive() {
+		TreasureHunter<MoveBehavior> treasureHunter = (TreasureHunter<MoveBehavior>) room.getCharacters().get(room.getPointUser());
+		return treasureHunter.getHearts() > 0;
 	}
 	
 	private void moveCharacters() {
@@ -184,6 +211,22 @@ public class GameLoop extends Thread{
 	
 	public SettingsGame getSettingsGame() {
 		return settingsGame;
+	}
+	
+	public boolean isMainMenu() {
+		return isMainMenu;
+	}
+
+	public void setMainMenu(boolean isMainMenu) {
+		this.isMainMenu = isMainMenu;
+	}
+	
+	public boolean isLose() {
+		return isLose;
+	}
+
+	public void setLose(boolean isLose) {
+		this.isLose = isLose;
 	}
 
 	@Override
