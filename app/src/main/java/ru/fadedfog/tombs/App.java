@@ -43,7 +43,7 @@ public class App {
     	GameLoop gameLoop = context.getBean(GameLoop.class);
     	
     	TreasureHunter<MoveBehavior> treasureHunter = new TreasureHunter<MoveBehavior>();
-    	treasureHunter.setHearts(2);
+    	treasureHunter.setHearts(0);
     	treasureHunter.setName("Hunter");
     	treasureHunter.setLevelScore(999);
     	treasureHunter.setTotalScore(9999);
@@ -68,9 +68,6 @@ public class App {
     	map2.put(new Point(5,1), block);
     	map2.put(new Point(2,3), block2);
     	
-//    	UserKeys userKeys = new UserKeys(gameLoop);
-//    	GameView gameView = new GameView(userKeys);
-    	
     	int width = 100;
     	int height = 60;
     	String name = "RoomTest";
@@ -78,7 +75,6 @@ public class App {
     	LOG.info(new Point(1, 1) + " " + treasureHunter);
     	gameLoop.setRoom(room);
     	gameLoop.start();
-
     	
     }   
     

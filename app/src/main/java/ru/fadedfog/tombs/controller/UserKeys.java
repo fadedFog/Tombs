@@ -11,16 +11,15 @@ import ru.fadedfog.tombs.asset.character.Character;
 import ru.fadedfog.tombs.asset.character.behavior.move.MoveBehavior;
 import ru.fadedfog.tombs.asset.character.user.TreasureHunter;
 import ru.fadedfog.tombs.asset.geometry.Point;
+import ru.fadedfog.tombs.asset.level.map.room.Room;
 import ru.fadedfog.tombs.game.GameLoop;
 
 public class UserKeys implements KeyListener {
-	private static UserKeys instance;
 	private static final Logger LOG = LogManager.getLogger();
 	private GameLoop gameLoop;
 	
 	public UserKeys(GameLoop gameLoop) {
 		this.gameLoop = gameLoop;
-		instance = this;
 	}
 
 	@Override
@@ -61,6 +60,11 @@ public class UserKeys implements KeyListener {
 				break;
 			case KeyEvent.VK_ENTER:
 				if (gameLoop.isMainMenu() || gameLoop.isLose()) {
+					if (gameLoop.isLose()) {
+						Room room = gameLoop.getRoom();
+						TreasureHunter<MoveBehavior> treasureHunter = (TreasureHunter<MoveBehavior>) room.getCharacters().get(room.getPointUser());
+						treasureHunter.setHearts(2); // TODO Example
+					}
 					gameLoop.setMainMenu(false);
 				}
 				break;

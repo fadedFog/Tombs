@@ -40,5 +40,10 @@ public class GameView extends JFrame {
 		label1.setText("Restart [Enter]");
 		label2.setText("Exit [Backspace]\n");
 	}
+	
+	public void setHeroSteps(int steps) {
+		label1.setText(String.valueOf(steps));
+		label2.setText("");
+	}
 
 }

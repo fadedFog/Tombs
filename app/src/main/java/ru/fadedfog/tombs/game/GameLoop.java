@@ -43,8 +43,8 @@ public class GameLoop extends Thread{
 	
 	public GameLoop() {
 		System.setProperty("java.awt.headless", "false");
-		setLose(false);
-		setMainMenu(true);
+		isLose = false;
+		isMainMenu = true;
 		settingsGame = SettingsGame.getInstance();
 		this.roomConfig = new RoomConfig();
 		userKeys = new UserKeys(this);
@@ -63,13 +63,14 @@ public class GameLoop extends Thread{
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
+					
 					if (isHeroLive()) {
 						moveCharacters();
 						TreasureHunter<MoveBehavior> treasureHunter = (TreasureHunter<MoveBehavior>) room.getCharacters().get(room.getPointUser());
+						gameView.setHeroSteps(treasureHunter.getNumberStepsUser());
 						LOG.info("getNumberStepsUser(): " + treasureHunter.getNumberStepsUser());
 					} else {
 						setLose(true);
-						pause();
 						gameView.setLoseMenu();
 					}
 				} else {
@@ -192,7 +193,6 @@ public class GameLoop extends Thread{
 	} 
 	
 	
-	
 	public RoomConfig getRoomConfig() {
 		return roomConfig;
 	}
@@ -226,7 +226,7 @@ public class GameLoop extends Thread{
 	}
 
 	public void setLose(boolean isLose) {
-		this.isLose = isLose;
+		this.isLose = isLose;		
 	}
 
 	@Override
