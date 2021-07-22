@@ -56,7 +56,7 @@ public class UserKeys implements KeyListener {
 				}
 				break;
 			case KeyEvent.VK_BACK_SPACE:
-				System.exit(1);
+				System.exit(0);
 				break;
 			case KeyEvent.VK_ENTER:
 				if (gameLoop.isMainMenu() || gameLoop.isLose()) {

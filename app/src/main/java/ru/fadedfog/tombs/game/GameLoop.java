@@ -56,31 +56,38 @@ public class GameLoop extends Thread{
 		init();
 		
 		while(!isInterrupted()) {
-			if (!isMainMenu) {
-				if (!isPause()) {
-					try {
-						Thread.sleep(500l);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					
-					if (isHeroLive()) {
-						moveCharacters();
-						TreasureHunter<MoveBehavior> treasureHunter = (TreasureHunter<MoveBehavior>) room.getCharacters().get(room.getPointUser());
-						gameView.setHeroSteps(treasureHunter.getNumberStepsUser());
-						LOG.info("getNumberStepsUser(): " + treasureHunter.getNumberStepsUser());
-					} else {
-						setLose(true);
-						gameView.setLoseMenu();
-					}
-				} else {
-					gameView.setPauseMenu();
-				}
-			} else {
-				gameView.setStartMenu();
-			}
+			game();
 		}
 		
+	}
+	
+	private void game() {
+		if (!isMainMenu) {
+			if (!isPause()) {
+				try {
+					stepOfGame();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			} else {
+				gameView.setPauseMenu();
+			}
+		} else {
+			gameView.setStartMenu();
+		}
+	}
+	
+	private void stepOfGame() throws InterruptedException {
+		Thread.sleep(500l);
+		if (isHeroLive()) {
+			moveCharacters();
+			TreasureHunter<MoveBehavior> treasureHunter = (TreasureHunter<MoveBehavior>) room.getCharacters().get(room.getPointUser());
+			gameView.setHeroSteps(treasureHunter.getNumberStepsUser());
+			LOG.info("getNumberStepsUser(): " + treasureHunter.getNumberStepsUser());
+		} else {
+			setLose(true);
+			gameView.setLoseMenu();
+		}
 	}
 
 	private void init() {
