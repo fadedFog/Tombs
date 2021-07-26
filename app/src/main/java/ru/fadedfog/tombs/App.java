@@ -25,9 +25,8 @@ import ru.fadedfog.tombs.asset.geometry.Point;
 import ru.fadedfog.tombs.asset.level.element.surface.Surface;
 import ru.fadedfog.tombs.asset.level.element.surface.TypeSurface;
 import ru.fadedfog.tombs.asset.level.map.room.Room;
-import ru.fadedfog.tombs.controller.UserKeys;
 import ru.fadedfog.tombs.game.GameLoop;
-import ru.fadedfog.tombs.view.GameView;
+import ru.fadedfog.tombs.settings.SettingsGame;
 
 @SpringBootApplication
 @Configurable
@@ -41,6 +40,8 @@ public class App {
     	
     	ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
     	GameLoop gameLoop = context.getBean(GameLoop.class);
+    	SettingsGame settingsGame = new SettingsGame();
+    	gameLoop.setSettingsGame(settingsGame);
     	
     	TreasureHunter<MoveBehavior> treasureHunter = new TreasureHunter<MoveBehavior>();
     	treasureHunter.setHearts(0);
@@ -48,14 +49,14 @@ public class App {
     	treasureHunter.setLevelScore(999);
     	treasureHunter.setTotalScore(9999);
     	treasureHunter.setNumberStepsUser(0);
-    	treasureHunter.setMoveBehavior(new Movable());
+    	treasureHunter.setMoveBehavior(new Movable(settingsGame));
     	Character<MoveBehavior> monster1 = new Character<>();
     	monster1.setName("Monster#1");
-    	monster1.setMoveBehavior(new Immovable());
+    	monster1.setMoveBehavior(new Immovable(settingsGame));
     	monster1.setHearts(1);
     	Character<MoveBehavior> monster2 = new Character<>();
     	monster2.setName("Monster#2");
-    	monster2.setMoveBehavior(new Immovable());
+    	monster2.setMoveBehavior(new Immovable(settingsGame));
     	monster2.setHearts(1);
     	ConcurrentHashMap<Point, Character<MoveBehavior>> map1 = new ConcurrentHashMap<>();
     	map1.put(new Point(0, 2), monster2);

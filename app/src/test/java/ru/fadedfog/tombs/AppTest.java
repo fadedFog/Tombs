@@ -3,6 +3,7 @@
  */
 package ru.fadedfog.tombs;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -17,9 +18,11 @@ import ru.fadedfog.tombs.asset.level.element.surface.Surface;
 import ru.fadedfog.tombs.asset.level.element.surface.TypeSurface;
 import ru.fadedfog.tombs.asset.level.map.room.Room;
 import ru.fadedfog.tombs.generate.RoomConfig;
+import ru.fadedfog.tombs.settings.SettingsGame;
 
 import static org.junit.Assert.*;
 
+import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,20 +31,21 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AppTest {
     private final String NAME_LEVEL_CONFIG_FILE = "src/test/resources/room.json";
 	
-//    @Before
-//    public void setUpHeadlessMode() {
-//        System.setProperty("java.awt.headless", "true");
-//    }
-//    
-//    @Test
-//    public void whenSetUpSuccessfulThenHeadlessIsTrue() {
-//    	assertTrue(GraphicsEnvironment.isHeadless());
-//    }
+    @Before
+    public void setUpHeadlessMode() {
+        System.setProperty("java.awt.headless", "true");
+    }
+    
+    @Test
+    public void whenSetUpSuccessfulThenHeadlessIsTrue() {
+    	assertTrue(GraphicsEnvironment.isHeadless());
+    }
     
     @Test
     public void testGenerateStage() throws JsonGenerationException, JsonMappingException, IOException {
     	int width = 100;
     	int height = 60;
+    	SettingsGame settingsGame = new SettingsGame();
     	String name = "RoomTest";
     	TreasureHunter<MoveBehavior> treasureHunter = new TreasureHunter<MoveBehavior>();
     	treasureHunter.setHearts(2);
@@ -49,11 +53,11 @@ public class AppTest {
     	treasureHunter.setLevelScore(999);
     	treasureHunter.setTotalScore(9999);
     	treasureHunter.setNumberStepsUser(0);
-    	treasureHunter.setMoveBehavior(new Movable());
+    	treasureHunter.setMoveBehavior(new Movable(settingsGame));
     	Character<MoveBehavior> npc = new Character<MoveBehavior>();
     	npc.setHearts(1);
     	npc.setName("NPC_1");
-    	npc.setMoveBehavior(new Movable());
+    	npc.setMoveBehavior(new Movable(settingsGame));
     	ConcurrentHashMap<Point, Character<MoveBehavior>> map1 = new ConcurrentHashMap<Point, Character<MoveBehavior>>();
     	map1.put(new Point(1,1), treasureHunter);
     	map1.put(new Point(2,2), npc);

@@ -22,14 +22,14 @@ import ru.fadedfog.tombs.asset.geometry.Point;
 import ru.fadedfog.tombs.asset.level.map.room.Room;
 import ru.fadedfog.tombs.controller.UserKeys;
 import ru.fadedfog.tombs.generate.RoomConfig;
-import ru.fadedfog.tombs.settings.SettingsGame;
 import ru.fadedfog.tombs.view.GameView;
 import ru.fadedfog.tombs.service.ServiceStatisticsCollector;
+import ru.fadedfog.tombs.settings.SettingsGame;
 
 @Component
 public class GameLoop extends Thread{
-	private SettingsGame settingsGame;
 	private static final Logger LOG = LogManager.getLogger();
+	private SettingsGame settingsGame;
 	private RoomConfig roomConfig;
 	private Room room;
 	private boolean pause;
@@ -45,7 +45,6 @@ public class GameLoop extends Thread{
 		System.setProperty("java.awt.headless", "false");
 		isLose = false;
 		isMainMenu = true;
-		settingsGame = SettingsGame.getInstance();
 		this.roomConfig = new RoomConfig();
 		userKeys = new UserKeys(this);
 		gameView = new GameView(userKeys);
@@ -57,39 +56,20 @@ public class GameLoop extends Thread{
 		
 		while(!isInterrupted()) {
 			game();
+			LOG.info("Hunter's position: " + this.room.getPointUser());
 		}
 		
 	}
 	
 	private void game() {
-		if (!isMainMenu) {
-			if (!isPause()) {
-				try {
-					stepOfGame();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			} else {
-				gameView.setPauseMenu();
-			}
-		} else {
-			gameView.setStartMenu();
+		try {
+			update();
+			render();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 	
-	private void stepOfGame() throws InterruptedException {
-		Thread.sleep(500l);
-		if (isHeroLive()) {
-			moveCharacters();
-			TreasureHunter<MoveBehavior> treasureHunter = (TreasureHunter<MoveBehavior>) room.getCharacters().get(room.getPointUser());
-			gameView.setHeroSteps(treasureHunter.getNumberStepsUser());
-			LOG.info("getNumberStepsUser(): " + treasureHunter.getNumberStepsUser());
-		} else {
-			setLose(true);
-			gameView.setLoseMenu();
-		}
-	}
-
 	private void init() {
 		try {
 			Runtime.getRuntime().addShutdownHook(new ProcessorHook(service));
@@ -148,19 +128,20 @@ public class GameLoop extends Thread{
     	ConcurrentHashMap<Point, Character<MoveBehavior>> newPositionCharacters = new ConcurrentHashMap<>();
     	List<Point> pointsRemove = new ArrayList<>();
     	
-    	for (Map.Entry<Point, Character<MoveBehavior>> character: room.getCharacters().entrySet()) {
-    		Character<MoveBehavior> value = character.getValue();
-	    	Point key = character.getKey();
-	    	Point newKey = value.move(xMonster, yMonster, key);
-	    	LOG.info("##newKey " + value.getName() + " || " + newKey + "\n");
-	    	if (value instanceof TreasureHunter<?>) {
-	    		changePositionUser((TreasureHunter<MoveBehavior>) value, key, key);
+    	for (Map.Entry<Point, Character<MoveBehavior>> pointAndCharacter: room.getCharacters().entrySet()) {
+    		Character<MoveBehavior> character = pointAndCharacter.getValue();
+	    	Point pointCharacter = pointAndCharacter.getKey();
+	    	Point newPointCharacter = character.move(xMonster, yMonster, pointCharacter);
+	    	
+	    	if (character instanceof TreasureHunter<?>) {
+	    		Point newPointHunter = new Point(pointCharacter.getX(), newPointCharacter.getY());
+	    		changePositionUser((TreasureHunter<MoveBehavior>) character, pointCharacter, newPointHunter);
+	    	} else if (!room.getCharacters().containsKey(newPointCharacter)) {
+	    		LOG.info("NewPointCharacter: " + character.getName() + " || " + newPointCharacter + "\n");
+	    		pointsRemove.add(pointCharacter);
+		    	newPositionCharacters.put(newPointCharacter, character);
 	    	}
-	    	LOG.info(!room.getCharacters().containsKey(newKey));
-	    	if (!room.getCharacters().containsKey(newKey) && !(value instanceof TreasureHunter<?>)) {
-		    	pointsRemove.add(key);
-		    	newPositionCharacters.put(newKey, value);
-	    	}
+	    	
     	}
     	
     	for (Point point: pointsRemove) {
@@ -171,7 +152,6 @@ public class GameLoop extends Thread{
     	
     	for (Map.Entry<Point, Character<MoveBehavior>> chaEntry: room.getCharacters().entrySet()) {
     		if (chaEntry.getValue() instanceof TreasureHunter<?>) {
-    			LOG.info(chaEntry.getKey() + " " + chaEntry.getValue());
 	    	} 
     	}
     	
@@ -180,11 +160,29 @@ public class GameLoop extends Thread{
 	
 	
 	private void render() {
-		
+		if (!isMainMenu) {
+			if (!isPause()) {
+				if (isHeroLive()) {
+					TreasureHunter<MoveBehavior> treasureHunter = (TreasureHunter<MoveBehavior>) room.getCharacters().get(room.getPointUser());
+					gameView.setHeroSteps(treasureHunter.getNumberStepsUser(), room.getPointUser());
+				} else {
+					gameView.setLoseMenu();
+				}
+			} else {
+				gameView.setPauseMenu();
+			}
+		} else {
+			gameView.setStartMenu();
+		}
 	}
 	
-	private void update() {
-		
+	private void update() throws InterruptedException {
+		Thread.sleep(500l);
+		if (isHeroLive()) {
+			moveCharacters();
+		} else {
+			setLose(true);
+		}
 	}
 	
 	public void changePositionUser(TreasureHunter<MoveBehavior> user, Point oldPoint, Point newPoint) {
@@ -216,10 +214,6 @@ public class GameLoop extends Thread{
 		this.room = room;
 	}
 	
-	public SettingsGame getSettingsGame() {
-		return settingsGame;
-	}
-	
 	public boolean isMainMenu() {
 		return isMainMenu;
 	}
@@ -234,6 +228,15 @@ public class GameLoop extends Thread{
 
 	public void setLose(boolean isLose) {
 		this.isLose = isLose;		
+	}
+	
+	public SettingsGame getSettingsGame() {
+		return settingsGame;
+	}
+
+	public void setSettingsGame(SettingsGame settingsGame) {
+		this.settingsGame = settingsGame;
+		this.roomConfig.setSettingsGame(settingsGame);
 	}
 
 	@Override

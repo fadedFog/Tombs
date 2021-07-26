@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import ru.fadedfog.tombs.asset.geometry.Point;
 import ru.fadedfog.tombs.controller.UserKeys;
 
 public class GameView extends JFrame {
@@ -41,9 +42,9 @@ public class GameView extends JFrame {
 		label2.setText("Exit [Backspace]\n");
 	}
 	
-	public void setHeroSteps(int steps) {
+	public void setHeroSteps(int steps, Point point) {
 		label1.setText(String.valueOf(steps));
-		label2.setText("");
+		label2.setText(point.getX() + " " + point.getY());
 	}
 
 }

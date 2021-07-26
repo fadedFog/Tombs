@@ -7,9 +7,9 @@ public class Immovable implements MoveBehavior {
 	private SettingsGame settingsGame;
 	private int boost;
 	
-	public Immovable() {
-		settingsGame = SettingsGame.getInstance();
-		boost = settingsGame.ZERO;
+	public Immovable(SettingsGame settingsGame) {
+		this.settingsGame = settingsGame;
+		boost = this.settingsGame.ZERO;
 	}
 	
 	@Override

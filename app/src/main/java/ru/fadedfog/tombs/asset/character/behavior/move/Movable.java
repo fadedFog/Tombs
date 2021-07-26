@@ -7,9 +7,9 @@ public class Movable implements MoveBehavior {
 	private SettingsGame settingsGame;
 	private int boost;
 	
-	public Movable() {
-		settingsGame = SettingsGame.getInstance();
-		boost = settingsGame.ZERO;
+	public Movable(SettingsGame settingsGame) {
+		this.settingsGame = settingsGame;
+		boost = this.settingsGame.ZERO;
 	}
 	
 	@Override
