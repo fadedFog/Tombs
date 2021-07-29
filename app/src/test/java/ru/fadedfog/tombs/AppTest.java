@@ -53,11 +53,11 @@ public class AppTest {
     	treasureHunter.setLevelScore(999);
     	treasureHunter.setTotalScore(9999);
     	treasureHunter.setNumberStepsUser(0);
-    	treasureHunter.setMoveBehavior(new Movable(settingsGame));
+    	treasureHunter.setMoveBehavior(new Movable());
     	Character<MoveBehavior> npc = new Character<MoveBehavior>();
     	npc.setHearts(1);
     	npc.setName("NPC_1");
-    	npc.setMoveBehavior(new Movable(settingsGame));
+    	npc.setMoveBehavior(new Movable());
     	ConcurrentHashMap<Point, Character<MoveBehavior>> map1 = new ConcurrentHashMap<Point, Character<MoveBehavior>>();
     	map1.put(new Point(1,1), treasureHunter);
     	map1.put(new Point(2,2), npc);

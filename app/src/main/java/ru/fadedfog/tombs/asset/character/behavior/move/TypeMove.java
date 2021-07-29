@@ -1,22 +1,21 @@
 package ru.fadedfog.tombs.asset.character.behavior.move;
 
-import ru.fadedfog.tombs.settings.SettingsGame;
 
 public enum TypeMove {
 	MOVABLE {
 		@Override
-		public MoveBehavior getMoveBehavior(SettingsGame settingsGame) {
-			return new Movable(settingsGame);
+		public MoveBehavior getMoveBehavior() {
+			return new Movable();
 		}
 	},
 	IMMOVABLE {
 		@Override
-		public MoveBehavior getMoveBehavior(SettingsGame settingsGame) {
-			return new Immovable(settingsGame);
+		public MoveBehavior getMoveBehavior() {
+			return new Immovable();
 		}
 	};
 	
-	public abstract MoveBehavior getMoveBehavior(SettingsGame settingsGame);
+	public abstract MoveBehavior getMoveBehavior();
 	
 	public static TypeMove getTypeMove(MoveBehavior moveBehavior) {
 		TypeMove typeMove;

@@ -7,11 +7,6 @@ public class Movable implements MoveBehavior {
 	private SettingsGame settingsGame;
 	private int boost;
 	
-	public Movable(SettingsGame settingsGame) {
-		this.settingsGame = settingsGame;
-		boost = this.settingsGame.ZERO;
-	}
-	
 	@Override
 	public Point move(int x, int y, Point point) {
 		int newX = x + point.getX();
@@ -46,8 +41,16 @@ public class Movable implements MoveBehavior {
 		}
 	}
 	
+	@Override
 	public SettingsGame getSettingsGame() {
 		return settingsGame;
+	}
+	
+	@Override
+	public void setSettingsGameAndBoost(SettingsGame settingsGame) {
+		this.settingsGame = settingsGame;
+		this.boost = this.settingsGame.ZERO;
+		System.out.println(this.settingsGame == null);
 	}
 	
 	@Override

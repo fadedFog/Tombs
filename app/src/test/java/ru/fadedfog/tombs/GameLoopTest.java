@@ -43,12 +43,12 @@ public class GameLoopTest {
     	String name2 = "Monseter_2";
     	Point point1 = new Point(0, 5);
     	Character<MoveBehavior> monster1 = new Character<>();
-    	monster1.setMoveBehavior(new Movable(settingsGame));
+    	monster1.setMoveBehavior(new Movable());
     	monster1.setName(name1);
     	monster1.setHearts(2);
     	Point point2 = new Point(3, -2);
     	Character<MoveBehavior> monster2 = new Character<>();
-    	monster2.setMoveBehavior(new Movable(settingsGame));
+    	monster2.setMoveBehavior(new Movable());
     	monster2.setName(name2);
     	monster2.setHearts(1);
     	

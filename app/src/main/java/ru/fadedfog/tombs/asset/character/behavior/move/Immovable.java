@@ -7,11 +7,6 @@ public class Immovable implements MoveBehavior {
 	private SettingsGame settingsGame;
 	private int boost;
 	
-	public Immovable(SettingsGame settingsGame) {
-		this.settingsGame = settingsGame;
-		boost = this.settingsGame.ZERO;
-	}
-	
 	@Override
 	public Point move(int x, int y, Point point) {
 		Point afterGravitation = getPointaAfterGravitation(point);
@@ -44,8 +39,15 @@ public class Immovable implements MoveBehavior {
 		}
 	}
 	
+	@Override
 	public SettingsGame getSettingsGame() {
 		return settingsGame;
+	}
+	
+	@Override
+	public void setSettingsGameAndBoost(SettingsGame settingsGame) {
+		this.settingsGame = settingsGame;
+		this.boost = this.settingsGame.ZERO;
 	}
 	
 	@Override
