@@ -96,7 +96,6 @@ public class GameLoop extends Thread{
 		List<Character<MoveBehavior>> characters = new ArrayList<>(room.getCharacters().values());
 		for (Character<MoveBehavior> element: characters) {
 			MoveBehavior moveBehaviorElement = element.getMoveBehavior();
-//			moveBehaviorElement.setSettingsGame(settingsGame);
 			element.setMoveBehavior(moveBehaviorElement);
 			Thread characterThread = new Thread(element, element.getName());
 			characterThread.start();

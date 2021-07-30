@@ -64,7 +64,7 @@ public class UserKeys implements KeyListener {
 					case LOSE:
 						Room room = gameLoop.getRoom();
 						TreasureHunter<MoveBehavior> treasureHunter = (TreasureHunter<MoveBehavior>) room.getCharacters().get(room.getPointUser());
-						treasureHunter.setHearts(2); // TODO Example
+						treasureHunter.setHearts(2);
 						gameLoop.setStateGame(StateGame.ON);
 						break;
 					case MAIN_MENU:
