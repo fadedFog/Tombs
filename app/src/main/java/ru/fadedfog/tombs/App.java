@@ -20,14 +20,12 @@ import ru.fadedfog.tombs.asset.character.Character;
 import ru.fadedfog.tombs.asset.character.behavior.move.Immovable;
 import ru.fadedfog.tombs.asset.character.behavior.move.Movable;
 import ru.fadedfog.tombs.asset.character.behavior.move.MoveBehavior;
-import ru.fadedfog.tombs.asset.character.behavior.move.TypeMove;
 import ru.fadedfog.tombs.asset.character.user.TreasureHunter;
 import ru.fadedfog.tombs.asset.geometry.Point;
 import ru.fadedfog.tombs.asset.level.element.surface.Surface;
 import ru.fadedfog.tombs.asset.level.element.surface.TypeSurface;
 import ru.fadedfog.tombs.asset.level.map.room.Room;
 import ru.fadedfog.tombs.game.GameLoop;
-import ru.fadedfog.tombs.settings.SettingsGame;
 
 @SpringBootApplication
 @Configurable
@@ -41,8 +39,6 @@ public class App {
     	
     	ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
     	GameLoop gameLoop = context.getBean(GameLoop.class);
-    	SettingsGame settingsGame = new SettingsGame();
-    	gameLoop.setSettingsGameAnd(settingsGame);
     	
     	TreasureHunter<MoveBehavior> treasureHunter = new TreasureHunter<MoveBehavior>();
     	treasureHunter.setHearts(0);
