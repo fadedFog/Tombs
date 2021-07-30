@@ -30,11 +30,9 @@ import ru.fadedfog.tombs.settings.SettingsGame;
 public class GameLoop extends Thread{
 	private static final Logger LOG = LogManager.getLogger();
 	private SettingsGame settingsGame;
+	private StateGame stateGame;
 	private RoomConfig roomConfig;
 	private Room room;
-	private boolean pause;
-	private boolean isMainMenu;
-	private boolean isLose;
 	@Autowired
 	private ServiceStatisticsCollector service;
 	private UserKeys userKeys;
@@ -43,10 +41,9 @@ public class GameLoop extends Thread{
 	
 	public GameLoop() {
 		System.setProperty("java.awt.headless", "false");
-		isLose = false;
-		isMainMenu = true;
 		roomConfig = new RoomConfig();
 		roomConfig.setSettingsGame(settingsGame);
+		setStateGame(StateGame.MAIN_MENU);
 		userKeys = new UserKeys(this);
 		gameView = new GameView(userKeys);
 	}
@@ -74,7 +71,7 @@ public class GameLoop extends Thread{
 	private void init() {
 		try {
 			Runtime.getRuntime().addShutdownHook(new ProcessorHook(service));
-			pause = false;
+//			pause = false;
 			initRoom();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -98,7 +95,7 @@ public class GameLoop extends Thread{
 		List<Character<MoveBehavior>> characters = new ArrayList<>(room.getCharacters().values());
 		for (Character<MoveBehavior> element: characters) {
 			MoveBehavior moveBehaviorElement = element.getMoveBehavior();
-			moveBehaviorElement.setSettingsGameAndBoost(settingsGame);
+			moveBehaviorElement.setSettingsGame(settingsGame);
 			element.setMoveBehavior(moveBehaviorElement);
 			Thread characterThread = new Thread(element, element.getName());
 			characterThread.start();
@@ -107,18 +104,6 @@ public class GameLoop extends Thread{
 	
 	private void initSurfaces() {
 		
-	}
-	
-	public boolean isPause() {
-		return pause;
-	} 
-
-	public void pause() {
-		this.pause = true;
-	}
-	
-	public void proceed() {
-		this.pause = false;
 	}
 	
 	private boolean isHeroLive() {
@@ -160,31 +145,37 @@ public class GameLoop extends Thread{
 	
 	
 	private void render() {
-		if (!isMainMenu && !isPause() && isHeroLive()) {
-			TreasureHunter<MoveBehavior> treasureHunter = (TreasureHunter<MoveBehavior>) room.getCharacters().get(room.getPointUser());
-			gameView.setHeroSteps(treasureHunter.getNumberStepsUser(), room.getPointUser());
-		} else {
-			gameView.setLoseMenu();
-		} 
-		
-		if (!isMainMenu && isPause()) {
-			gameView.setPauseMenu();
-		}
-		
-		if (isMainMenu) {
-			gameView.setStartMenu();
+		switch (stateGame) {
+			case MAIN_MENU: 
+				gameView.setStartMenu();
+				break;
+			case PAUSE:
+				gameView.setPauseMenu();
+				break;
+			case LOSE:
+				gameView.setLoseMenu();
+				break;
+			default:
+				TreasureHunter<MoveBehavior> treasureHunter = (TreasureHunter<MoveBehavior>) room.getCharacters().get(room.getPointUser());
+				gameView.setHeroSteps(treasureHunter.getNumberStepsUser(), room.getPointUser());
+				break;
 		}
 	}
 	
 	private void update() throws InterruptedException {
 		Thread.sleep(500l);
-		if (!isPause() && !isMainMenu) {
+		if (isGameOn()) {
 			if (isHeroLive()) {
 				moveCharacters();
 			} else {
-				setLose(true);
+				stateGame = StateGame.LOSE;
 			}
 		}
+		
+	}
+	
+	private boolean isGameOn() {
+		return stateGame != StateGame.PAUSE && stateGame != StateGame.MAIN_MENU;
 	}
 	
 	public void changePositionUser(TreasureHunter<MoveBehavior> user, Point oldPoint, Point newPoint) {
@@ -216,28 +207,20 @@ public class GameLoop extends Thread{
 		this.room = room;
 	}
 	
-	public boolean isMainMenu() {
-		return isMainMenu;
-	}
-
-	public void setMainMenu(boolean isMainMenu) {
-		this.isMainMenu = isMainMenu;
-	}
-	
-	public boolean isLose() {
-		return isLose;
-	}
-
-	public void setLose(boolean isLose) {
-		this.isLose = isLose;		
-	}
-	
 	public SettingsGame getSettingsGame() {
 		return settingsGame;
 	}
 	
 	public void setSettingsGameAnd(SettingsGame settingsGame) {
 		this.settingsGame = settingsGame;
+	}
+	
+	public StateGame getStateGame() {
+		return stateGame;
+	}
+
+	public void setStateGame(StateGame stateGame) {
+		this.stateGame = stateGame;
 	}
 
 	@Override

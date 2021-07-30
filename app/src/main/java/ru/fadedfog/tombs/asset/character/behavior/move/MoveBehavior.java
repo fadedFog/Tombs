@@ -21,5 +21,5 @@ public interface MoveBehavior {
 	
 	SettingsGame getSettingsGame();
 	
-	void setSettingsGameAndBoost(SettingsGame settingsGame);
+	void setSettingsGame(SettingsGame settingsGame);
 }

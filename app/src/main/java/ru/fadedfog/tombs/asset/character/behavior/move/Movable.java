@@ -1,9 +1,12 @@
 package ru.fadedfog.tombs.asset.character.behavior.move;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import ru.fadedfog.tombs.asset.geometry.Point;
 import ru.fadedfog.tombs.settings.SettingsGame;
 
 public class Movable implements MoveBehavior {
+	@Autowired
 	private SettingsGame settingsGame;
 	private int boost;
 	
@@ -47,10 +50,8 @@ public class Movable implements MoveBehavior {
 	}
 	
 	@Override
-	public void setSettingsGameAndBoost(SettingsGame settingsGame) {
+	public void setSettingsGame(SettingsGame settingsGame) {
 		this.settingsGame = settingsGame;
-		this.boost = this.settingsGame.ZERO;
-		System.out.println(this.settingsGame == null);
 	}
 	
 	@Override

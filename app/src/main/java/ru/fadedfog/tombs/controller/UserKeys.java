@@ -13,6 +13,7 @@ import ru.fadedfog.tombs.asset.character.user.TreasureHunter;
 import ru.fadedfog.tombs.asset.geometry.Point;
 import ru.fadedfog.tombs.asset.level.map.room.Room;
 import ru.fadedfog.tombs.game.GameLoop;
+import ru.fadedfog.tombs.game.StateGame;
 
 public class UserKeys implements KeyListener {
 	private static final Logger LOG = LogManager.getLogger();
@@ -44,35 +45,39 @@ public class UserKeys implements KeyListener {
 				move(user, -xVelocity, yStartVelocity, oldPointUser);
 				break;
 			case KeyEvent.VK_ESCAPE:
-				LOG.info("IP: " + gameLoop.isPause());
-				LOG.info("IA: " + gameLoop.isAlive());
-				LOG.info("II: " + gameLoop.isInterrupted());
-				if (gameLoop.isPause()) {
-					gameLoop.proceed();
-					LOG.info(gameLoop.isPause());
-				} else {
-					gameLoop.pause();
-					LOG.info(gameLoop.isPause());
+				LOG.info("State of game: " + gameLoop.getStateGame());
+				switch (gameLoop.getStateGame()) {
+					case PAUSE:
+						gameLoop.setStateGame(StateGame.ON);
+						break;
+					case ON:
+						gameLoop.setStateGame(StateGame.PAUSE);
+						break;
 				}
+				LOG.info(gameLoop.getStateGame());
 				break;
 			case KeyEvent.VK_BACK_SPACE:
 				System.exit(0);
 				break;
 			case KeyEvent.VK_ENTER:
-				if (gameLoop.isMainMenu() || gameLoop.isLose()) {
-					if (gameLoop.isLose()) {
+				switch (gameLoop.getStateGame()) {
+					case LOSE:
 						Room room = gameLoop.getRoom();
 						TreasureHunter<MoveBehavior> treasureHunter = (TreasureHunter<MoveBehavior>) room.getCharacters().get(room.getPointUser());
 						treasureHunter.setHearts(2); // TODO Example
-					}
-					gameLoop.setMainMenu(false);
+						gameLoop.setStateGame(StateGame.ON);
+						break;
+					case MAIN_MENU:
+						gameLoop.setStateGame(StateGame.ON);
+						break;
 				}
+				
 				break;
 		}
 	}
 	
 	private void move(TreasureHunter<MoveBehavior> user, int xVelocity, int yVelocity, Point oldPointUser) {
-		if (!gameLoop.isPause()) {
+		if (gameLoop.getStateGame() != StateGame.PAUSE) {
 			Point newPoint = user.move(xVelocity, yVelocity, oldPointUser);
 			LOG.info(newPoint);
 			gameLoop.changePositionUser(user, oldPointUser, newPoint);
