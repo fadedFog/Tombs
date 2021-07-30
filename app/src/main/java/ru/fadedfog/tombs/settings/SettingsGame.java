@@ -8,8 +8,6 @@ public class SettingsGame {
 	public final int GRAVITATION_PRIMORDIAL = -1;
 	private int gravitation = GRAVITATION_PRIMORDIAL;
 	
-	public SettingsGame() {}
-	
 	public int getGravitation() {
 		return gravitation;
 	}

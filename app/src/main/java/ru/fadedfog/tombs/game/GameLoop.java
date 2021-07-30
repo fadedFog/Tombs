@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
+import ru.fadedfog.tombs.App;
 import ru.fadedfog.tombs.asset.character.Character;
 import ru.fadedfog.tombs.asset.character.behavior.move.MoveBehavior;
 import ru.fadedfog.tombs.asset.character.user.TreasureHunter;
@@ -29,6 +30,7 @@ import ru.fadedfog.tombs.settings.SettingsGame;
 @Component
 public class GameLoop extends Thread{
 	private static final Logger LOG = LogManager.getLogger();
+	@Autowired
 	private SettingsGame settingsGame;
 	private StateGame stateGame;
 	private RoomConfig roomConfig;
@@ -42,16 +44,15 @@ public class GameLoop extends Thread{
 	public GameLoop() {
 		System.setProperty("java.awt.headless", "false");
 		roomConfig = new RoomConfig();
-		roomConfig.setSettingsGame(settingsGame);
 		setStateGame(StateGame.MAIN_MENU);
 		userKeys = new UserKeys(this);
 		gameView = new GameView(userKeys);
 	}
 	
+	
 	@Override
 	public void run() {
 		init();
-		
 		while(!isInterrupted()) {
 			game();
 			LOG.info("Hunter's position: " + this.room.getPointUser());
@@ -71,8 +72,8 @@ public class GameLoop extends Thread{
 	private void init() {
 		try {
 			Runtime.getRuntime().addShutdownHook(new ProcessorHook(service));
-//			pause = false;
 			initRoom();
+			roomConfig.setSettingsGame(settingsGame);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -95,7 +96,7 @@ public class GameLoop extends Thread{
 		List<Character<MoveBehavior>> characters = new ArrayList<>(room.getCharacters().values());
 		for (Character<MoveBehavior> element: characters) {
 			MoveBehavior moveBehaviorElement = element.getMoveBehavior();
-			moveBehaviorElement.setSettingsGame(settingsGame);
+//			moveBehaviorElement.setSettingsGame(settingsGame);
 			element.setMoveBehavior(moveBehaviorElement);
 			Thread characterThread = new Thread(element, element.getName());
 			characterThread.start();
@@ -207,13 +208,13 @@ public class GameLoop extends Thread{
 		this.room = room;
 	}
 	
-	public SettingsGame getSettingsGame() {
-		return settingsGame;
-	}
-	
-	public void setSettingsGameAnd(SettingsGame settingsGame) {
-		this.settingsGame = settingsGame;
-	}
+//	public SettingsGame getSettingsGame() {
+//		return settingsGame;
+//	}
+//	
+//	public void setSettingsGameAnd(SettingsGame settingsGame) {
+//		this.settingsGame = settingsGame;
+//	}
 	
 	public StateGame getStateGame() {
 		return stateGame;

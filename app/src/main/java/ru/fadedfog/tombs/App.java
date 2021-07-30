@@ -27,6 +27,7 @@ import ru.fadedfog.tombs.asset.level.element.surface.Surface;
 import ru.fadedfog.tombs.asset.level.element.surface.TypeSurface;
 import ru.fadedfog.tombs.asset.level.map.room.Room;
 import ru.fadedfog.tombs.game.GameLoop;
+import ru.fadedfog.tombs.settings.ApplicationContextGame;
 import ru.fadedfog.tombs.settings.SettingsGame;
 
 @SpringBootApplication
@@ -39,10 +40,8 @@ public class App {
     	
     	System.setProperty("java.awt.headless", "false");
     	
-    	ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-    	GameLoop gameLoop = context.getBean(GameLoop.class);
-    	SettingsGame settingsGame = new SettingsGame();
-    	gameLoop.setSettingsGameAnd(settingsGame);
+    	ApplicationContextGame context = new ApplicationContextGame();
+    	GameLoop gameLoop = context.getContext().getBean(GameLoop.class);
     	
     	TreasureHunter<MoveBehavior> treasureHunter = new TreasureHunter<MoveBehavior>();
     	treasureHunter.setHearts(0);
