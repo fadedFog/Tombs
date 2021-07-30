@@ -44,7 +44,7 @@ public class GameLoop extends Thread{
 	public GameLoop() {
 		System.setProperty("java.awt.headless", "false");
 		roomConfig = new RoomConfig();
-		setStateGame(StateGame.MAIN_MENU);
+		stateGame = StateGame.MAIN_MENU;
 		userKeys = new UserKeys(this);
 		gameView = new GameView(userKeys);
 	}
