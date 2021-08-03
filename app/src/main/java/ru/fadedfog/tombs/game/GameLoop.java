@@ -1,6 +1,7 @@
 package ru.fadedfog.tombs.game;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
-import ru.fadedfog.tombs.App;
 import ru.fadedfog.tombs.asset.character.Character;
 import ru.fadedfog.tombs.asset.character.behavior.move.MoveBehavior;
 import ru.fadedfog.tombs.asset.character.user.TreasureHunter;
@@ -96,10 +96,22 @@ public class GameLoop extends Thread{
 		List<Character<MoveBehavior>> characters = new ArrayList<>(room.getCharacters().values());
 		for (Character<MoveBehavior> element: characters) {
 			MoveBehavior moveBehaviorElement = element.getMoveBehavior();
+			try {
+				setSettingsGameToMoveBehavior(moveBehaviorElement);
+			} catch(NoSuchFieldException | IllegalAccessException e) {
+				e.printStackTrace();
+			}
+			
 			element.setMoveBehavior(moveBehaviorElement);
 			Thread characterThread = new Thread(element, element.getName());
 			characterThread.start();
 		}
+	}
+	
+	private void setSettingsGameToMoveBehavior(MoveBehavior moveBehaviorElement) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		Field field = moveBehaviorElement.getClass().getDeclaredField("settingsGame");
+		field.setAccessible(true);
+		field.set(moveBehaviorElement, this.settingsGame);
 	}
 	
 	private void initSurfaces() {
@@ -206,14 +218,6 @@ public class GameLoop extends Thread{
 	public void setRoom(Room room) {
 		this.room = room;
 	}
-	
-//	public SettingsGame getSettingsGame() {
-//		return settingsGame;
-//	}
-//	
-//	public void setSettingsGameAnd(SettingsGame settingsGame) {
-//		this.settingsGame = settingsGame;
-//	}
 	
 	public StateGame getStateGame() {
 		return stateGame;
