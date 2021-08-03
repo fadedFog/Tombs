@@ -1,5 +1,6 @@
 package ru.fadedfog.tombs.asset.character.behavior.move;
 
+import ru.fadedfog.tombs.ApplicationContextKeeper;
 import ru.fadedfog.tombs.asset.geometry.Point;
 import ru.fadedfog.tombs.settings.SettingsGame;
 
@@ -8,6 +9,7 @@ public class Immovable implements MoveBehavior {
 	private int boost;
 	
 	public Immovable() {
+		this.settingsGame = ApplicationContextKeeper.getContext().getBean(SettingsGame.class);
 	}
 	
 	@Override

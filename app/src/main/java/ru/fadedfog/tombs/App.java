@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import ru.fadedfog.tombs.asset.character.Character;
 import ru.fadedfog.tombs.asset.character.behavior.move.Immovable;
@@ -26,6 +25,7 @@ import ru.fadedfog.tombs.asset.level.element.surface.Surface;
 import ru.fadedfog.tombs.asset.level.element.surface.TypeSurface;
 import ru.fadedfog.tombs.asset.level.map.room.Room;
 import ru.fadedfog.tombs.game.GameLoop;
+import ru.fadedfog.tombs.settings.SettingsGame;
 
 @SpringBootApplication
 @Configurable
@@ -37,8 +37,10 @@ public class App {
     	
     	System.setProperty("java.awt.headless", "false");
     	
-    	ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+    	ApplicationContext context = ApplicationContextKeeper.getContext();
     	GameLoop gameLoop = context.getBean(GameLoop.class);
+    	SettingsGame settingsGame = context.getBean(SettingsGame.class);
+    	LOG.info(settingsGame);
     	
     	TreasureHunter<MoveBehavior> treasureHunter = new TreasureHunter<MoveBehavior>();
     	treasureHunter.setHearts(0);
@@ -47,6 +49,8 @@ public class App {
     	treasureHunter.setTotalScore(9999);
     	treasureHunter.setNumberStepsUser(0);
     	Movable movable = new Movable();
+    	LOG.info(movable.getSettingsGame());
+    	
     	treasureHunter.setMoveBehavior(movable);
     	Character<MoveBehavior> monster1 = new Character<>();
     	monster1.setName("Monster#1");

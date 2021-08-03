@@ -96,21 +96,10 @@ public class GameLoop extends Thread{
 		List<Character<MoveBehavior>> characters = new ArrayList<>(room.getCharacters().values());
 		for (Character<MoveBehavior> element: characters) {
 			MoveBehavior moveBehaviorElement = element.getMoveBehavior();
-			try {
-				setSettingsGameToMoveBehavior(moveBehaviorElement);
-			} catch(NoSuchFieldException | IllegalAccessException e) {
-				e.printStackTrace();
-			}
 			element.setMoveBehavior(moveBehaviorElement);
 			Thread characterThread = new Thread(element, element.getName());
 			characterThread.start();
 		}
-	}
-	
-	private void setSettingsGameToMoveBehavior(MoveBehavior moveBehaviorElement) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
-		Field field = moveBehaviorElement.getClass().getDeclaredField("settingsGame");
-		field.setAccessible(true);
-		field.set(moveBehaviorElement, this.settingsGame);
 	}
 	
 	private void initSurfaces() {
