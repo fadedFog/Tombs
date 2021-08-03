@@ -8,6 +8,9 @@ public class Movable implements MoveBehavior {
 	private SettingsGame settingsGame;
 	private int boost;
 	
+	public Movable() {
+	}
+	
 	@Override
 	public Point move(int x, int y, Point point) {
 		int newX = x + point.getX();

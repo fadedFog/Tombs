@@ -101,7 +101,6 @@ public class GameLoop extends Thread{
 			} catch(NoSuchFieldException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
-			
 			element.setMoveBehavior(moveBehaviorElement);
 			Thread characterThread = new Thread(element, element.getName());
 			characterThread.start();
