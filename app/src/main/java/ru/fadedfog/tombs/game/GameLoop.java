@@ -226,6 +226,10 @@ public class GameLoop extends Thread{
 	public void setStateGame(StateGame stateGame) {
 		this.stateGame = stateGame;
 	}
+	
+	public SettingsGame getSettingsGame() {
+		return this.settingsGame;
+	}
 
 	@Override
 	public int hashCode() {

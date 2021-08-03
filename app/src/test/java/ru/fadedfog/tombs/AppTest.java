@@ -74,6 +74,7 @@ public class AppTest {
     	Room newRoom = serializerRoom.deserialize();
     	
     	assertEquals(room, newRoom);
+    
     }
     
 }

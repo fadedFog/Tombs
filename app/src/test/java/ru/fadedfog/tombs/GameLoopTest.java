@@ -21,6 +21,7 @@ import ru.fadedfog.tombs.asset.character.behavior.move.MoveBehavior;
 import ru.fadedfog.tombs.asset.geometry.Point;
 import ru.fadedfog.tombs.asset.level.map.room.Room;
 import ru.fadedfog.tombs.game.GameLoop;
+import ru.fadedfog.tombs.game.StateGame;
 import ru.fadedfog.tombs.settings.SettingsGame;
 
 public class GameLoopTest {
@@ -78,30 +79,30 @@ public class GameLoopTest {
     	List<Point> newPoints = new ArrayList<>(map.keySet());   	
     	
     	assertFalse(oldPoints.equals(newPoints));
+    	
     }
 	
     @Test
     public void testPauseGameLoop() {
-//    	GameLoop gameLoop = new GameLoop();
-//    	gameLoop.start();
-//    	assertFalse(gameLoop.isPause());
-//    	
-//    	gameLoop.pause();
-//    	assertTrue(gameLoop.isPause());
-//    	
-//    	gameLoop.proceed();
-//    	assertFalse(gameLoop.isPause());
-//    	
-//    	gameLoop.interrupt();
-//    	assertFalse(gameLoop.isPause());
-//    	
+    	GameLoop gameLoop = new GameLoop();
+    	gameLoop.start();
+    	assertFalse(gameLoop.getStateGame() == StateGame.PAUSE);
+    	
+    	gameLoop.setStateGame(StateGame.PAUSE);
+    	assertTrue(gameLoop.getStateGame() == StateGame.PAUSE);
+    	
+    	gameLoop.setStateGame(StateGame.ON);
+    	assertFalse(gameLoop.getStateGame() == StateGame.PAUSE);
+    	
+    	gameLoop.interrupt();
+    	assertFalse(gameLoop.getStateGame() == StateGame.PAUSE);
     }
     
     @Test
     public void testChangeGravitation() {
-//    	GameLoop gameLoop = new GameLoop();
-//    	gameLoop.getSettingsGame().setGravitation(10);
-//    	Movable movable = new Movable(); 
-//    	assertTrue(movable.getSettingsGame().getGravitation() == 10);
+    	GameLoop gameLoop = new GameLoop();
+    	gameLoop.getSettingsGame().setGravitation(10);
+    	Movable movable = new Movable(); 
+    	assertTrue(movable.getSettingsGame().getGravitation() == 10);
     }
 }
