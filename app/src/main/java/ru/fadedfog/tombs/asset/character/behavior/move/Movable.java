@@ -8,7 +8,6 @@ import ru.fadedfog.tombs.asset.geometry.Point;
 import ru.fadedfog.tombs.settings.SettingsGame;
 
 public class Movable implements MoveBehavior {
-	@Autowired
 	private SettingsGame settingsGame;
 	private int boost;
 	
