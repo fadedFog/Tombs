@@ -39,8 +39,6 @@ public class App {
     	
     	ApplicationContext context = ApplicationContextKeeper.getContext();
     	GameLoop gameLoop = context.getBean(GameLoop.class);
-    	SettingsGame settingsGame = context.getBean(SettingsGame.class);
-    	LOG.info(settingsGame);
     	
     	TreasureHunter<MoveBehavior> treasureHunter = new TreasureHunter<MoveBehavior>();
     	treasureHunter.setHearts(0);
@@ -49,8 +47,6 @@ public class App {
     	treasureHunter.setTotalScore(9999);
     	treasureHunter.setNumberStepsUser(0);
     	Movable movable = new Movable();
-    	LOG.info(movable.getSettingsGame());
-    	
     	treasureHunter.setMoveBehavior(movable);
     	Character<MoveBehavior> monster1 = new Character<>();
     	monster1.setName("Monster#1");
@@ -63,9 +59,9 @@ public class App {
     	monster2.setMoveBehavior(immovable2);
     	monster2.setHearts(1);
     	ConcurrentHashMap<Point, Character<MoveBehavior>> map1 = new ConcurrentHashMap<>();
-    	map1.put(new Point(0, 2), monster2);
     	map1.put(new Point(5, 5), treasureHunter);
     	map1.put(new Point(10, 2), monster1);
+    	map1.put(new Point(0, 2), monster2);
     	
     	Surface<TypeSurface> block = new Surface<TypeSurface>(TypeSurface.BLOCK);
     	Surface<TypeSurface> block2 = new Surface<TypeSurface>(TypeSurface.BLOCK);

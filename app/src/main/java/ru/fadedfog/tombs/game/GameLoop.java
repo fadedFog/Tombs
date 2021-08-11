@@ -218,6 +218,10 @@ public class GameLoop extends Thread{
 	public SettingsGame getSettingsGame() {
 		return this.settingsGame;
 	}
+	
+	public UserKeys getUserKeys() {
+		return userKeys;
+	}
 
 	@Override
 	public int hashCode() {
