@@ -18,7 +18,6 @@ import ru.fadedfog.tombs.game.StateGame;
 public class UserKeys implements KeyListener {
 	private static final Logger LOG = LogManager.getLogger();
 	private GameLoop gameLoop;
-	private int lastKey;
 	
 	public UserKeys(GameLoop gameLoop) {
 		this.gameLoop = gameLoop;
@@ -33,12 +32,10 @@ public class UserKeys implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		int xVelocity = 1;
 		int yStartVelocity = 0;
-		
 		Point oldPointUser = gameLoop.getRoom().getPointUser();
 		ConcurrentHashMap<Point, Character<MoveBehavior>> characters = gameLoop.getRoom().getCharacters();
 		TreasureHunter<MoveBehavior> user = (TreasureHunter<MoveBehavior>) characters.get(oldPointUser);
 		LOG.info("##############");
-		lastKey = e.getKeyCode();
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_D:
 				move(user, xVelocity, yStartVelocity, oldPointUser);
@@ -89,14 +86,6 @@ public class UserKeys implements KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		
-	}
-
-	public int getLastKey() {
-		return lastKey;
-	}
-	
-	public void setLastKey(int lastKey) {
-		this.lastKey = lastKey;
 	}
 
 }

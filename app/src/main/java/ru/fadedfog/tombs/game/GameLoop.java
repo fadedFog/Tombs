@@ -106,7 +106,7 @@ public class GameLoop extends Thread{
 		
 	}
 	
-	private boolean isHeroLive() {
+	public boolean isHeroLive() {
 		TreasureHunter<MoveBehavior> treasureHunter = (TreasureHunter<MoveBehavior>) room.getCharacters().get(room.getPointUser());
 		return treasureHunter.getHearts() > 0;
 	}
