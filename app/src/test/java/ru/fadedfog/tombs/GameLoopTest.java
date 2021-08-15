@@ -84,6 +84,7 @@ public class GameLoopTest {
     	List<Point> newPoints = new ArrayList<>(map.keySet());   	
     	
     	assertFalse(oldPoints.equals(newPoints));
+    	
     }
 	
     @Test
