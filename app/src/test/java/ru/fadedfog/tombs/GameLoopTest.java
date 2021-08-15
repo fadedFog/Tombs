@@ -145,8 +145,7 @@ public class GameLoopTest {
     	gameLoop.start();
     	
     	assertTrue(gameLoop.getStateGame() == StateGame.MAIN_MENU);
-    
-    	
+
     	KeyEvent ke = new KeyEvent(new Component() {}, 0, 0l, 0, KeyEvent.VK_ENTER);
     	gameLoop.getUserKeys().keyPressed(ke);
     	assertTrue(gameLoop.getStateGame() == StateGame.ON);
@@ -160,16 +159,12 @@ public class GameLoopTest {
     	assertTrue(gameLoop.getStateGame() == StateGame.ON);
     	
     	room = gameLoop.getRoom();
-    	LOG.info("HEARTS_FIRST: " + room.getCharacters().get(room.getPointUser()).getHearts());
     	TreasureHunter<MoveBehavior> hunter = (TreasureHunter<MoveBehavior>) room.getCharacters().get(room.getPointUser());
     	hunter.setHearts(0);
+    	Thread.sleep(500l);
     	
-    	LOG.info("HEARTS_LAST: " + room.getCharacters().get(room.getPointUser()).getHearts());
-    	
-    	LOG.info("STATE_GAME: " + gameLoop.getStateGame());
-    	
-    	assertFalse(gameLoop.isHeroLive()); // False - correct
-    	assertTrue(gameLoop.getStateGame() == StateGame.LOSE); // TODO - incorrect, but when start from App.java - all is good. ??
+    	assertFalse(gameLoop.isHeroLive());
+    	assertTrue(gameLoop.getStateGame() == StateGame.LOSE);
     }
     
 //    @Test
