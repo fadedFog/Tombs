@@ -163,7 +163,6 @@ public class GameLoopTest {
     	hunter.setHearts(0);
     	Thread.sleep(500l);
     	
-    	assertFalse(gameLoop.isHeroLive());
     	assertTrue(gameLoop.getStateGame() == StateGame.LOSE);
     }
     
