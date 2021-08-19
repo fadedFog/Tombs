@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import ru.fadedfog.tombs.asset.character.Character;
 import ru.fadedfog.tombs.asset.character.behavior.move.Immovable;
@@ -25,9 +24,8 @@ import ru.fadedfog.tombs.asset.geometry.Point;
 import ru.fadedfog.tombs.asset.level.element.surface.Surface;
 import ru.fadedfog.tombs.asset.level.element.surface.TypeSurface;
 import ru.fadedfog.tombs.asset.level.map.room.Room;
-import ru.fadedfog.tombs.controller.UserKeys;
 import ru.fadedfog.tombs.game.GameLoop;
-import ru.fadedfog.tombs.view.GameView;
+import ru.fadedfog.tombs.settings.SettingsGame;
 
 @SpringBootApplication
 @Configurable
@@ -39,35 +37,37 @@ public class App {
     	
     	System.setProperty("java.awt.headless", "false");
     	
-    	ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+    	ApplicationContext context = ApplicationContextKeeper.getContext();
     	GameLoop gameLoop = context.getBean(GameLoop.class);
     	
     	TreasureHunter<MoveBehavior> treasureHunter = new TreasureHunter<MoveBehavior>();
-    	treasureHunter.setHearts(2);
+    	treasureHunter.setHearts(0);
     	treasureHunter.setName("Hunter");
     	treasureHunter.setLevelScore(999);
     	treasureHunter.setTotalScore(9999);
     	treasureHunter.setNumberStepsUser(0);
-    	treasureHunter.setMoveBehavior(new Movable());
+    	Movable movable = new Movable();
+    	treasureHunter.setMoveBehavior(movable);
     	Character<MoveBehavior> monster1 = new Character<>();
     	monster1.setName("Monster#1");
-    	monster1.setMoveBehavior(new Immovable());
+    	Immovable immovable1 = new Immovable();
+    	monster1.setMoveBehavior(immovable1);
     	monster1.setHearts(1);
     	Character<MoveBehavior> monster2 = new Character<>();
     	monster2.setName("Monster#2");
-    	monster2.setMoveBehavior(new Immovable());
+    	Immovable immovable2 = new Immovable();
+    	monster2.setMoveBehavior(immovable2);
     	monster2.setHearts(1);
     	ConcurrentHashMap<Point, Character<MoveBehavior>> map1 = new ConcurrentHashMap<>();
-    	map1.put(new Point(0, 2), monster2);
     	map1.put(new Point(5, 5), treasureHunter);
     	map1.put(new Point(10, 2), monster1);
+    	map1.put(new Point(0, 2), monster2);
     	
     	Surface<TypeSurface> block = new Surface<TypeSurface>(TypeSurface.BLOCK);
     	Surface<TypeSurface> block2 = new Surface<TypeSurface>(TypeSurface.BLOCK);
     	Map<Point, Surface<TypeSurface>> map2 = new HashMap<>();
     	map2.put(new Point(5,1), block);
     	map2.put(new Point(2,3), block2);
-    	
     	
     	int width = 100;
     	int height = 60;
@@ -76,9 +76,6 @@ public class App {
     	LOG.info(new Point(1, 1) + " " + treasureHunter);
     	gameLoop.setRoom(room);
     	gameLoop.start();
-
-    	UserKeys userKeys = new UserKeys(gameLoop);
-    	GameView gameView = new GameView(userKeys);
     	
     }   
     

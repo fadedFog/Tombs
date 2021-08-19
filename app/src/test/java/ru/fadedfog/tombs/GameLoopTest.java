@@ -3,6 +3,8 @@ package ru.fadedfog.tombs;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.awt.Component;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,16 +13,22 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import ru.fadedfog.tombs.asset.character.Character;
+import ru.fadedfog.tombs.asset.character.behavior.move.Immovable;
 import ru.fadedfog.tombs.asset.character.behavior.move.Movable;
 import ru.fadedfog.tombs.asset.character.behavior.move.MoveBehavior;
+import ru.fadedfog.tombs.asset.character.user.TreasureHunter;
 import ru.fadedfog.tombs.asset.geometry.Point;
+import ru.fadedfog.tombs.asset.level.element.surface.Surface;
+import ru.fadedfog.tombs.asset.level.element.surface.TypeSurface;
 import ru.fadedfog.tombs.asset.level.map.room.Room;
 import ru.fadedfog.tombs.game.GameLoop;
+import ru.fadedfog.tombs.game.StateGame;
 
 public class GameLoopTest {
 	private final String NAME_LEVEL_CONFIG_FILE = "src/test/resources/room.json";
@@ -82,17 +90,69 @@ public class GameLoopTest {
     public void testPauseGameLoop() {
     	GameLoop gameLoop = new GameLoop();
     	gameLoop.start();
-    	assertFalse(gameLoop.isPause());
+    	assertFalse(gameLoop.getStateGame() == StateGame.PAUSE);
     	
-    	gameLoop.pause();
-    	assertTrue(gameLoop.isPause());
+    	gameLoop.setStateGame(StateGame.PAUSE);
+    	assertTrue(gameLoop.getStateGame() == StateGame.PAUSE);
     	
-    	gameLoop.proceed();
-    	assertFalse(gameLoop.isPause());
+    	gameLoop.setStateGame(StateGame.ON);
+    	assertFalse(gameLoop.getStateGame() == StateGame.PAUSE);
     	
     	gameLoop.interrupt();
-    	assertFalse(gameLoop.isPause());
+    	assertFalse(gameLoop.getStateGame() == StateGame.PAUSE);
+    }
+    
+    @Test
+    public void testSwitchStateGame() throws Exception {
+    	ApplicationContext context = ApplicationContextKeeper.getContext();
+    	GameLoop gameLoop = context.getBean(GameLoop.class);
+    	TreasureHunter<MoveBehavior> treasureHunter = new TreasureHunter<MoveBehavior>();
+    	treasureHunter.setHearts(2);
+    	treasureHunter.setName("Hunter");
+    	treasureHunter.setLevelScore(999);
+    	treasureHunter.setTotalScore(9999);
+    	treasureHunter.setNumberStepsUser(0);
+    	Movable movable = new Movable();
+    	treasureHunter.setMoveBehavior(movable);
+    	Character<MoveBehavior> monster1 = new Character<>();
+    	monster1.setName("Monster#1");
+    	Immovable immovable1 = new Immovable();
+    	monster1.setMoveBehavior(immovable1);
+    	monster1.setHearts(1);
     	
+    	ConcurrentHashMap<Point, Character<MoveBehavior>> map1 = new ConcurrentHashMap<>();
+    	map1.put(new Point(5, 5), treasureHunter);
+    	map1.put(new Point(10, 2), monster1);
+    	Map<Point, Surface<TypeSurface>> map2 = new HashMap<>();
+    	
+    	int width = 100;
+    	int height = 60;
+    	String name = "RoomTest";
+    	Room room = new Room(width, height, name, map1, map2);
+    	
+    	gameLoop.setRoom(room);
+    	gameLoop.start();
+    	
+    	assertTrue(gameLoop.getStateGame() == StateGame.MAIN_MENU);
+
+    	KeyEvent ke = new KeyEvent(new Component() {}, 0, 0l, 0, KeyEvent.VK_ENTER);
+    	gameLoop.getUserKeys().keyPressed(ke);
+    	assertTrue(gameLoop.getStateGame() == StateGame.ON);
+    	
+    	ke = new KeyEvent(new Component() {}, 0, 0l, 0, KeyEvent.VK_ESCAPE);
+    	gameLoop.getUserKeys().keyPressed(ke);
+    	assertTrue(gameLoop.getStateGame() == StateGame.PAUSE);
+    	
+    	ke = new KeyEvent(new Component() {}, 0, 0l, 0, KeyEvent.VK_ESCAPE);
+    	gameLoop.getUserKeys().keyPressed(ke);
+    	assertTrue(gameLoop.getStateGame() == StateGame.ON);
+    	
+    	room = gameLoop.getRoom();
+    	TreasureHunter<MoveBehavior> hunter = (TreasureHunter<MoveBehavior>) room.getCharacters().get(room.getPointUser());
+    	hunter.setHearts(0);
+    	Thread.sleep(500l);
+    	
+    	assertTrue(gameLoop.getStateGame() == StateGame.LOSE);
     }
     
     @Test

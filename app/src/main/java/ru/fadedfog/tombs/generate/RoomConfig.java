@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -24,8 +26,11 @@ import ru.fadedfog.tombs.asset.geometry.Point;
 import ru.fadedfog.tombs.asset.level.element.surface.Surface;
 import ru.fadedfog.tombs.asset.level.element.surface.TypeSurface;
 import ru.fadedfog.tombs.asset.level.map.room.Room;
+import ru.fadedfog.tombs.settings.SettingsGame;
 
 public class RoomConfig {
+	@Autowired
+	private SettingsGame settingsGame;
 	private static final String PATH = "src/main/resources/room.json";
 	private static final ObjectMapper mapper = new ObjectMapper();
 	@JsonIgnoreProperties
@@ -158,6 +163,18 @@ public class RoomConfig {
 		}
 		
 		return result;
+	}
+
+	public SettingsGame getSettingsGame() {
+		return settingsGame;
+	}
+
+	public void setSettingsGame(SettingsGame settingsGame) {
+		this.settingsGame = settingsGame;
+	}
+
+	public static ObjectMapper getMapper() {
+		return mapper;
 	}
 
 	public int getWidth() {

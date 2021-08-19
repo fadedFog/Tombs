@@ -1,5 +1,6 @@
 package ru.fadedfog.tombs.asset.character.behavior.move;
 
+
 public enum TypeMove {
 	MOVABLE {
 		@Override
