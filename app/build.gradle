@@ -65,6 +65,16 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager
 	implementation 'org.hibernate:hibernate-entitymanager:5.5.3.Final'
 	
+	// https://mvnrepository.com/artifact/org.apache.kafka/kafka
+	implementation 'org.apache.kafka:kafka_2.13:2.8.0'
+	
+	// https://mvnrepository.com/artifact/org.springframework.kafka/spring-kafka
+	implementation 'org.springframework.kafka:spring-kafka:2.7.6'
+	
+	// https://mvnrepository.com/artifact/org.springframework.kafka/spring-kafka-test
+	testImplementation 'org.springframework.kafka:spring-kafka-test:2.7.6'
+	
+	
 }
 
 application {

@@ -1,7 +1,6 @@
 package ru.fadedfog.tombs.asset.character.behavior.move;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 
 import ru.fadedfog.tombs.ApplicationContextKeeper;
 import ru.fadedfog.tombs.asset.geometry.Point;
