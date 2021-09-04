@@ -3,7 +3,6 @@
  */
 package ru.fadedfog.tombs;
 
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,6 +13,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.kafka.annotation.EnableKafka;
 
 import ru.fadedfog.tombs.asset.character.Character;
 import ru.fadedfog.tombs.asset.character.behavior.move.Immovable;
@@ -25,8 +25,8 @@ import ru.fadedfog.tombs.asset.level.element.surface.Surface;
 import ru.fadedfog.tombs.asset.level.element.surface.TypeSurface;
 import ru.fadedfog.tombs.asset.level.map.room.Room;
 import ru.fadedfog.tombs.game.GameLoop;
-import ru.fadedfog.tombs.settings.SettingsGame;
 
+@EnableKafka
 @SpringBootApplication
 @Configurable
 public class App {
@@ -34,7 +34,6 @@ public class App {
 	
     public static void main(String[] args) throws Exception {
     	SpringApplication.run(App.class, args);
-    	
     	System.setProperty("java.awt.headless", "false");
     	
     	ApplicationContext context = ApplicationContextKeeper.getContext();

@@ -2,6 +2,7 @@ package ru.fadedfog.tombs.asset.character;
 
 import ru.fadedfog.tombs.asset.character.behavior.move.MoveBehavior;
 import ru.fadedfog.tombs.asset.geometry.Point;
+import ru.fadedfog.tombs.kafka.MessageController;
 
 public class Character <T extends MoveBehavior> implements Runnable {
 	private String name;
@@ -23,6 +24,7 @@ public class Character <T extends MoveBehavior> implements Runnable {
 	}
 	
 	public Point move(int x, int y, Point point) {
+		MessageController.getInstance().sendOrder(name, "Movement character");
 		return moveBehavior.move(x, y, point);
 	}
 
